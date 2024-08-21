@@ -5,7 +5,7 @@
 #define TAM 3
 #define JOGADOR_X 'X'
 #define JOGADOR_O 'O'
-#define CARACTER_BRANCO '_'
+#define CARACTER '_'
 
 int main()
 {
@@ -20,7 +20,7 @@ int main()
     {
         for (col = 0; col < TAM; col++)
         {
-            jogo[lin][col] = CARACTER_BRANCO;
+            jogo[lin][col] = CARACTER;
         }
     }
 
@@ -51,7 +51,7 @@ int main()
             // Condicoes de jogadas, jogador A;
             if (jogada >= 1 && jogada <= 3)
             {
-                if (jogo[0][jogada - 1] != CARACTER_BRANCO)
+                if (jogo[0][jogada - 1] != CARACTER)
                 {
                     printf("Posicao ja preenchida, digite novamente.");
                     continue;
@@ -61,7 +61,7 @@ int main()
             }
             else if (jogada >= 4 && jogada <= 6)
             {
-                if (jogo[1][jogada - 4] != CARACTER_BRANCO)
+                if (jogo[1][jogada - 4] != CARACTER)
                 {
                     printf("Posicao ja preenchida, digite novamente.");
                     continue;
@@ -71,7 +71,7 @@ int main()
             }
             else if (jogada >= 7 && jogada <= 9)
             {
-                 if (jogo[2][jogada - 7] != CARACTER_BRANCO)
+                 if (jogo[2][jogada - 7] != CARACTER)
                 {
                     printf("Posicao ja preenchida, digite novamente.");
                     continue;
