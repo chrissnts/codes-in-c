@@ -1,4 +1,3 @@
-Novidade! Atalhos do teclado … Os atalhos de teclado do Drive foram atualizados para oferecer navegação por letras iniciais
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
