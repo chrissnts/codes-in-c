@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 #define TAM 3
 #define JOGADOR_X 'X'
@@ -81,6 +80,50 @@ int main()
             }
 
             cont_jogadas++;
+        }
+        else 
+        {
+            printf("\nJogador %c, faça sua jogada:\n", JOGADOR_O);
+            scanf("%i", &jogada);
+
+            // Verificando se jogada é valida;
+            if (!(jogada >= 1 && jogada <= 9))
+            {
+                printf("Posicao invalida, digite novamente.\n");
+                continue;
+            }
+
+            // Condicoes de jogadas, jogador A;
+            if (jogada >= 1 && jogada <= 3)
+            {
+                if (jogo[0][jogada - 1] != CARACTER)
+                {
+                    printf("Posicao ja preenchida, digite novamente.");
+                    continue;
+                }
+
+                jogo[0][jogada - 1] = JOGADOR_O;
+            }
+            else if (jogada >= 4 && jogada <= 6)
+            {
+                if (jogo[1][jogada - 4] != CARACTER)
+                {
+                    printf("Posicao ja preenchida, digite novamente.");
+                    continue;
+                }
+
+                jogo[1][jogada - 4] = JOGADOR_O;
+            }
+            else if (jogada >= 7 && jogada <= 9)
+            {
+                if (jogo[2][jogada - 7] != CARACTER)
+                {
+                    printf("Posicao ja preenchida, digite novamente.");
+                    continue;
+                }
+
+                jogo[2][jogada - 7] = JOGADOR_O;
+            }
         }
      
     }
