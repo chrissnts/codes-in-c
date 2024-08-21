@@ -5,29 +5,7 @@
 #define TAM 3
 #define JOGADOR_X 'X'
 #define JOGADOR_O 'O'
-
-void mostrar_tabuleiro()
-{
-    char tabuleiro[TAM][TAM];
-    int lin, col;
-
-    for (lin = 0; lin < TAM; lin++)
-    {
-        for (col = 0; col < TAM; col++)
-        {
-            tabuleiro[lin][col] = '_';
-        }
-    }
-
-    for (lin = 0; lin < TAM; lin++)
-    {
-        for (col = 0; col < TAM; col++)
-        {
-            printf("%c", tabuleiro[lin][col]);
-        }
-        printf("\n");
-    }
-}
+#define CARACTER_BRANCO '_'
 
 int main()
 {
@@ -37,280 +15,73 @@ int main()
     int jogada;
     char jogo[TAM][TAM];
 
-    mostrar_tabuleiro();
-
-    // Criando tabuleiro;
+    // Criando o "menu";
     for (lin = 0; lin < TAM; lin++)
     {
         for (col = 0; col < TAM; col++)
         {
-            jogo[lin][col] = '_';
+            jogo[lin][col] = CARACTER_BRANCO;
         }
     }
 
+    for (lin = 0; lin < TAM; lin++)
+    {
+        for (col = 0; col < TAM; col++)
+        {
+            printf("%c", jogo[lin][col]);
+        }
+        printf("\n");
+    }
+
+    // Laço de jogadas;
     while (1)
     {
         if (cont_jogadas % 2 == 0)
         {
             printf("\nJogador %c, faça sua jogada:\n", JOGADOR_X);
             scanf("%i", &jogada);
-            cont_jogadas++;
+
+            // Verificando se jogada é valida;
+            if (!(jogada >= 1 && jogada <= 9))
+            {
+                printf("Posicao invalida, digite novamente.\n");
+                continue;
+            }
 
             // Condicoes de jogadas, jogador A;
-            if (jogada == 1)
+            if (jogada >= 1 && jogada <= 3)
             {
-                if (jogo[0][0] == JOGADOR_O)
+                if (jogo[0][jogada - 1] != CARACTER_BRANCO)
                 {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
+                    printf("Posicao ja preenchida, digite novamente.");
                     continue;
                 }
-                else
-                {
-                    jogo[0][0] = JOGADOR_X;
-                }
+
+                jogo[0][jogada - 1] = JOGADOR_X;
             }
-            else if (jogada == 2)
+            else if (jogada >= 4 && jogada <= 6)
             {
-                if (jogo[0][1] == JOGADOR_O)
+                if (jogo[1][jogada - 4] != CARACTER_BRANCO)
                 {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
+                    printf("Posicao ja preenchida, digite novamente.");
                     continue;
                 }
-                else
-                {
-                    jogo[0][1] = JOGADOR_X;
-                }
+
+                jogo[1][jogada - 4] = JOGADOR_X;
             }
-            else if (jogada == 3)
+            else if (jogada >= 7 && jogada <= 9)
             {
-                if (jogo[0][2] == JOGADOR_O)
+                 if (jogo[2][jogada - 7] != CARACTER_BRANCO)
                 {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
+                    printf("Posicao ja preenchida, digite novamente.");
                     continue;
                 }
-                else
-                {
-                    jogo[0][2] = JOGADOR_X;
-                }
+
+                jogo[2][jogada - 7] = JOGADOR_X;
             }
-            else if (jogada == 4)
-            {
-                if (jogo[1][0] == JOGADOR_O)
-                {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
-                    continue;
-                }
-                else
-                {
-                    jogo[1][0] = JOGADOR_X;
-                }
-            }
-            else if (jogada == 5)
-            {
-                if (jogo[1][1] == JOGADOR_O)
-                {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
-                    continue;
-                }
-                else
-                {
-                    jogo[1][1] = JOGADOR_X;
-                }
-            }
-            else if (jogada == 6)
-            {
-                if (jogo[1][2] == JOGADOR_O)
-                {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
-                    continue;
-                }
-                else
-                {
-                    jogo[1][2] = JOGADOR_X;
-                }
-            }
-            else if (jogada == 7)
-            {
-                if (jogo[2][0] == JOGADOR_O)
-                {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
-                    continue;
-                }
-                else
-                {
-                    jogo[2][0] = JOGADOR_X;
-                }
-            }
-            else if (jogada == 8)
-            {
-                if (jogo[2][1] == JOGADOR_O)
-                {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
-                    continue;
-                }
-                else
-                {
-                    jogo[2][1] = JOGADOR_X;
-                }
-            }
-            else if (jogada == 9)
-            {
-                if (jogo[2][2] == JOGADOR_O)
-                {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
-                    continue;
-                }
-                else
-                {
-                    jogo[2][2] = JOGADOR_X;
-                }
-            }
-        }
-        else if (cont_jogadas % 2 != 0)
-        {
-            printf("\nJogador %c, faça sua jogada:\n", JOGADOR_O);
-            scanf("%i", &jogada);
+
             cont_jogadas++;
-
-            // Condicoes de jogadas, jogador O;
-            if (jogada == 1)
-            {
-                if (jogo[0][0] == JOGADOR_X)
-                {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
-                    continue;
-                }
-                else
-                {
-                    jogo[0][0] = JOGADOR_O;
-                }
-            }
-            else if (jogada == 2)
-            {
-                if (jogo[0][1] == JOGADOR_X)
-                {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
-                    continue;
-                }
-                else
-                {
-                    jogo[0][1] = JOGADOR_O;
-                }
-            }
-            else if (jogada == 3)
-            {
-                if (jogo[0][2] == JOGADOR_X)
-                {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
-                    continue;
-                }
-                else
-                {
-                    jogo[0][2] = JOGADOR_O;
-                }
-            }
-            else if (jogada == 4)
-            {
-                if (jogo[1][0] == JOGADOR_X)
-                {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
-                    continue;
-                }
-                else
-                {
-                    jogo[1][0] = JOGADOR_O;
-                }
-            }
-            else if (jogada == 5)
-            {
-                if (jogo[1][1] == JOGADOR_X)
-                {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
-                    continue;
-                }
-                else
-                {
-                    jogo[1][1] = JOGADOR_O;
-                }
-            }
-            else if (jogada == 6)
-            {
-                if (jogo[1][2] == JOGADOR_X)
-                {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
-                    continue;
-                }
-                else
-                {
-                    jogo[1][2] = JOGADOR_O;
-                }
-            }
-            else if (jogada == 7)
-            {
-                if (jogo[2][0] == JOGADOR_X)
-                {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
-                    continue;
-                }
-                else
-                {
-                    jogo[2][0] = JOGADOR_O;
-                }
-            }
-            else if (jogada == 8)
-            {
-                if (jogo[2][1] == JOGADOR_X)
-                {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
-                    continue;
-                }
-                else
-                {
-                    jogo[2][1] = JOGADOR_O;
-                }
-            }
-            else if (jogada == 9)
-            {
-                if (jogo[2][2] == JOGADOR_X)
-                {
-                    printf("Posicao invalida, tente novamente.\n");
-                    cont_jogadas--;
-                    continue;
-                }
-                else
-                {
-                    jogo[2][2] = JOGADOR_O;
-                }
-            }
-
-            // Mostrando o tabuleiro com X e O;
-            for (lin = 0; lin < TAM; lin++)
-            {
-                for (col = 0; col < TAM; col++)
-                {
-                    printf("%c", jogo[lin][col]);
-                }
-                printf("\n");
-            }
         }
-
-        
+     
     }
 }
