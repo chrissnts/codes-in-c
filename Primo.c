@@ -17,14 +17,15 @@ int main()
     {
         if (n % d == 0)
             primo = 0;
-        d ++;
+        d++;
     }
 
     if (primo == 1)
         printf("%d é primo meofi, rai dento caba \n", n);
-
     else
+    {
         printf(" %d nao é primo, é cumpixa\n", n);
+    }
 
     return 0;
 }

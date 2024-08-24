@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main ()
+int main()
 {
     int n = 0, i, k;
     float soma = 0;
@@ -15,9 +15,8 @@ int main ()
     k = 1;
 
     while (i <= n)
-    {   
-    
-        soma += (1.0/i*k);
+    {
+        soma += (1.0 / i * k);
         k *= -1;
         i++;
     }

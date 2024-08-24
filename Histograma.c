@@ -16,7 +16,6 @@ int main()
     for (i = 0; i < TAM; i++)
     {
         vet[i] = 1 + rand() % VALOR;
-       
     }
 
     printf("vet: ");

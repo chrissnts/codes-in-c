@@ -6,18 +6,18 @@ int main()
 
     printf("Digite sua idade: \n");
     scanf("%i", &idade);
-    if (idade <=0 )
+    if (idade <= 0)
     {
-         printf("\nIdade inválida");
-        
+        printf("\nIdade inválida");
     }
-    if( idade >= 16 )
-     {
+    if (idade >= 16)
+    {
         printf("\nPode votar");
-    }else
+    }
+    else
     {
         printf("\nNão pode votar");
     }
-   
+
     return 0;
 }

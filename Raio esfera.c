@@ -6,11 +6,10 @@ int main()
 
     printf("\nDigite o raio de uma esfera:");
     scanf("%f", &raio);
-    if( raio >= 0)
+    if (raio >= 0)
     {
-        form = (4.0/3.0) * 3.14 * raio * raio * raio;
+        form = (4.0 / 3.0) * 3.14 * raio * raio * raio;
         printf("\nVolume: %f\n ", form);
-
     }
     else
     {

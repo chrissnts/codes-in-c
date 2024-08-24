@@ -6,7 +6,7 @@
 
 int main()
 {
-    int i,iguais = 0;
+    int i, iguais = 0;
     int tam;
     char word[TAM], copy[TAM];
 
@@ -21,13 +21,13 @@ int main()
     printf("%i", tam);
     for (i = 0; i < tam; i++)
     {
-        copy[i] = word[tam-1];
+        copy[i] = word[tam - 1];
         tam--;
     }
-    
+
     for (i = 0; i < tam; i++)
     {
-        if(copy[i] == word[i])
+        if (copy[i] == word[i])
         {
             iguais++;
         }
