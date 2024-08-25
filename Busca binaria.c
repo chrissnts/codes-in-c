@@ -21,7 +21,7 @@ int main()
     }
     printf("\n");
 
-    // Vetor crescente
+    // Algotitmo pro vetor crescente usando termo bubble sort
     for (i = 0; i < TAM; i++)
     {
         for (j = 0; j < TAM - i - 1; j++)
@@ -34,7 +34,7 @@ int main()
             }
         }
     }
-    printf("Vetor decrescente: ");
+    printf("Vetor cecrescente: ");
     for (i = 0; i < TAM; i++)
     {
 
