@@ -6,8 +6,8 @@
 
 int main()
 {
-    int vet[TAM], vet2[TAM], vetinter[0];
-    int i, j;
+    int vet[TAM], vet2[TAM];
+    int i, j, k, ja_impresso = 0;
 
     srand(time(NULL));
 
@@ -17,17 +17,19 @@ int main()
         vet2[i] = 1 + rand() % 10;
     }
 
+    printf("\nVetor A: ");
     for (i = 0; i < TAM; i++)
     {
         printf("[%i]", vet[i]);
     }
 
+    printf("\nVetor B: ");
     for (i = 0; i < TAM; i++)
     {
         printf("[%i]", vet2[i]);
     }
 
-    printf("Intersecao: [");
+    printf("\nIntersecao: [");
 
     for (i = 0; i < TAM; i++)
     {
@@ -35,7 +37,21 @@ int main()
         {
             if (vet[i] == vet2[j])
             {
-                printf("%i ", vet[i]);
+                ja_impresso = 0;
+
+                for (k = 0; k < i; k++)
+                {
+                    if (vet[k] == vet[i])
+                    {
+                        ja_impresso = 1;
+                        break;
+                    }
+                }
+                if (!ja_impresso)
+                {
+                    printf("[%i]", vet[i]);
+                    break;
+                }
             }
         }
     }
