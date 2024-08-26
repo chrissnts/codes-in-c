@@ -58,7 +58,7 @@ int main()
             continue;
         }
 
-        // Condicoes de jogadas, jogador x;
+        // Condições de jogadas;
         if (jogada >= 1 && jogada <= 3)
         {
             if (jogo[0][jogada - 1] != CARACTER)
@@ -90,7 +90,7 @@ int main()
             jogo[2][jogada - 7] = jogador_atual;
         }
 
-        // Verifica se as linhas foram preenchidas e jogador X ganhou;
+        // Verifica se as linhas foram preenchidas e jogador ganhou;
         for (lin = 0; lin < TAM; lin++)
         {
             if (jogo[lin][0] == jogador_atual && jogo[lin][1] == jogador_atual && jogo[lin][2] == jogador_atual)
@@ -100,7 +100,7 @@ int main()
             }
         }
 
-        // Verifica se as colunas foram preenchidas e jogador X ganhou;
+        // Verifica se as colunas foram preenchidas e jogador ganhou;
         for (col = 0; col < TAM; col++)
         {
             if (jogo[0][col] == jogador_atual && jogo[1][col] == jogador_atual && jogo[2][col] == jogador_atual)
@@ -109,7 +109,8 @@ int main()
                 break;
             }
         }
-        // Verifica se as diagonais foram preenchidas e jogador X ganhou;
+
+        // Verifica se as diagonais foram preenchidas e jogador  ganhou;
         if (jogo[0][0] == JOGADOR_X && jogo[1][1] == JOGADOR_X && jogo[2][2] == JOGADOR_X)
         {
             ganhador = JOGADOR_X;
@@ -119,7 +120,7 @@ int main()
             ganhador = JOGADOR_X;
         }
 
-        // Se houver ganhador ou todas as casas estiverem preenchidas
+        // Se houver ganhador ou todas as casas estiverem preenchidas;
         if (ganhador != EMPATE)
         {
             break;
@@ -127,7 +128,7 @@ int main()
 
         cont_jogadas++;
 
-        // Verificando se a jogada sera do X ou O;
+        // Verificando se a jogada sera do jogador X ou O;
         if (jogador_atual == JOGADOR_X)
         {
             jogador_atual = JOGADOR_O;
@@ -137,12 +138,13 @@ int main()
             jogador_atual = JOGADOR_X;
         }
 
-        // Se houver ganhador ou todas as casas estiverem preenchidas
+        // Se houver ganhador ou todas as casas estiverem preenchidas;
         if (ganhador != EMPATE || cont_jogadas == 9)
         {
             break;
         }
     }
+
     // Apresentando o resultado final;
     for (lin = 0; lin < TAM; lin++)
     {
