@@ -1,74 +1,84 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-float adicao(float a, float b)
+void adicao()
 {
-    float soma;
-
+    float a, b;
+    printf("Digite dois números: ");
     scanf("%f %f", &a, &b);
-    soma = a + b;
+    printf("Resultado da adição: %.2f\n", a + b);
+}
 
-    return soma;
+void subtracao()
+{
+    float a, b;
+    printf("Digite dois números: ");
+    scanf("%f %f", &a, &b);
+    printf("Resultado da subtração: %.2f\n", a - b);
+}
+
+void multiplicacao()
+{
+    float a, b;
+    printf("Digite dois números: ");
+    scanf("%f %f", &a, &b);
+    printf("Resultado da multiplicação: %.2f\n", a * b);
+}
+
+void divisao()
+{
+    float a, b;
+    printf("Digite dois números: ");
+    scanf("%f %f", &a, &b);
+    if (b != 0)
+    {
+        printf("Resultado da divisão: %.2f\n", a / b);
+    }
+    else
+    {
+        printf("Divisão por zero\n");
+    }
 }
 
 int main()
 {
+    int opcao;
 
-    double v1, v2;
-    double soma;
-    int op = 0;
-
-    // Escolha a operação que o usuario quer
-    do
+    while (1)
     {
-        printf("\nEscolha uma operacao:\n ");
-        printf(" [1] Soma\n");
-        printf("  [2] Subtracao\n");
-        printf("  [3] Multiplicacao\n");
-        printf("  [4] Divisao\n");
-        scanf("%i", &op);
 
-        // Fazer a operação
-        switch (op)
+        printf("Escolha uma operação:\n");
+        printf("1. Adição\n");
+        printf("2. Subtração\n");
+        printf("3. Multiplicação\n");
+        printf("4. Divisão\n");
+        printf("0. Sair\n");
+        printf("Digite sua opção: ");
+        scanf("%d", &opcao);
+
+        if (opcao == 0)
         {
-        case 1:
-
-            printf("+----+----+----+----+----+\n ");
-            printf("\nDigite o primeiro valor:");
-            scanf("%f", &v1);
-             printf("\nDigite o segundo valor:");
-            scanf("%f", &v1);
-            soma = adicao(v1, v2);
-            printf("Adição = %f\n", soma);
-            printf("+----+----+----+----+----+");
-
-        case 2:
-
-            printf("+----+----+----+----+----+\n ");
-
-            printf("+----+----+----+----+----+");
-
-        case 3:
-
-            printf("+----+----+----+----+----+\n ");
-
-            printf("+----+----+----+----+----+");
-
-        case 4:
-
-            printf("+----+----+----+----+----+\n ");
-
-            printf("+----+----+----+----+----+");
-        }
-
-        if (op == 0)
-        {
-            printf("+----+----+----+----+----+\n ");
-
-            printf("+----+----+----+----+----+");
+            printf("Saindo...\n");
             break;
         }
-    } while (op != 0);
+
+        switch (opcao)
+        {
+        case 1:
+            adicao();
+            break;
+        case 2:
+            subtracao();
+            break;
+        case 3:
+            multiplicacao();
+            break;
+        case 4:
+            divisao();
+            break;
+        default:
+            printf("Opção inválida!\n");
+        }
+    }
 
     return 0;
 }

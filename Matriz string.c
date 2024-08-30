@@ -10,7 +10,7 @@ int main()
 {
     int i, j, k;
     char aluno[LIN][COL];
-    float nota[LIN][COL], media[LIN], soma, aux;
+    float nota[LIN][COL2], media[LIN], soma, aux;
 
     for (i = 0; i < LIN; i++)
     {
