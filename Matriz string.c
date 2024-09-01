@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdio_ext.h>
 
 #define LIN 2
 #define COL2 4
@@ -17,7 +16,7 @@ int main()
         soma = 0;
         printf("\nDigite o nome do aluno [%i]: ", i + 1);
         gets(aluno[i]);
-        __fpurge(stdin);
+        fflush(stdin);
 
         for (j = 0; j < COL2; j++)
         {
@@ -25,7 +24,7 @@ int main()
             {
                 printf("\nNota [%i]: ", j + 1);
                 scanf("%f", &nota[i][j]);
-                __fpurge(stdin);
+                fflush(stdin);
             } while (nota[i][j] < 0 || nota[i][j] > 10);
 
             soma += nota[i][j];
@@ -56,17 +55,17 @@ int main()
         printf("\nNotas em ordem crescente: ");
         for (j = 0; j < COL2; j++)
         {
-            printf("%.2f ", nota[i][j]);
+            printf("%.2f, ", nota[i][j]);
         }
-        printf("\nMédia: %.2f\n", media[i]);
+        printf("\nMedia: %.2f\n", media[i]);
 
         if (media[i] >= 7)
         {
-            printf("Situação: Aprovado\n\n");
+            printf("Situacao: Aprovado\n\n");
         }
         else
         {
-            printf("Situação: Reprovado\n\n");
+            printf("Situacao: Reprovado\n\n");
         }
     }
 

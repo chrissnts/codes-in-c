@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define TAM 100
+#define TAM 5
 
 int main()
 {
