@@ -7,21 +7,22 @@
 int main()
 {
     int i, iguais = 0;
-    int tam;
+    int tam = 0;
     char word[TAM], copy[TAM];
 
     printf("Escreva uma palavra: ");
     gets(word);
-    __fpurge(stdin);
+    fflush(stdin);
 
     while (word[tam] != '\0')
     {
         tam++;
     }
     printf("%i", tam);
+    
     for (i = 0; i < tam; i++)
     {
-        copy[i] = word[tam - 1];
+        copy[i] = word[tam - 1 - i];
         tam--;
     }
 
