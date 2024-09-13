@@ -3,10 +3,10 @@
 
 // Christian Alexssander Santos da Silva info24 atividade avaliativa;
 
-float azul(int dias)
+float azul(float dias)
 {
     float desconto = 0;
-    float preco = 0;
+    float preco;
 
     preco = dias * 10;
 
