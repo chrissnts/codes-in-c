@@ -26,6 +26,10 @@ void menu_visualizar_veiculo();
 void visualizar_veiculo(int opm);
 void excluir();
 void excluir_veiculo(char *placa);
+void verificacao_string_marca(char marca);
+void verificacao_string_modelo(char modelo);
+void verificacao_string_cambio(char cambio);
+void verificacao_string_placa(char placa);
 
 int main()
 {
@@ -43,11 +47,11 @@ int main()
 
 void menu()
 {
-    system("clear");
     printf("\n1- Adicionar veiculo\n");
     printf("\n2 - Visualizar veiculo\n");
     printf("\n3 - Excluir veiculo\n");
     printf("\n4 - Sair\n");
+    // system("cls");
 }
 void opcao_menu(int op)
 {
@@ -69,8 +73,13 @@ void opcao_menu(int op)
         scanf("%i", &opm);
         visualizar_veiculo(opm);
     }
-    else if (op == 2)
+    else if (op == 3)
     {
+        if (ja_adicionado <= 0)
+        {
+            messageError(2);
+            return;
+        }
         excluir();
         fflush(stdin);
         scanf("%s", placa);
@@ -78,32 +87,9 @@ void opcao_menu(int op)
     }
 }
 
-void messageError(int erro)
-{
-    switch (erro)
-    {
-    case 0:
-        system("clear");
-        printf("\nErro. Opcao invalida.\n");
-        break;
-    case 1:
-        system("clear");
-        printf("\nLimite de veiculos atingido.\n");
-        break;
-
-    case 2:
-        system("clear");
-        printf("\nErro. Nenhum veiculo adicionado.\n");
-        break;
-    case 3:
-        system("clear");
-        printf("\nErro. Placa nao encontrada.\n");
-        break;
-    }
-}
 void adicionar_veiculo()
 {
-    system("clear");
+    system("cls");
     if (ja_adicionado >= 200)
     {
         messageError(1);
@@ -116,24 +102,39 @@ void adicionar_veiculo()
     carro[ja_adicionado].cambio = malloc(10 * sizeof(char));
 
     printf("\nDigite a marca do veiculo: (Fiat, Volks, Ford, Toyota, Jeep)\n");
+    fflush(stdin);
     scanf("%s", carro[ja_adicionado].marca);
+    carro[ja_adicionado].marca = toupper(carro[ja_adicionado].marca);
+    verificacao_string_marca (carro[ja_adicionado].marca);
+
     printf("Digite o modelo do veiculo: (Polo, Argo, Corolla, Ranger, Renegade)\n");
+    fflush(stdin);
     scanf("%s", carro[ja_adicionado].modelo);
+    carro[ja_adicionado].modelo = toupper(carro[ja_adicionado].modelo);
+
     printf("Digite a placa do veiculo: (AAA0000, BBB1234)\n");
+    fflush(stdin);
     scanf("%s", carro[ja_adicionado].placa);
+    carro[ja_adicionado].placa = toupper(carro[ja_adicionado].placa);
+
     printf("Digite o tipo de cambio do veiculo: (Manual, Automatico)\n");
+    fflush(stdin);
     scanf("%s", carro[ja_adicionado].cambio);
+    carro[ja_adicionado].cambio = toupper(carro[ja_adicionado].cambio);
+
     printf("Digite o motor do veiculo: (1.0, 1.4, 1.6, 1.8, 2.0)\n");
+    fflush(stdin);
     scanf("%f", &carro[ja_adicionado].motor);
 
     ja_adicionado++;
 
+    system("cls");
     printf("\nVeiculo adicionado com sucesso!\n");
 }
 
 void menu_visualizar_veiculo()
 {
-    system("clear");
+    system("cls");
     printf("\n1- Verificar todos\n");
     printf("\n2- Verificar por marca\n");
     printf("\n3- Verificar por modelo\n");
@@ -150,13 +151,13 @@ void visualizar_veiculo(int opm)
     }
     else if (opm == 1)
     {
-        system("clear");
+
         for (int i = 0; i < ja_adicionado; i++)
         {
             printf("\nMarca do veiculo %i: %s\n", i + 1, carro[i].marca);
             printf("\nModelo do veiculo %i: %s\n", i + 1, carro[i].modelo);
             printf("\nCambio do veiculo %i: %s\n", i + 1, carro[i].cambio);
-            printf("\nMotor do veiculo %i: %.2f\n", i + 1, carro[i].motor);
+            printf("\nMotor do veiculo %i: %.1f\n", i + 1, carro[i].motor);
             printf("\nPlaca do veiculo %i: %s\n", i + 1, carro[i].placa);
         }
     }
@@ -165,7 +166,7 @@ void visualizar_veiculo(int opm)
         printf("\nDigite a marca:\n");
         fflush(stdin);
         scanf("%s", marca);
-        system("clear");
+
         for (int i = 0; i < ja_adicionado; i++)
         {
             if (strcmp(carro[i].marca, marca) == 0)
@@ -173,7 +174,7 @@ void visualizar_veiculo(int opm)
                 printf("\nInformacoes do veiculo %i com marca %s:", i + 1, carro[i].marca);
                 printf("\nModelo do veiculo %i: %s\n", i + 1, carro[i].modelo);
                 printf("\nCambio do veiculo %i: %s\n", i + 1, carro[i].cambio);
-                printf("\nMotor do veiculo %i: %.2f\n", i + 1, carro[i].motor);
+                printf("\nMotor do veiculo %i: %.1f\n", i + 1, carro[i].motor);
                 printf("\nPlaca do veiculo %i: %s\n", i + 1, carro[i].placa);
             }
         }
@@ -183,7 +184,7 @@ void visualizar_veiculo(int opm)
         printf("\nDigite o modelo:\n");
         fflush(stdin);
         scanf("%s", modelo);
-        system("clear");
+
         for (int i = 0; i < ja_adicionado; i++)
         {
             if (strcmp(carro[i].modelo, modelo) == 0)
@@ -192,7 +193,7 @@ void visualizar_veiculo(int opm)
                 printf("\nMarca do veiculo %i: %s\n", i + 1, carro[i].marca);
                 printf("\nModelo do veiculo %i: %s\n", i + 1, carro[i].modelo);
                 printf("\nCambio do veiculo %i: %s\n", i + 1, carro[i].cambio);
-                printf("\nMotor do veiculo %i: %.2f\n", i + 1, carro[i].motor);
+                printf("\nMotor do veiculo %i: %.1f\n", i + 1, carro[i].motor);
                 printf("\nPlaca do veiculo %i: %s\n", i + 1, carro[i].placa);
             }
         }
@@ -202,12 +203,6 @@ void excluir_veiculo(char *placa)
 {
 
     int encontrado = 0;
-
-    if (ja_adicionado <= 0)
-    {
-        messageError(2);
-        return;
-    }
 
     for (int i = 0; i < ja_adicionado; i++)
     {
@@ -219,7 +214,6 @@ void excluir_veiculo(char *placa)
             free(carro[i].cambio);
             free(carro[i].placa);
             free(carro[i].modelo);
-            
 
             for (int j = i; j < ja_adicionado - 1; j++)
             {
@@ -241,6 +235,47 @@ void excluir_veiculo(char *placa)
 }
 void excluir()
 {
-    system("clear");
+    system("cls");
     printf("\nDigite a placa do veiculo:\n");
+}
+void verificacao_string_marca(char marca)
+{
+    if (marca != 'FIAT' || marca != 'VOLKS' || marca != 'FORD' || marca != 'TOYOTA' || marca != 'JEEP')
+    {
+        
+        messageError(4);
+        
+    }
+}
+
+void messageError(int erro)
+{
+    switch (erro)
+    {
+    case 0:
+        system("cls");
+        printf("\nErro. Opcao invalida.\n");
+        break;
+    case 1:
+        system("cls");
+        printf("\nLimite de veiculos atingido.\n");
+        break;
+
+    case 2:
+        system("cls");
+        printf("\nErro. Nenhum veiculo adicionado.\n");
+        break;
+    case 3:
+        system("cls");
+        printf("\nErro. Placa nao encontrada.\n");
+        break;
+    case 4:
+        system("cls");
+        printf("\nErro. Marca invalida.\n");
+        break;
+    default:
+        system("cls");
+        printf("\nErro.\n");
+        break;
+    }
 }
