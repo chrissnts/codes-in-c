@@ -27,16 +27,19 @@ typedef struct
 Music *PlayList;
 int NumMusic = 0;
 
-void Menu();                         // mostrar enu;
-void OptionMenu(int op);             // mostra opcao escolhida;
-void MessageError(int erro);         // dispara mensagens de erro;
-int Include();                       // inclui musica;
-Music CreateMusic();                 // cria uma musica;
-void PrintMusic(Music m);            // mostra musica;
+void Menu();  // mostrar enu;
+void OptionMenu(int op); // mostra opcao escolhida;
+void MessageError(int erro);  // dispara mensagens de erro;
+int Include(); // inclui musica;
+Music CreateMusic(); // cria uma musica;
+void PrintMusic(Music m);  // mostra musica;
 int ValidDuration(int min, int sec); // valida o tempo da musica;
-int ListPlaylist();                  // lista todas as musicas;
-int Alternate();                     // alterna as playlist;
-void SwitchTrack(int track);         // alterna dados na musica
+int ListPlaylist(); // lista todas as musicas;
+int Alternate(); // alterna as playlist;
+void SwitchTrack(int track);  // alterna dados na musica;
+int Delete(); // exclui musica;
+void DeleteTrack (int track); // exclui faixa;
+void ReorganizePlaylist ( int track); // reorganiza playlist pos exclusao;
 
 int main()
 {
@@ -76,6 +79,10 @@ void OptionMenu(int op)
         if (op == 1)
         {
             error = Include();
+        }
+        else if (op == 2)
+        {
+            error = Delete();
         }
         else if (op == 3)
         {
@@ -131,6 +138,7 @@ int Include()
     }
 
     PlayList[NumMusic] = CreateMusic();
+    system("cls");
     PrintMusic(PlayList[NumMusic++]);
 
     return 1;
@@ -275,4 +283,58 @@ void SwitchTrack(int track)
             MessageError(error);
         }
     }
+}
+int Delete()
+{
+    int track = -1;
+
+    if (NumMusic <= 0)
+    {
+        return -2;
+    }
+    while (track < 0 || track >= NumMusic)
+    {
+        ListPlaylist();
+        printf("\nEnter the track you want to delete: [ %i - %i]:", 1, NumMusic);
+        scanf("%i", &track);
+        fflush(stdin);
+        track--;
+        if (track < 0 || track >= NumMusic)
+        {
+            MessageError(-8);
+        }
+        else
+        {
+            DeleteTrack(track);
+           break;
+        }
+    }
+    system("cls");
+    printf("\nSuccessful deletion\n");
+    return 1;
+}
+void DeleteTrack ( int track)
+{
+    if (NumMusic == 1)
+    {
+        NumMusic = 0;
+    }
+    else if ((NumMusic-1) == track)
+    {
+        NumMusic--;
+    }
+    else
+    {
+        ReorganizePlaylist (track);
+    }
+}
+void ReorganizePlaylist ( int track)
+{
+    int i;
+
+    for ( i = track; i < NumMusic -1; i ++)
+    {
+        PlayList[i] = PlayList[i +1];
+    }
+    NumMusic--;
 }
