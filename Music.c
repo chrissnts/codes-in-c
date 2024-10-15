@@ -33,8 +33,10 @@ void MessageError(int erro);         // dispara mensagens de erro;
 int Include();                       // inclui musica;
 Music CreateMusic();                 // cria uma musica;
 void PrintMusic(Music m);            // mostra musica;
-int ValidDuration(int min, int sec); // valida o tempo da musica
-int ListPlaylist();                  // lista todas as musicas
+int ValidDuration(int min, int sec); // valida o tempo da musica;
+int ListPlaylist();                  // lista todas as musicas;
+int Alternate();                     // alterna as playlist;
+void SwitchTrack(int track);         // alterna dados na musica
 
 int main()
 {
@@ -66,7 +68,7 @@ void OptionMenu(int op)
     int error;
     if (op < 1 || op > 5)
     {
-        MessageError(0); 
+        MessageError(0);
     }
     else if (op < 5)
     {
@@ -75,12 +77,14 @@ void OptionMenu(int op)
         {
             error = Include();
         }
+        else if (op == 3)
+        {
+            error = Alternate();
+        }
         else if (op == 4)
         {
             error = ListPlaylist();
         }
-
-
 
         if (error <= 0)
         {
@@ -109,6 +113,9 @@ void MessageError(int error)
         break;
     case -7:
         printf("\nError. Enter a valid minute and second.\n");
+        break;
+    case -8:
+        printf("\nError. Invalid track.\n");
         break;
 
     default:
@@ -203,9 +210,69 @@ int ListPlaylist()
 
     for (i = 0; i < NumMusic; i++)
     {
-        printf("\n-- Faixa [%i] --\n", i + 1);
+        printf("\n-- Track [%i] --\n", i + 1);
         PrintMusic(PlayList[i]);
     }
 
     return 1;
+}
+int Alternate()
+{
+    int track = -1;
+    if (NumMusic <= 0)
+    {
+        return -2;
+    }
+    while (track < 0 || track >= NumMusic)
+    {
+        ListPlaylist();
+        printf("\nEnter the track you want to switch: [ %i - %i]:", 1, NumMusic);
+        scanf("%i", &track);
+        fflush(stdin);
+        track--;
+        if (track < 0 || track >= NumMusic)
+        {
+            MessageError(-8);
+        }
+        else
+        {
+            SwitchTrack(track);
+        }
+    }
+    system("cls");
+    PrintMusic(PlayList[track]);
+    return 1;
+}
+void SwitchTrack(int track)
+{
+
+    int error = -1;
+
+    printf("\nMusic name:\n");
+    gets(PlayList[track].name);
+    fflush(stdin);
+
+    printf("\nAlbum:\n");
+    gets(PlayList[track].album);
+    fflush(stdin);
+
+    printf("\nArtist:\n");
+    gets(PlayList[track].artist);
+    fflush(stdin);
+
+    printf("\nStyle:\n");
+    gets(PlayList[track].style);
+    fflush(stdin);
+
+    while (error < 0)
+    {
+        printf("\nDuracao (MM SS):\n");
+        scanf("%i%i", &PlayList[track].duration.min, &PlayList[track].duration.sec);
+        fflush(stdin);
+        error = ValidDuration(PlayList[track].duration.min, PlayList[track].duration.sec);
+        if (error < 0)
+        {
+            MessageError(error);
+        }
+    }
 }
