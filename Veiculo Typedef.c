@@ -4,11 +4,6 @@
 #include <ctype.h>
 
 #define TAM 100
-#define FI "FIAT"
-#define VO "VOLKS"
-#define TO "TOYOTA"
-#define FO "FORD"
-#define JE "JEEP"
 
 typedef struct
 {
@@ -39,8 +34,8 @@ int main()
     do
     {
         menu();
-        __fpurge(stdin);
         scanf("%i", &op);
+        fflush(stdin);
         opcao_menu(op);
     } while (op != 4);
 
@@ -70,7 +65,7 @@ void opcao_menu(int op)
     else if (op == 2)
     {
         menu_visualizar_veiculo();
-        __fpurge(stdin);
+        fflush(stdin);
         scanf("%i", &opm);
         visualizar_veiculo(opm);
     }
@@ -82,7 +77,7 @@ void opcao_menu(int op)
             return;
         }
         excluir();
-        __fpurge(stdin);
+        fflush(stdin);
         scanf("%s", placa);
         verificacao_placa(placa);
         converter_para_maiusculas(placa);
@@ -105,27 +100,27 @@ void adicionar_veiculo()
     carro[ja_adicionado].cambio = malloc(10 * sizeof(char));
 
     printf("\nDigite a marca do veiculo: (Fiat, Volks, Ford, Toyota, Jeep)\n");
-    __fpurge(stdin);
+    fflush(stdin);
     scanf("%s", carro[ja_adicionado].marca);
     converter_para_maiusculas(carro[ja_adicionado].marca);
 
     printf("Digite o modelo do veiculo: (Polo, Argo, Corolla, Ranger, Renegade)\n");
-    __fpurge(stdin);
+    fflush(stdin);
     scanf("%s", carro[ja_adicionado].modelo);
     converter_para_maiusculas(carro[ja_adicionado].modelo);
 
     printf("Digite a placa do veiculo: (AAA0000, BBB1234)\n");
-    __fpurge(stdin);
+    fflush(stdin);
     scanf("%s", carro[ja_adicionado].placa);
     converter_para_maiusculas(carro[ja_adicionado].placa);
 
     printf("Digite o tipo de cambio do veiculo: (Manual, Automatico)\n");
-    __fpurge(stdin);
+    fflush(stdin);
     scanf("%s", carro[ja_adicionado].cambio);
     converter_para_maiusculas(carro[ja_adicionado].cambio);
 
     printf("Digite o motor do veiculo: (1.0, 1.4, 1.6, 1.8, 2.0)\n");
-    __fpurge(stdin);
+    fflush(stdin);
     scanf("%f", &carro[ja_adicionado].motor);
 
     ja_adicionado++;
@@ -166,7 +161,7 @@ void visualizar_veiculo(int opm)
     else if (opm == 2)
     {
         printf("\nDigite a marca:\n");
-        __fpurge(stdin);
+        fflush(stdin);
         scanf("%s", marca);
         converter_para_maiusculas(marca);
 
@@ -185,7 +180,7 @@ void visualizar_veiculo(int opm)
     else if (opm == 3)
     {
         printf("\nDigite o modelo:\n");
-        __fpurge(stdin);
+        fflush(stdin);
         scanf("%s", modelo);
         converter_para_maiusculas(modelo);
 
@@ -249,7 +244,6 @@ void converter_para_maiusculas(char str[8])
         str[i] = toupper(str[i]);
     }
 }
-
 
 void messageError(int erro)
 {
