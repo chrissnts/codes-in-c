@@ -40,18 +40,22 @@ typedef struct
 
 Pessoa *cliente;
 Livro *livro;
-int numPessoa = 0, numLivro = 0;
+Emprestimo **emprestimo;
+int numPessoa = 0, numLivro = 0, numEmprestimo = 0;
 
 void Menu(); // mostra menu;
-void MensagemErro(int erro); //mostrar erros;
+void MensagemErro(int erro);  // mostrar erros;
 int OpcaoMenu(int op); // pega a opcao do usuario;
-int IncluirPessoa(); // inclui pessoa;
+int IncluirPessoa();  // inclui pessoa;
 int IncluirLivro(); // inclui livro;
+int RegistrarEmprestimo();  // registra um emprestimo;
+int VerificarEmprestimo (); // verifica se o livro esta sendo emprestado por alguem;
 void ImprimirPessoa(Pessoa p); // imprime pessoa;
 void ImprimirLivro(Livro l); // imprime livro;
 
+
 Pessoa InclusaoP(); // criar pessoa;
-Livro InclusaoL(); // criar livro;
+Livro InclusaoL();  // criar livro;
 
 int main()
 {
@@ -83,26 +87,17 @@ void MensagemErro(int erro)
         printf("\nErro. Lista cheia.\n");
         break;
     case -2:
-        printf("\nErro. Empty list.\n");
+        printf("\nErro. Nao ha pessoas ou livros cadastrados.\n");
         break;
-    case -5:
-        printf("\nErro. Enter a valid minute.\n");
+    case -3:
+        printf("\nErro. Esse livro ja foi emprestado.\n");
         break;
-    case -6:
-        printf("\nErro. Enter a valid second.\n");
-        break;
-    case -7:
-        printf("\nErro. Enter a valid minute and second.\n");
-        break;
-    case -8:
-        printf("\nErro. Invalid track.\n");
-        break;
-
     default:
         printf("\nErro.\n");
         break;
     }
 }
+
 void Menu()
 {
     system("cls");
@@ -113,6 +108,7 @@ void Menu()
     printf("\n - (5) Buscar pessoa pelo CPF e ver livros emprestados\n");
     printf("\n - (6) Sair\n");
 }
+
 int OpcaoMenu(int op)
 {
     int erro;
@@ -129,12 +125,17 @@ int OpcaoMenu(int op)
     {
         erro = IncluirLivro();
     }
+    else if (op == 3)
+    {
+        erro = RegistrarEmprestimo();
+    }
 
     if (erro <= 0)
     {
         MensagemErro(erro);
     }
 }
+
 Pessoa InclusaoP()
 {
     Pessoa p;
@@ -145,6 +146,7 @@ Pessoa InclusaoP()
     p.endereco.rua = (char *)malloc(20 * sizeof(char));
     p.cpf = (char *)malloc(12 * sizeof(char));
 
+    system ("cls");
     printf("\nNome da pessoa:\n");
     gets(p.nome);
     fflush(stdin);
@@ -172,7 +174,7 @@ Pessoa InclusaoP()
     return p;
 }
 
-int Incluir()
+int IncluirPessoa()
 {
     if (numPessoa >= MAXPESSOA)
     {
@@ -184,6 +186,7 @@ int Incluir()
 
     return 1;
 }
+
 void ImprimirPessoa(Pessoa pessoa)
 {
     printf("\n- Nome: %s\n", pessoa.nome);
@@ -194,6 +197,7 @@ void ImprimirPessoa(Pessoa pessoa)
     printf("\n- Rua: %s\n", pessoa.endereco.rua);
     printf("\n- Numero: %i\n", pessoa.endereco.numero);
 }
+
 Livro InclusaoL()
 {
     Livro l;
@@ -202,6 +206,7 @@ Livro InclusaoL()
     l.autor = (char *)malloc(20 * sizeof(char));
     l.isbn = (char *)malloc(20 * sizeof(char));
 
+    system ("cls");
     printf("\nTitulo:\n");
     gets(l.titulo);
     fflush(stdin);
@@ -220,22 +225,103 @@ Livro InclusaoL()
 
     return l;
 }
+
 int IncluirLivro()
 {
     if (numLivro >= MAXLIVRO)
     {
         return -1;
     }
-    livro[numLivro] = Inclusao();
+    livro[numLivro] = InclusaoL();
     system("cls");
     ImprimirLivro(livro[numLivro++]);
 
     return 1;
 }
+
 void ImprimirLivro(Livro l)
 {
     printf("\n- Titulo: %s\n", l.titulo);
     printf("\n- Ano publicado: %i\n", l.anopubli);
     printf("\n- Autor: %s\n", l.autor);
     printf("\n- Isbn: %s\n", l.isbn);
+}
+
+int RegistrarEmprestimo()
+{
+    int erro;
+    if (numPessoa == 0 || numLivro == 0)
+    {
+        return -2;
+    }
+
+    int pessoaIndex, livroIndex;
+    char dataEmp[11], dataDev[11];
+
+    system("cls");
+    printf("\nEscolha a pessoa pelo numero (0 a %i):\n", numPessoa - 1);
+    for (int i = 0; i < numPessoa; i++)
+    {
+        printf("%i. %s\n", i, cliente[i].nome);
+    }
+    scanf("%i", &pessoaIndex);
+    fflush(stdin);
+
+    system("cls");
+    printf("\nEscolha o livro pelo numero (0 a %i):\n", numLivro - 1);
+    for (int i = 0; i < numLivro; i++)
+    {
+        printf("%i. %s\n", i, livro[i].titulo);
+    }
+    scanf("%i", &livroIndex);
+    fflush(stdin);
+
+    
+    erro = VerificarEmprestimo(livroIndex);
+    if (erro == -3)
+    {
+        
+        return erro;
+    }
+
+    
+    emprestimo = (Emprestimo **)realloc(emprestimo, (numEmprestimo + 1) * sizeof(Emprestimo *));
+    emprestimo[numEmprestimo] = (Emprestimo *)malloc(sizeof(Emprestimo));
+
+    emprestimo[numEmprestimo]->pessoa_que_pegou = cliente[pessoaIndex];
+    emprestimo[numEmprestimo]->livro_emprestado = livro[livroIndex];
+
+    system("cls");
+    printf("\nDigite a data do emprestimo (dd/mm/aaaa):\n");
+    gets(dataEmp);
+    fflush(stdin);
+    emprestimo[numEmprestimo]->data_emprestimo = (char *)malloc((strlen(dataEmp) + 1) * sizeof(char));
+    strcpy(emprestimo[numEmprestimo]->data_emprestimo, dataEmp);
+
+    system("cls");
+    printf("\nDigite a data prevista para devolucao (dd/mm/aaaa):\n");
+    gets(dataDev);
+    fflush(stdin);
+    emprestimo[numEmprestimo]->data_devolucao = (char *)malloc((strlen(dataDev) + 1) * sizeof(char));
+    strcpy(emprestimo[numEmprestimo]->data_devolucao, dataDev);
+
+    system("cls");
+    printf("\nEmprestimo registrado com sucesso!\n");
+
+    numEmprestimo++;
+
+    return 1;
+}
+
+int VerificarEmprestimo(int livroIndex) 
+{
+    for (int i = 0; i < numEmprestimo; i++) 
+    {
+        
+        if (strcmp(emprestimo[i]->livro_emprestado.isbn, livro[livroIndex].isbn) == 0) 
+        {
+            return -3; 
+        }
+    }
+    return 1;
 }
