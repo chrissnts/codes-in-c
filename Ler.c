@@ -16,31 +16,38 @@
 
 int main()
 {
-    FILE * fp;
+    FILE *fp;
 
-    int i, qntd = 0;
-    char nome[50];
+    char name[50], name2[50];
 
-    fp = fopen ("Alunos.txt", "a+");
+    fp = fopen("Alunos.txt", "a+");
 
     if (fp == NULL)
     {
         printf("\nErro ao abrir o arquivo.\n");
     }
 
-    printf("\nDigite a quantidade de alunos para cadastrar na disciplina de LP:\n");
-    scanf("%i", &qntd);
+    printf("\nNome:\n");
+    gets(name2);
     fflush(stdin);
 
-    for (i = 0; i < qntd; i++)
-    {
-        printf("Digite um nome:\n");
-        gets(nome);
-        fflush(stdin);
-        fputs (nome, fp);
-        fputs("\n", fp);
+
+    // Fazer exercicio 10;
+    while (fgets(name, sizeof(name), fp) != NULL)
+    {   
+        name[strcspn(name, "\n")] = '\0';
+
+        if (strcmp(name, name2) == 0)
+        {
+            printf("\nEncontrado\n");
+            fclose(fp);
+            return 0;
+        }
     }
 
+    printf("\nNao encontrado.\n");
 
     fclose(fp);
+
+    return 0;
 }
