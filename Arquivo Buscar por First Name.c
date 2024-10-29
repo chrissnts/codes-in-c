@@ -17,37 +17,37 @@
 int main()
 {
     FILE *fp;
-
-    char name[50], name2[50];
+    char name[50], name2[50], n[50];
+    int i;
 
     fp = fopen("Alunos.txt", "a+");
 
     if (fp == NULL)
     {
         printf("\nErro ao abrir o arquivo.\n");
+        return 1;
     }
 
     printf("\nNome:\n");
-    gets(name2);
-    fflush(stdin);
+    gets(name2);  
+    fflush(stdin); 
 
-
-    // Fazer exercicio 10;
-    while (fgets(name, sizeof(name), fp) != NULL)
-    {   
-        name[strcspn(name, "\n")] = '\0';
-
-        if (strcmp(name, name2) == 0)
+    while (fgets(name, 50, fp) != NULL)
+    {
+        
+        for (i = 0; name[i] != ' ' && name[i] != '\0'; i++)
         {
-            printf("\nEncontrado\n");
-            fclose(fp);
-            return 0;
+            n[i] = name[i];
+        }
+
+        n[i] = '\0'; 
+
+        if (strcmp(n, name2) == 0)
+        {
+            printf("\n%s\n", name); 
         }
     }
 
-    printf("\nNao encontrado.\n");
-
     fclose(fp);
-
     return 0;
 }
