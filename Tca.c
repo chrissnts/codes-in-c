@@ -57,15 +57,15 @@ typedef struct
     Categoria categoria;
     char *descricao;
 
-}
+} Encontro;
 
 void MenssagemErro(int erro); // imprime mensagens de erro;
-void Menu();        // imprime menu principal;
-void MenuAmigo();       // imprime menu amigo;
-void MenuLocal();       // imprime menu local;
-void MenuCategoria();   // imprime menu categoria;
-void MenuEncontro();    // imprime menu encontro;
-void OpcaoMenu(int op); // recebe opcao do menu e faz a validacao;
+void Menu();             // imprime menu principal;
+void MenuAmigo();        // imprime menu amigo;
+void MenuLocal();        // imprime menu local;
+void MenuCategoria();    // imprime menu categoria;
+void MenuEncontro();     // imprime menu encontro;
+void OpcaoMenu(int op);  // recebe opcao do menu e faz a validacao;
 
 int main()
 {
@@ -108,7 +108,6 @@ void Menu()
     printf("\n4. Manter encontro\n");
     printf("\n5. Relatorios\n");
     printf("\n6. Sair\n");
-    printf("\n\nDigite uma opcao:\n");
 }
 void OpcaoMenu(int op)
 {
