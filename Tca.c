@@ -106,20 +106,20 @@ void MenssagemErro(int erro)
     switch (erro)
     {
     case 0:
-        system("clear");
+        system("cls");
         printf("\nErro. Opcao invalida.\n");
         break;
     case -1:
-        system("clear");
+        system("cls");
         printf("\nErro. Quantidade de amigos cheia.\n");
         break;
     case -2:
-        system("clear");
+        system("cls");
         printf("\nErro. Dia, Mes ou ano invalido.\n");
         break;
 
     default:
-        system("clear");
+        system("cls");
         printf("\nErro.\n");
         break;
     }
@@ -127,7 +127,7 @@ void MenssagemErro(int erro)
 
 void Menu()
 {
-    system("clear");
+    system("cls");
     printf("\n1. Manter amigo\n");
     printf("\n2. Manter local\n");
     printf("\n3. Manter categoria\n");
@@ -137,7 +137,6 @@ void Menu()
 }
 void OpcaoMenu(int op)
 {
-
     int opm;
 
     if (op < 1 || op > 6)
@@ -180,7 +179,7 @@ void OpcaoMenu(int op)
 void MenuAmigo()
 {
 
-    system("clear");
+    system("cls");
     printf("\n1. Cadastrar Amigo\n");
     printf("\n2. Modificar Amigo\n");
     printf("\n3. Excluir Amigo\n");
@@ -188,7 +187,7 @@ void MenuAmigo()
 void MenuLocal()
 {
 
-    system("clear");
+    system("cls");
     printf("\n1. Cadastrar Local\n");
     printf("\n2. Modificar Local\n");
     printf("\n3. Excluir Local\n");
@@ -196,7 +195,7 @@ void MenuLocal()
 void MenuCategoria()
 {
 
-    system("clear");
+    system("cls");
     printf("\n1. Cadastrar Categoria\n");
     printf("\n2. Modificar Categoria\n");
     printf("\n3. Excluir Categoria\n");
@@ -204,14 +203,14 @@ void MenuCategoria()
 void MenuEncontro()
 {
 
-    system("clear");
+    system("cls");
     printf("\n1. Cadastrar Encontro\n");
     printf("\n2. Modificar Encontro\n");
     printf("\n3. Excluir Encontro\n");
 }
 void MenuRelatorio()
 {
-    system("clear");
+    system("cls");
     printf("\n1. Listar Amigos\n");
     printf("\n2. Listar Locais\n");
     printf("\n3. Listar Categorias\n");
@@ -222,13 +221,14 @@ void OpcaoMenuAmigo(int op)
 {
     int erro;
 
+    // DAR UM JEITO DE VOLTAR PARA O MENU DE AMIGOS!!!!!!!
     if (op < 1 || op > 3)
     {
         MenssagemErro(0);
+        
     }
-    else if (op < 3)
+    else if (op <= 3)
     {
-
         if (op == 1)
         {
             erro = IncluirAmigo();
@@ -298,14 +298,14 @@ int IncluirAmigo()
     }
 
     Amigos[num_amigos] = CriaAmigo();
-    system("clear");
+    system("cls");
     ImprimirAmigos(Amigos[num_amigos++]);
 
     return 1;
 }
 void ImprimirAmigos(Amigo amigos)
 {
-    system("clear");
+    system("cls");
     printf("\n- Nome: %s\n", amigos.nome);
     printf("\n- Apelido: %s\n", amigos.apelido);
     printf("\n- Email: %s\n", amigos.email);
@@ -321,7 +321,7 @@ int Bissexto(int ano)
 int ValidarData(int dia, int mes, int ano)
 {
 
-    if (ano < 1)
+    if (ano < 1980)
     {
         return -2;
     }
