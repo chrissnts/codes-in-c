@@ -64,6 +64,10 @@ typedef struct
 
 } Encontro;
 
+// COISAS QUE TALVEZ MODIFIQUE.
+// 1- COLOCAR UM MENU PARA DELETAR 1 OU TODOS (SE FOR 1, TALVEZ POR APELIDO.)
+
+
 void MenssagemErro(int erro);                 // imprime mensagens de erro;
 void Menu();                                  // imprime menu principal;
 void MenuAmigo();                             // imprime menu amigo;
@@ -77,16 +81,21 @@ void OpcaoMenuAmigo(int op);                  // recebe opcao do menu de amigos 
 int OpcaoMenuRelatorio(int op);               // recebe opcao do menu de relatorios e faz validacao e procede;
 void OpcaoMenuRelatorioListarAmigos(int opr); // recebe a opcao se vai ser todos ou especifico com apelido e procede;
 void ImprimirAmigos(Amigo amigos);            // imprime amigos;
-void ModificarAmigos(int amigo);              // modifica os dados do amigo na hora de alternar;
+void AlternarAmigos(int amigo);               // modifica os dados do amigo na hora de alternar;
+void ExcluirAmigos(int amigo);                // dispara qual amigo o usuario deseja excluir;
+void ReorganizarAmigos(int amigo);            // reorganiza todos os amigos com base no amigo excluido;
+
+
 int IncluirAmigos();                          // inclui na funcao o amigo criado na funcao "cria amigo";
 int ValidarData(int dia, int mes, int ano);   // valida data que o usuario digitar;
 int ListarAmigos();                           // lista os amigos que ja estao cadastrados;
-int ListarAmigoPorApelido();                  // faz a logica de listar amigo por apelido;
-int AlternarAmigos();                         // alterar amigo;
+int ListarAmigosPorApelido();                 // faz a logica de listar amigo por apelido;
+int ModificarAmigos();                        // alterar amigo;
+int Bissexto(int ano);                        // verifica se o ano eh bissexto para poder arrumar dias e mes
 
-int Bissexto(int ano); // verifica se o ano eh bissexto para poder arrumar dias e mes
 
-Amigo CriaAmigo(); // funcao para criar um amigo;
+Amigo CriaAmigo();                            // funcao para criar um amigo;
+
 
 Amigo *Amigos;
 int NumAmigos = 0;
@@ -254,7 +263,7 @@ void OpcaoMenuAmigo(int op)
 {
     int erro;
 
-    // TEM QUE ARRUMA PARA DAR UM JEITO DE VOLTAR PARA O MENU DE AMIGOS CASO OPCOA SEJA INVALIDA!!!!!!!
+    // TEM QUE ARRUMA PARA DAR UM JEITO DE VOLTAR PARA O MENU DE AMIGOS CASO OPCAO SEJA INVALIDA!!!!!!!
     if (op < 1 || op > 3)
     {
         MenssagemErro(0);
@@ -267,11 +276,11 @@ void OpcaoMenuAmigo(int op)
         }
         else if (op == 2)
         {
-            erro = AlternarAmigos();
+            erro = ModificarAmigos();
         }
         else if (op == 3)
         {
-            //FAZER A LOGICA PARA DELETAR AMIGOSS;
+            erro = DeletarAmigos();
         }
 
         if (erro <= 0)
@@ -289,7 +298,7 @@ int OpcaoMenuRelatorio(int op)
         return -3;
     }
 
-    // TEM QUE ARRUMA PARA DAR UM JEITO DE VOLTAR PARA O MENU DE RELATORIO CASO OPCOA SEJA INVALIDA (IGUAL NO DE AMIGOS)!!!!!!!
+    // TEM QUE ARRUMA PARA DAR UM JEITO DE VOLTAR PARA O MENU DE RELATORIO CASO OPCAO SEJA INVALIDA (IGUAL NO DE AMIGOS)!!!!!!!
     if (op < 1 || op > 2)
     {
         MenssagemErro(0);
@@ -335,16 +344,15 @@ void OpcaoMenuRelatorioListarAmigos(int opr)
         MenssagemErro(0);
     }
 
-   
     if (opr == 1)
-    {   
+    {
         // lista todos;
         erro = ListarAmigos();
     }
     else if (opr == 2)
     {
         // lista por apelido que o usuario digitar;
-        erro = ListarAmigoPorApelido();
+        erro = ListarAmigosPorApelido();
     }
 
     if (erro <= 0)
@@ -440,7 +448,7 @@ int ListarAmigos()
 }
 
 // ARRUMAR CODIGO!!!!!!!! TODA VEZ QUE COLOCA APELIDO INVALIDO RETORNA -4, MAS TAMBEM RETORNA 0 LOGO DEPOIS!!
-int ListarAmigoPorApelido()
+int ListarAmigosPorApelido()
 {
     char *apelido;
     int i;
@@ -460,7 +468,7 @@ int ListarAmigoPorApelido()
     }
     return -4;
 }
-void ModificarAmigos(int amigo)
+void AlternarAmigos(int amigo)
 {
     int erro = -1;
 
@@ -495,7 +503,7 @@ void ModificarAmigos(int amigo)
         }
     }
 }
-int AlternarAmigos()
+int ModificarAmigos()
 {
 
     int amigo = -1;
@@ -519,13 +527,67 @@ int AlternarAmigos()
         }
         else
         {
-            ModificarAmigos(amigo);
+            AlternarAmigos(amigo);
         }
     }
     system("cls");
     ImprimirAmigos(Amigos[amigo]);
 
     return 1;
+}
+
+int DeletarAmigos()
+{
+    int amigo = -1;
+
+    if (NumAmigos <= 0)
+    {
+        return -3;
+    }
+    ListarAmigos();
+    printf("\nSelecione o amigo que deseja deletar: [ %i - %i]:", 1, NumAmigos);
+    scanf("%i", &amigo);
+    fflush(stdin);
+    amigo--;
+
+    if (amigo < 0 || amigo >= NumAmigos)
+    {
+        MenssagemErro(-4);
+    }
+    else
+    {
+        ExcluirAmigos(amigo);
+    }
+    system("cls");
+    printf("\nExclusao bem sucedida.\n");
+
+    return 1;
+}
+void ExcluirAmigos(int amigo)
+{
+    if (NumAmigos == 1)
+    {
+        NumAmigos = 0;
+    }
+    else if ((NumAmigos - 1) == amigo)
+    {
+        NumAmigos--;
+    }
+    else
+    {
+        ReorganizarAmigos(amigo);
+    }
+}
+void ReorganizarAmigos(int amigo)
+{
+    int i;
+
+    for (i = amigo; i < NumAmigos - 1; i++)
+    {
+        Amigos[i] = Amigos[i + 1];
+    }
+
+    NumAmigos--;
 }
 
 int Bissexto(int ano)
