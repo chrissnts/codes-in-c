@@ -66,7 +66,6 @@ typedef struct
 // COISAS QUE TALVEZ MODIFIQUE.
 // 1- COLOCAR UM MENU PARA DELETAR 1 OU TODOS (SE FOR 1, TALVEZ POR APELIDO.)
 
-
 void MenssagemErro(int erro);                 // imprime mensagens de erro;
 void Menu();                                  // imprime menu principal;
 void MenuAmigo();                             // imprime menu amigo;
@@ -87,6 +86,8 @@ void ImprimirLocais(Local locais);            // imprime locais;
 void AlternarAmigos(int amigo);               // modifica os dados do amigo na hora de alternar;
 void ExcluirAmigos(int amigo);                // dispara qual amigo o usuario deseja excluir;
 void ReorganizarAmigos(int amigo);            // reorganiza todos os amigos com base no amigo excluido;
+void LimpaPonteiroAmigo (Amigo *amigo);       // limpa o ponteiro de amigos;sssssssssss
+void LimpaPonteiroLocal (Local *local);       // limpa o ponteiro de locais;
 
 int IncluirAmigos();                        // inclui na funcao o amigo criado na funcao "cria amigo";
 int IncluirLocal();                         // inclui na funcao o local criado na funcao "cria local";
@@ -106,8 +107,6 @@ int NumAmigos = 0, NumLocais = 0;
 
 int main()
 {
-    
-    
 
     int op = 0;
 
@@ -276,15 +275,14 @@ void MenuRelatorioListarAmigos()
 void MenuRelatorioListarLocais()
 {
     system("cls");
-    printf("\n1. Listar todos\n"); 
+    printf("\n1. Listar todos\n");
     printf("\n2. Listar por estado\n");
     printf("\n3. Listar por cidade\n");
     printf("\n4. Listar por bairro\n");
-   
 }
 Amigo CriaAmigo()
-{   
-    
+{
+
     Amigo amigo;
 
     int erro = -1;
@@ -335,7 +333,6 @@ Local CriaLocal()
     Local local;
     char strAux[100];
 
- 
     printf("\nNome do encontro:\n");
     gets(strAux);
     local.nome_encontro = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
@@ -379,20 +376,20 @@ int IncluirAmigos()
         return -1;
     }
 
-    if (NumAmigos == 0) 
+    if (NumAmigos == 0)
     {
         Amigos = (Amigo *)malloc(1 * sizeof(Amigo));
     }
     else
     {
         Amigos = (Amigo *)realloc(Amigos, (NumAmigos + 1) * sizeof(Amigo));
-    } 
+    }
 
     if (!Amigos)
     {
         return -10;
     }
-    
+
     Amigos[NumAmigos] = CriaAmigo();
     system("cls");
     ImprimirAmigos(Amigos[NumAmigos]);
@@ -415,14 +412,14 @@ int IncluirLocal()
         return -5;
     }
 
-    if (NumLocais == 0) 
+    if (NumLocais == 0)
     {
         Locais = (Local *)malloc(1 * sizeof(Local));
     }
     else
     {
         Locais = (Local *)realloc(Locais, (NumLocais + 1) * sizeof(Local));
-    } 
+    }
 
     if (!Locais)
     {
@@ -591,8 +588,7 @@ void OpcaoMenuRelatorioListarLocais(int opr)
     }
     else if (opr == 2)
     {
-       //lista por estado;
-       
+        // lista por estado;
     }
     else if (opr == 3)
     {
@@ -608,8 +604,6 @@ void OpcaoMenuRelatorioListarLocais(int opr)
         MenssagemErro(erro);
     }
 }
-
-
 
 void ImprimirLocais(Local locais)
 {
@@ -680,6 +674,7 @@ int ListarAmigosPorApelido()
     }
     return -4;
 }
+// ARRUMAR, TA COLOCANDO O NUMERO DE TELEFONE NO LUGAR DO NOME, E BUGANDO TUDO;
 void AlternarAmigos(int amigo)
 {
     int erro = -1;
@@ -786,20 +781,19 @@ int DeletarAmigos()
 }
 void ExcluirAmigos(int amigo)
 {
-    //ta errado;
+    // exclui um unico amigo que tiver
     if (NumAmigos == 1)
     {
-        NumAmigos = 0;
-    }
-    /*else if ()
+        LimpaPonteiroAmigo(&Amigos[amigo]);
+        NumAmigos--;
+    } 
+    else if (amigo >= 0 && amigo < NumAmigos)
     {
-        // fazer logica para excluir amigos;
-    }
-    */
-    else
-    {
+        // exclui e reorganiza se houver mais de um amigo
+        LimpaPonteiroAmigo(&Amigos[amigo]);
         ReorganizarAmigos(amigo);
     }
+   
 }
 void ReorganizarAmigos(int amigo)
 {
@@ -809,8 +803,23 @@ void ReorganizarAmigos(int amigo)
     {
         Amigos[i] = Amigos[i + 1];
     }
-
     NumAmigos--;
+}
+void LimpaPonteiroAmigo(Amigo *amigo) 
+{
+    free(amigo->nome);
+    free(amigo->apelido);
+    free(amigo->email);
+    free(amigo->telefone);
+}
+
+void LimpaPonteiroLocal(Local *local) 
+{
+    free(local->nome_encontro);
+    free(local->endereco.logradouro);
+    free(local->endereco.bairro);
+    free(local->endereco.cidade);
+    free(local->endereco.estado);
 }
 
 int Bissexto(int ano)
