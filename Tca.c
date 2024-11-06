@@ -65,6 +65,7 @@ typedef struct
 
 // COISAS QUE TALVEZ MODIFIQUE.
 // 1- COLOCAR UM MENU PARA DELETAR 1 OU TODOS (SE FOR 1, TALVEZ POR APELIDO.)
+// 2- ADICIONAR MENU PARA MODIFICAR TUDO OU APENAS UMA PARTE, TEREI QUE FAZER UMA OPCAO PARA CADA PROVAVELMENTE.
 
 void MenssagemErro(int erro);                 // imprime mensagens de erro;
 void Menu();                                  // imprime menu principal;
@@ -86,7 +87,7 @@ void ImprimirLocais(Local locais);            // imprime locais;
 void AlternarAmigos(int amigo);               // modifica os dados do amigo na hora de alternar;
 void ExcluirAmigos(int amigo);                // dispara qual amigo o usuario deseja excluir;
 void ReorganizarAmigos(int amigo);            // reorganiza todos os amigos com base no amigo excluido;
-void LimpaPonteiroAmigo (Amigo *amigo);       // limpa o ponteiro de amigos;sssssssssss
+void LimpaPonteiroAmigo (Amigo *amigo);       // limpa o ponteiro de amigos; 
 void LimpaPonteiroLocal (Local *local);       // limpa o ponteiro de locais;
 
 int IncluirAmigos();                        // inclui na funcao o amigo criado na funcao "cria amigo";
