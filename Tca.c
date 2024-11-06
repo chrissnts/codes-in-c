@@ -4,6 +4,7 @@
 
 #define TAMMAX 20
 #define MAXAMIGO 100
+#define MAXLOCAL 100
 #define TAMEMAIL 50
 #define TAMTELE 10
 
@@ -28,6 +29,7 @@ typedef struct
     char *bairro;
     char *cidade;
     char *estado;
+    int numero;
 
 } Endereco;
 
@@ -67,7 +69,6 @@ typedef struct
 // COISAS QUE TALVEZ MODIFIQUE.
 // 1- COLOCAR UM MENU PARA DELETAR 1 OU TODOS (SE FOR 1, TALVEZ POR APELIDO.)
 
-
 void MenssagemErro(int erro);                 // imprime mensagens de erro;
 void Menu();                                  // imprime menu principal;
 void MenuAmigo();                             // imprime menu amigo;
@@ -76,33 +77,39 @@ void MenuCategoria();                         // imprime menu categoria;
 void MenuEncontro();                          // imprime menu encontro;
 void MenuRelatorio();                         // imprime menu relatorio;
 void MenuRelatorioListarAmigos();             // menu para perguntar se sera listados todos ou especifico por apelido;
+void MenuRelatorioListarLocais();             // menu para perguntar se sera listados todos ou especifico;
 void OpcaoMenu(int op);                       // recebe opcao do menu e faz a validacao e procede;
 void OpcaoMenuAmigo(int op);                  // recebe opcao do menu de amigos e faz validacao e procede;
+void OpcaoMenuLocal(int op);                  // recebe opcao do menu de local e faz validacao e procede;
 int OpcaoMenuRelatorio(int op);               // recebe opcao do menu de relatorios e faz validacao e procede;
 void OpcaoMenuRelatorioListarAmigos(int opr); // recebe a opcao se vai ser todos ou especifico com apelido e procede;
+void OpcaoMenuRelatorioListarLocais(int opr); // recebe a opcao se vai ser todos ou especifico com apelido e procede;
 void ImprimirAmigos(Amigo amigos);            // imprime amigos;
+void ImprimirLocais(Local locais);            // imprime locais;
 void AlternarAmigos(int amigo);               // modifica os dados do amigo na hora de alternar;
 void ExcluirAmigos(int amigo);                // dispara qual amigo o usuario deseja excluir;
 void ReorganizarAmigos(int amigo);            // reorganiza todos os amigos com base no amigo excluido;
 
+int IncluirAmigos();                        // inclui na funcao o amigo criado na funcao "cria amigo";
+int IncluirLocal();                         // inclui na funcao o local criado na funcao "cria local";
+int ValidarData(int dia, int mes, int ano); // valida data que o usuario digitar;
+int ListarAmigos();                         // lista os amigos que ja estao cadastrados;
+int ListarLocais();                         // lista os locais que ja estao cadastrados;
+int ListarAmigosPorApelido();               // faz a logica de listar amigo por apelido;
+int ModificarAmigos();                      // alterar amigo;
+int Bissexto(int ano);                      // verifica se o ano eh bissexto para poder arrumar dias e mes
 
-int IncluirAmigos();                          // inclui na funcao o amigo criado na funcao "cria amigo";
-int ValidarData(int dia, int mes, int ano);   // valida data que o usuario digitar;
-int ListarAmigos();                           // lista os amigos que ja estao cadastrados;
-int ListarAmigosPorApelido();                 // faz a logica de listar amigo por apelido;
-int ModificarAmigos();                        // alterar amigo;
-int Bissexto(int ano);                        // verifica se o ano eh bissexto para poder arrumar dias e mes
-
-
-Amigo CriaAmigo();                            // funcao para criar um amigo;
-
+Amigo CriaAmigo(); // funcao para criar um amigo;
+Local CriaLocal(); // funcao para criar um local;
 
 Amigo *Amigos;
-int NumAmigos = 0;
+Local *Locais;
+int NumAmigos = 0, NumLocais = 0;
 
 int main()
 {
     Amigos = (Amigo *)malloc(MAXAMIGO * sizeof(Amigo));
+    Locais = (Local *)malloc(MAXLOCAL * sizeof(Local));
 
     int op = 0;
 
@@ -142,6 +149,14 @@ void MenssagemErro(int erro)
     case -4:
         system("cls");
         printf("\nErro. Amigo invalido.\n");
+        break;
+    case -5:
+        system("cls");
+        printf("\nErro. Quantidade de locais cheia.\n");
+        break;
+    case -6:
+        system("cls");
+        printf("\nErro. Locais vazio.\n");
         break;
 
     default:
@@ -185,18 +200,15 @@ void OpcaoMenu(int op)
             MenuLocal();
             scanf("%i", &opm);
             fflush(stdin);
+            OpcaoMenuLocal(opm);
         }
         else if (op == 3)
         {
-            MenuCategoria();
-            scanf("%i", &opm);
-            fflush(stdin);
+            // categoria;
         }
         else if (op == 4)
         {
-            MenuEncontro();
-            scanf("%i", &opm);
-            fflush(stdin);
+            // encontro;
         }
         else if (op == 5)
         {
@@ -259,6 +271,15 @@ void MenuRelatorioListarAmigos()
     printf("\n1. Listar todos\n");
     printf("\n2. Buscar por apelido\n");
 }
+void MenuRelatorioListarLocais()
+{
+    system("cls");
+    printf("\n1. Listar todos\n"); 
+    printf("\n2. Listar por estado\n");
+    printf("\n3. Listar por cidade\n");
+    printf("\n4. Listar por bairro\n");
+   
+}
 void OpcaoMenuAmigo(int op)
 {
     int erro;
@@ -289,13 +310,48 @@ void OpcaoMenuAmigo(int op)
         }
     }
 }
+void OpcaoMenuLocal(int op)
+{
+    int erro;
+
+    // TEM QUE ARRUMA PARA DAR UM JEITO DE VOLTAR PARA O MENU DE LOCAL CASO OPCAO SEJA INVALIDA!!!!!!!
+    if (op < 1 || op > 3)
+    {
+        MenssagemErro(0);
+    }
+    else if (op <= 3)
+    {
+        if (op == 1)
+        {
+            erro = IncluirLocal();
+        }
+        else if (op == 2)
+        {
+            // modificar local;
+        }
+        else if (op == 3)
+        {
+            // deletar local;
+        }
+
+        if (erro <= 0)
+        {
+            MenssagemErro(erro);
+        }
+    }
+}
 int OpcaoMenuRelatorio(int op)
 {
     int opr;
 
+    // ARRUMAR PARA RETORNAR O ERRO CERTO, POIS TA RETORNANDO O ERRO ERRADO, NAO SEI AINDA COMO VOU RESOLVER, TALVEZ COM LAÇO DE REPETIÇÃO;
     if (NumAmigos <= 0)
     {
         return -3;
+    }
+    if (NumLocais <= 0)
+    {
+        return -6;
     }
 
     // TEM QUE ARRUMA PARA DAR UM JEITO DE VOLTAR PARA O MENU DE RELATORIO CASO OPCAO SEJA INVALIDA (IGUAL NO DE AMIGOS)!!!!!!!
@@ -314,7 +370,10 @@ int OpcaoMenuRelatorio(int op)
         }
         else if (op == 2)
         {
-            // LOGICA PARA LISTAR LOCAIS;
+            MenuRelatorioListarLocais();
+            scanf("%i", &opr);
+            fflush(stdin);
+            OpcaoMenuRelatorioListarLocais(opr);
         }
         else if (op == 3)
         {
@@ -353,6 +412,39 @@ void OpcaoMenuRelatorioListarAmigos(int opr)
     {
         // lista por apelido que o usuario digitar;
         erro = ListarAmigosPorApelido();
+    }
+
+    if (erro <= 0)
+    {
+        MenssagemErro(erro);
+    }
+}
+void OpcaoMenuRelatorioListarLocais(int opr)
+{
+    int erro;
+
+    if (opr < 1 || opr > 2)
+    {
+        MenssagemErro(0);
+    }
+
+    if (opr == 1)
+    {
+        // lista todos;
+        erro = ListarLocais();
+    }
+    else if (opr == 2)
+    {
+       //lista por estado;
+       
+    }
+    else if (opr == 3)
+    {
+        // lista por cidade;
+    }
+    else if (opr == 4)
+    {
+        // listar por bairro;
     }
 
     if (erro <= 0)
@@ -404,6 +496,42 @@ Amigo CriaAmigo()
 
     return amigo;
 }
+Local CriaLocal()
+{
+    Local local;
+
+    local.nome_encontro = (char *)malloc(TAMMAX * sizeof(char));
+    local.endereco.estado = (char *)malloc(TAMMAX * sizeof(char));
+    local.endereco.cidade = (char *)malloc(TAMMAX * sizeof(char));
+    local.endereco.bairro = (char *)malloc(TAMMAX * sizeof(char));
+    local.endereco.logradouro = (char *)malloc(TAMMAX * sizeof(char));
+
+    printf("\nNome do encontro:\n");
+    gets(local.nome_encontro);
+    fflush(stdin);
+
+    printf("\nEstado:\n");
+    gets(local.endereco.estado);
+    fflush(stdin);
+
+    printf("\nCidade:\n");
+    gets(local.endereco.cidade);
+    fflush(stdin);
+
+    printf("\nBairro:\n");
+    gets(local.endereco.bairro);
+    fflush(stdin);
+
+    printf("\nLogradouro:\n");
+    gets(local.endereco.logradouro);
+    fflush(stdin);
+
+    printf("\nNumero:\n");
+    scanf("%i", &local.endereco.numero);
+    fflush(stdin);
+
+    return local;
+}
 int IncluirAmigos()
 {
     if (NumAmigos >= MAXAMIGO)
@@ -426,7 +554,29 @@ void ImprimirAmigos(Amigo amigos)
     printf("\n- Telefone: %s\n", amigos.telefone);
     printf("\n- Data Nascimento: [%i/%i/%i]\n", amigos.datanasc.dia, amigos.datanasc.mes, amigos.datanasc.ano);
 }
+int IncluirLocal()
+{
+    if (NumLocais >= MAXLOCAL)
+    {
+        return -5;
+    }
 
+    Locais[NumLocais] = CriaLocal();
+    system("cls");
+    ImprimirLocais(Locais[NumLocais]);
+    NumLocais++;
+
+    return 1;
+}
+void ImprimirLocais(Local locais)
+{
+    printf("\nNome do encontro: %s\n", locais.nome_encontro);
+    printf("\nEstado: %s \n", locais.endereco.estado);
+    printf("\nCidade: %s\n", locais.endereco.cidade);
+    printf("\nBairro: %s\n", locais.endereco.bairro);
+    printf("\nLogradouro: %s\n", locais.endereco.logradouro);
+    printf("\nNumero: %i\n", locais.endereco.numero);
+}
 int ListarAmigos()
 {
     int i;
@@ -442,6 +592,25 @@ int ListarAmigos()
         printf("\n");
         printf("\n-- Amigo [Numero %i] --\n", i + 1);
         ImprimirAmigos(Amigos[i]);
+    }
+
+    return 1;
+}
+int ListarLocais()
+{
+    int i;
+
+    if (NumLocais <= 0)
+    {
+        return -6;
+    }
+
+    system("cls");
+    for (i = 0; i < NumLocais; i++)
+    {
+        printf("\n");
+        printf("\n-- Local [Numero %i] --\n", i + 1);
+        ImprimirLocais(Locais[i]);
     }
 
     return 1;
