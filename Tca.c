@@ -786,14 +786,16 @@ int DeletarAmigos()
 }
 void ExcluirAmigos(int amigo)
 {
+    //ta errado;
     if (NumAmigos == 1)
     {
         NumAmigos = 0;
     }
-    else if ((NumAmigos - 1) == amigo)
+    /*else if ()
     {
-        NumAmigos--;
+        // fazer logica para excluir amigos;
     }
+    */
     else
     {
         ReorganizarAmigos(amigo);
