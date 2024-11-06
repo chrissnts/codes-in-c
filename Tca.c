@@ -2,11 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define TAMMAX 20
-#define MAXAMIGO 100
 #define MAXLOCAL 100
-#define TAMEMAIL 50
-#define TAMTELE 10
+#define MAXAMIGO 100
 
 typedef struct
 {
@@ -69,6 +66,7 @@ typedef struct
 // COISAS QUE TALVEZ MODIFIQUE.
 // 1- COLOCAR UM MENU PARA DELETAR 1 OU TODOS (SE FOR 1, TALVEZ POR APELIDO.)
 
+
 void MenssagemErro(int erro);                 // imprime mensagens de erro;
 void Menu();                                  // imprime menu principal;
 void MenuAmigo();                             // imprime menu amigo;
@@ -108,8 +106,8 @@ int NumAmigos = 0, NumLocais = 0;
 
 int main()
 {
-    Amigos = (Amigo *)malloc(MAXAMIGO * sizeof(Amigo));
-    Locais = (Local *)malloc(MAXLOCAL * sizeof(Local));
+    
+    
 
     int op = 0;
 
@@ -157,6 +155,10 @@ void MenssagemErro(int erro)
     case -6:
         system("cls");
         printf("\nErro. Locais vazio.\n");
+        break;
+    case -10:
+        system("cls");
+        printf("\nErro. Alocacao de memoria fracassada.\n");
         break;
 
     default:
@@ -279,6 +281,160 @@ void MenuRelatorioListarLocais()
     printf("\n3. Listar por cidade\n");
     printf("\n4. Listar por bairro\n");
    
+}
+Amigo CriaAmigo()
+{   
+    
+    Amigo amigo;
+
+    int erro = -1;
+    char strAux[100];
+
+    printf("\nNome:\n");
+    gets(strAux);
+    amigo.nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+    strcpy(amigo.nome, strAux);
+    fflush(stdin);
+
+    printf("\nApelido:\n");
+    gets(strAux);
+    amigo.apelido = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+    strcpy(amigo.apelido, strAux);
+    fflush(stdin);
+
+    printf("\nEmail:\n");
+    gets(strAux);
+    amigo.email = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+    strcpy(amigo.email, strAux);
+    fflush(stdin);
+
+    printf("\nTelefone:\n");
+    gets(strAux);
+    amigo.telefone = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+    strcpy(amigo.telefone, strAux);
+    fflush(stdin);
+
+    while (erro < 0)
+    {
+        // força o usuario digitar data de nascimento seguindo os parametros de data
+        printf("\nData Nascimento [dd/mm/yy]:\n");
+        scanf("%i%i%i", &amigo.datanasc.dia, &amigo.datanasc.mes, &amigo.datanasc.ano);
+        fflush(stdin);
+        erro = ValidarData(amigo.datanasc.dia, amigo.datanasc.mes, amigo.datanasc.ano);
+
+        if (erro < 0)
+        {
+            MenssagemErro(erro);
+        }
+    }
+
+    return amigo;
+}
+Local CriaLocal()
+{
+    Local local;
+    char strAux[100];
+
+ 
+    printf("\nNome do encontro:\n");
+    gets(strAux);
+    local.nome_encontro = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+    strcpy(local.nome_encontro, strAux);
+    fflush(stdin);
+
+    printf("\nEstado:\n");
+    gets(strAux);
+    local.endereco.estado = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+    strcpy(local.endereco.estado, strAux);
+    fflush(stdin);
+
+    printf("\nCidade:\n");
+    gets(strAux);
+    local.endereco.cidade = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+    strcpy(local.endereco.cidade, strAux);
+    fflush(stdin);
+
+    printf("\nBairro:\n");
+    gets(strAux);
+    local.endereco.bairro = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+    strcpy(local.endereco.bairro, strAux);
+    fflush(stdin);
+
+    printf("\nLogradouro:\n");
+    gets(strAux);
+    local.endereco.logradouro = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+    strcpy(local.endereco.logradouro, strAux);
+    fflush(stdin);
+
+    printf("\nNumero:\n");
+    scanf("%i", &local.endereco.numero);
+    fflush(stdin);
+
+    return local;
+}
+int IncluirAmigos()
+{
+    if (NumAmigos >= MAXAMIGO)
+    {
+        return -1;
+    }
+
+    if (NumAmigos == 0) 
+    {
+        Amigos = (Amigo *)malloc(1 * sizeof(Amigo));
+    }
+    else
+    {
+        Amigos = (Amigo *)realloc(Amigos, (NumAmigos + 1) * sizeof(Amigo));
+    } 
+
+    if (!Amigos)
+    {
+        return -10;
+    }
+    
+    Amigos[NumAmigos] = CriaAmigo();
+    system("cls");
+    ImprimirAmigos(Amigos[NumAmigos]);
+    NumAmigos++;
+
+    return 1;
+}
+void ImprimirAmigos(Amigo amigos)
+{
+    printf("\n- Nome: %s\n", amigos.nome);
+    printf("\n- Apelido: %s\n", amigos.apelido);
+    printf("\n- Email: %s\n", amigos.email);
+    printf("\n- Telefone: %s\n", amigos.telefone);
+    printf("\n- Data Nascimento: [%i/%i/%i]\n", amigos.datanasc.dia, amigos.datanasc.mes, amigos.datanasc.ano);
+}
+int IncluirLocal()
+{
+    if (NumLocais >= MAXLOCAL)
+    {
+        return -5;
+    }
+
+    if (NumLocais == 0) 
+    {
+        Locais = (Local *)malloc(1 * sizeof(Local));
+    }
+    else
+    {
+        Locais = (Local *)realloc(Locais, (NumLocais + 1) * sizeof(Local));
+    } 
+
+    if (!Locais)
+    {
+        return -10;
+    }
+
+    Locais[NumLocais] = CriaLocal();
+    system("cls");
+    ImprimirLocais(Locais[NumLocais]);
+    NumLocais++;
+
+    return 1;
 }
 void OpcaoMenuAmigo(int op)
 {
@@ -453,121 +609,8 @@ void OpcaoMenuRelatorioListarLocais(int opr)
     }
 }
 
-Amigo CriaAmigo()
-{
-    Amigo amigo;
 
-    int erro = -1;
 
-    amigo.nome = (char *)malloc(TAMMAX * sizeof(char));
-    amigo.apelido = (char *)malloc(TAMMAX * sizeof(char));
-    amigo.telefone = (char *)malloc(TAMTELE * sizeof(char));
-    amigo.email = (char *)malloc(TAMEMAIL * sizeof(char));
-
-    printf("\nNome:\n");
-    gets(amigo.nome);
-    fflush(stdin);
-
-    printf("\nApelido:\n");
-    gets(amigo.apelido);
-    fflush(stdin);
-
-    printf("\nEmail:\n");
-    gets(amigo.email);
-    fflush(stdin);
-
-    printf("\nTelefone:\n");
-    gets(amigo.telefone);
-    fflush(stdin);
-
-    while (erro < 0)
-    {
-        // força o usuario digitar data de nascimento seguindo os parametros de data
-        printf("\nData Nascimento [dd/mm/yy]:\n");
-        scanf("%i%i%i", &amigo.datanasc.dia, &amigo.datanasc.mes, &amigo.datanasc.ano);
-        fflush(stdin);
-        erro = ValidarData(amigo.datanasc.dia, amigo.datanasc.mes, amigo.datanasc.ano);
-
-        if (erro < 0)
-        {
-            MenssagemErro(erro);
-        }
-    }
-
-    return amigo;
-}
-Local CriaLocal()
-{
-    Local local;
-
-    local.nome_encontro = (char *)malloc(TAMMAX * sizeof(char));
-    local.endereco.estado = (char *)malloc(TAMMAX * sizeof(char));
-    local.endereco.cidade = (char *)malloc(TAMMAX * sizeof(char));
-    local.endereco.bairro = (char *)malloc(TAMMAX * sizeof(char));
-    local.endereco.logradouro = (char *)malloc(TAMMAX * sizeof(char));
-
-    printf("\nNome do encontro:\n");
-    gets(local.nome_encontro);
-    fflush(stdin);
-
-    printf("\nEstado:\n");
-    gets(local.endereco.estado);
-    fflush(stdin);
-
-    printf("\nCidade:\n");
-    gets(local.endereco.cidade);
-    fflush(stdin);
-
-    printf("\nBairro:\n");
-    gets(local.endereco.bairro);
-    fflush(stdin);
-
-    printf("\nLogradouro:\n");
-    gets(local.endereco.logradouro);
-    fflush(stdin);
-
-    printf("\nNumero:\n");
-    scanf("%i", &local.endereco.numero);
-    fflush(stdin);
-
-    return local;
-}
-int IncluirAmigos()
-{
-    if (NumAmigos >= MAXAMIGO)
-    {
-        return -1;
-    }
-
-    Amigos[NumAmigos] = CriaAmigo();
-    system("cls");
-    ImprimirAmigos(Amigos[NumAmigos]);
-    NumAmigos++;
-
-    return 1;
-}
-void ImprimirAmigos(Amigo amigos)
-{
-    printf("\n- Nome: %s\n", amigos.nome);
-    printf("\n- Apelido: %s\n", amigos.apelido);
-    printf("\n- Email: %s\n", amigos.email);
-    printf("\n- Telefone: %s\n", amigos.telefone);
-    printf("\n- Data Nascimento: [%i/%i/%i]\n", amigos.datanasc.dia, amigos.datanasc.mes, amigos.datanasc.ano);
-}
-int IncluirLocal()
-{
-    if (NumLocais >= MAXLOCAL)
-    {
-        return -5;
-    }
-
-    Locais[NumLocais] = CriaLocal();
-    system("cls");
-    ImprimirLocais(Locais[NumLocais]);
-    NumLocais++;
-
-    return 1;
-}
 void ImprimirLocais(Local locais)
 {
     printf("\nNome do encontro: %s\n", locais.nome_encontro);
@@ -640,23 +683,32 @@ int ListarAmigosPorApelido()
 void AlternarAmigos(int amigo)
 {
     int erro = -1;
+    char strAux[100];
 
     // Modifica o amigo que o usuario escolheu, no caso na mesma posicao que estava o anterior;
 
     printf("\nNome:\n");
-    gets(Amigos[amigo].nome);
+    gets(strAux);
+    Amigos[amigo].nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+    strcpy(Amigos[amigo].nome, strAux);
     fflush(stdin);
 
     printf("\nApelido:\n");
-    gets(Amigos[amigo].apelido);
+    gets(strAux);
+    Amigos[amigo].apelido = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+    strcpy(Amigos[amigo].apelido, strAux);
     fflush(stdin);
 
     printf("\nEmail:\n");
-    gets(Amigos[amigo].email);
+    gets(strAux);
+    Amigos[amigo].email = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+    strcpy(Amigos[amigo].email, strAux);
     fflush(stdin);
 
     printf("\nTelefone:\n");
-    gets(Amigos[amigo].telefone);
+    gets(strAux);
+    Amigos[amigo].telefone = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+    strcpy(Amigos[amigo].nome, strAux);
     fflush(stdin);
 
     while (erro < 0)
