@@ -79,7 +79,7 @@ void MenuRelatorioListarLocais();             // menu para perguntar se sera lis
 void OpcaoMenu(int op);                       // recebe opcao do menu e faz a validacao e procede;
 void OpcaoMenuAmigo(int op);                  // recebe opcao do menu de amigos e faz validacao e procede;
 void OpcaoMenuLocal(int op);                  // recebe opcao do menu de local e faz validacao e procede;
-int OpcaoMenuRelatorio(int op);               // recebe opcao do menu de relatorios e faz validacao e procede;
+void OpcaoMenuRelatorio(int op);               // recebe opcao do menu de relatorios e faz validacao e procede;
 void OpcaoMenuRelatorioListarAmigos(int opr); // recebe a opcao se vai ser todos ou especifico com apelido e procede;
 void OpcaoMenuRelatorioListarLocais(int opr); // recebe a opcao se vai ser todos ou especifico com apelido e procede;
 void ImprimirAmigos(Amigo amigos);            // imprime amigos;
@@ -217,7 +217,7 @@ void OpcaoMenu(int op)
             MenuRelatorio();
             scanf("%i", &opm);
             fflush(stdin);
-            erro = OpcaoMenuRelatorio(opm);
+            OpcaoMenuRelatorio(opm);
         }
         if (erro <= 0)
         {
@@ -497,16 +497,7 @@ void OpcaoMenuLocal(int op)
 int OpcaoMenuRelatorio(int op)
 {
     int opr;
-
-    // ARRUMAR PARA RETORNAR O ERRO CERTO, POIS TA RETORNANDO O ERRO ERRADO, NAO SEI AINDA COMO VOU RESOLVER, TALVEZ COM LAÇO DE REPETIÇÃO;
-    if (NumAmigos <= 0)
-    {
-        return -3;
-    }
-    if (NumLocais <= 0)
-    {
-        return -6;
-    }
+    int erro;
 
     // TEM QUE ARRUMA PARA DAR UM JEITO DE VOLTAR PARA O MENU DE RELATORIO CASO OPCAO SEJA INVALIDA (IGUAL NO DE AMIGOS)!!!!!!!
     if (op < 1 || op > 2)
@@ -520,6 +511,13 @@ int OpcaoMenuRelatorio(int op)
             MenuRelatorioListarAmigos();
             scanf("%i", &opr);
             fflush(stdin);
+            if (NumAmigos <= 0)
+            {
+                erro = -3;
+                // TESTAR RETURN E BREAK;
+                return;
+                break;
+            }
             OpcaoMenuRelatorioListarAmigos(opr);
         }
         else if (op == 2)
@@ -527,6 +525,13 @@ int OpcaoMenuRelatorio(int op)
             MenuRelatorioListarLocais();
             scanf("%i", &opr);
             fflush(stdin);
+            if (NumLocais <= 0)
+            {
+                erro = -6;
+                // TESTAR RETURN E BREAK;
+                return;
+                break;
+            }    
             OpcaoMenuRelatorioListarLocais(opr);
         }
         else if (op == 3)
@@ -544,6 +549,10 @@ int OpcaoMenuRelatorio(int op)
         else if (op == 6)
         {
             // LOGICA PARA SAIR;
+        }
+        if (erro <= 0)
+        {
+            MenssagemErro(erro);
         }
     }
 }
