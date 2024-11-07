@@ -436,7 +436,7 @@ int IncluirLocal()
 }
 void OpcaoMenuAmigo(int op)
 {
-    int erro;
+    int erro = -1;
 
     // TEM QUE ARRUMA PARA DAR UM JEITO DE VOLTAR PARA O MENU DE AMIGOS CASO OPCAO SEJA INVALIDA!!!!!!!
     if (op < 1 || op > 3)
@@ -462,6 +462,10 @@ void OpcaoMenuAmigo(int op)
         {
             MenssagemErro(erro);
         }
+    }
+    if (erro <= 0)
+    {
+        MenssagemErro(erro);
     }
 }
 void OpcaoMenuLocal(int op)
@@ -494,7 +498,7 @@ void OpcaoMenuLocal(int op)
         }
     }
 }
-int OpcaoMenuRelatorio(int op)
+void OpcaoMenuRelatorio(int op)
 {
     int opr;
     int erro;
@@ -514,9 +518,9 @@ int OpcaoMenuRelatorio(int op)
             if (NumAmigos <= 0)
             {
                 erro = -3;
-                // TESTAR RETURN E BREAK;
+                // TESTAR RETURN ;
                 return;
-                break;
+                
             }
             OpcaoMenuRelatorioListarAmigos(opr);
         }
@@ -528,9 +532,9 @@ int OpcaoMenuRelatorio(int op)
             if (NumLocais <= 0)
             {
                 erro = -6;
-                // TESTAR RETURN E BREAK;
+                // TESTAR RETURN;
                 return;
-                break;
+                
             }    
             OpcaoMenuRelatorioListarLocais(opr);
         }
@@ -684,7 +688,7 @@ int ListarAmigosPorApelido()
     }
     return -4;
 }
-// ARRUMAR, TA COLOCANDO O NUMERO DE TELEFONE NO LUGAR DO NOME, E BUGANDO TUDO;
+
 void AlternarAmigos(int amigo)
 {
     int erro = -1;
@@ -694,26 +698,69 @@ void AlternarAmigos(int amigo)
 
     printf("\nNome:\n");
     gets(strAux);
+    if (Amigos[amigo].nome != NULL) 
+    {
+        free(Amigos[amigo].nome);
+    }
+
     Amigos[amigo].nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+
+    if (Amigos[amigo].nome == NULL) 
+    {
+        MenssagemErro(-10);
+        return; 
+    }
     strcpy(Amigos[amigo].nome, strAux);
     fflush(stdin);
 
     printf("\nApelido:\n");
     gets(strAux);
+    if (Amigos[amigo].apelido != NULL) 
+    {
+        free(Amigos[amigo].apelido);
+    }
+
     Amigos[amigo].apelido = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+
+    if (Amigos[amigo].apelido == NULL) 
+    {
+        MenssagemErro(-10);
+        return; 
+    }
     strcpy(Amigos[amigo].apelido, strAux);
     fflush(stdin);
 
     printf("\nEmail:\n");
-    gets(strAux);
+    if (Amigos[amigo].email != NULL) 
+    {
+        free(Amigos[amigo].email);
+    }
+
     Amigos[amigo].email = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+
+    if (Amigos[amigo].email == NULL) 
+    {
+        MenssagemErro(-10);
+        return; 
+    }
     strcpy(Amigos[amigo].email, strAux);
     fflush(stdin);
 
     printf("\nTelefone:\n");
     gets(strAux);
+    if (Amigos[amigo].telefone != NULL) 
+    {
+        free(Amigos[amigo].telefone);
+    }
+
     Amigos[amigo].telefone = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
-    strcpy(Amigos[amigo].nome, strAux);
+
+    if (Amigos[amigo].telefone == NULL) 
+    {
+        MenssagemErro(-10);
+        return; 
+    }
+    strcpy(Amigos[amigo].telefone, strAux);
     fflush(stdin);
 
     while (erro < 0)
@@ -749,7 +796,7 @@ int ModificarAmigos()
 
         if (amigo < 0 || amigo >= NumAmigos)
         {
-            MenssagemErro(-4);
+            return -4;
         }
         else
         {
@@ -778,7 +825,7 @@ int DeletarAmigos()
 
     if (amigo < 0 || amigo >= NumAmigos)
     {
-        MenssagemErro(-4);
+       return -4;
     }
     else
     {
