@@ -66,6 +66,7 @@ typedef struct
 // COISAS QUE TALVEZ MODIFIQUE.
 // 1- COLOCAR UM MENU PARA DELETAR 1 OU TODOS (SE FOR 1, TALVEZ POR APELIDO.)
 // 2- ADICIONAR MENU PARA MODIFICAR TUDO OU APENAS UMA PARTE, TEREI QUE FAZER UMA OPCAO PARA CADA PROVAVELMENTE.
+// 3-
 
 void MenssagemErro(int erro);                 // imprime mensagens de erro;
 void Menu();                                  // imprime menu principal;
