@@ -178,54 +178,7 @@ void Menu()
     printf("\n5. Relatorios\n");
     printf("\n6. Sair\n");
 }
-void OpcaoMenu(int op)
-{
-    int opm;
 
-    while (op < 1 || op > 6)
-    {
-        MenssagemErro(0);
-        getchar();
-        Menu();
-        scanf("%i", &op);
-        fflush(stdin);
-        getchar();
-    }
-
-    if (op == 1)
-    {
-        MenuAmigo();
-        scanf("%i", &opm);
-        fflush(stdin);
-        OpcaoMenuAmigo(opm);
-    }
-    else if (op == 2)
-    {
-        MenuLocal();
-        scanf("%i", &opm);
-        fflush(stdin);
-        OpcaoMenuLocal(opm);
-    }
-    else if (op == 3)
-    {
-        // categoria;
-    }
-    else if (op == 4)
-    {
-        // encontro;
-    }
-    else if (op == 5)
-    {
-        MenuRelatorio();
-        scanf("%i", &opm);
-        fflush(stdin);
-        OpcaoMenuRelatorio(opm);
-    }
-    else if (op == 6)
-    {
-        exit(0);
-    }
-}
 void MenuAmigo()
 {
 
@@ -287,6 +240,54 @@ void MenuRelatorioListarLocais()
     printf("\n3. Listar por cidade\n");
     printf("\n4. Listar por bairro\n");
     printf("\n5. Voltar\n");
+}
+void OpcaoMenu(int op)
+{
+    int opm;
+
+    while (op < 1 || op > 6)
+    {   
+        MenssagemErro(0);
+        getchar();
+        Menu();
+        scanf("%i", &op);
+        fflush(stdin);
+        getchar();
+    }
+
+    if (op == 1)
+    {
+        MenuAmigo();
+        scanf("%i", &opm);
+        fflush(stdin);
+        OpcaoMenuAmigo(opm);
+    }
+    else if (op == 2)
+    {
+        MenuLocal();
+        scanf("%i", &opm);
+        fflush(stdin);
+        OpcaoMenuLocal(opm);
+    }
+    else if (op == 3)
+    {
+        // categoria;
+    }
+    else if (op == 4)
+    {
+        // encontro;
+    }
+    else if (op == 5)
+    {
+        MenuRelatorio();
+        scanf("%i", &opm);
+        fflush(stdin);
+        OpcaoMenuRelatorio(opm);
+    }
+    else if (op == 6)
+    {
+        exit(0);
+    }
 }
 Amigo CriaAmigo()
 {
@@ -483,7 +484,6 @@ void OpcaoMenuAmigo(int op)
     {
         MenssagemErro(erro);
     }
-
     Pausar(pause);
 }
 void OpcaoMenuLocal(int op)
@@ -542,9 +542,9 @@ void OpcaoMenuRelatorio(int op)
         getchar();
     }
 
-    if (op == 1)
+    switch (op)
     {
-
+    case 1:
         if (NumAmigos <= 0)
         {
             erro = -3;
@@ -553,12 +553,11 @@ void OpcaoMenuRelatorio(int op)
         {
             MenuRelatorioListarAmigos();
             scanf("%i", &opr);
-            fflush(stdin);
             OpcaoMenuRelatorioListarAmigos(opr);
+            return;
         }
-    }
-    else if (op == 2)
-    {
+    break;
+    case 2:
         if (NumLocais <= 0)
         {
             erro = -6;
@@ -570,35 +569,35 @@ void OpcaoMenuRelatorio(int op)
             fflush(stdin);
             OpcaoMenuRelatorioListarLocais(opr);
         }
-    }
-    else if (op == 3)
-    {
+    break;
+    case 3:
+
         // LOGICA PARA LISTAR CATEGORIAS;
-    }
-    else if (op == 4)
-    {
+    break;
+    case 4:
+
         // LOGICA PARA LISTAR ENCONTROS;
-    }
-    else if (op == 5)
-    {
+    break;
+    case 5:
+
         // LOGICA PARA RELATORIO DE CATEGORIA;
-    }
-    // ARRUMAR, ESTA DANDO ERRO AO INVES DE SAIR DIRETO!!!!!!!!!!!!!
-    else if (op == 6)
+    break;
+    case 6:
     {
         return;
     }
 
-    while (erro <= 0)
+    }
+
+    if (erro <= 0)
     {
         MenssagemErro(erro);
         getchar();
-        MenuRelatorio();
-        scanf("%i", &opr);
-        getchar();
-        OpcaoMenuRelatorio(opr);
-        fflush(stdin);
     }
+
+    MenuRelatorio();
+    scanf("%i", &opr);
+    OpcaoMenuRelatorio(opr);
 }
 
 void OpcaoMenuRelatorioListarAmigos(int opr)
@@ -612,6 +611,7 @@ void OpcaoMenuRelatorioListarAmigos(int opr)
         MenuRelatorioListarAmigos();
         scanf("%i", &opr);
         fflush(stdin);
+        getchar();
     }
 
     if (opr == 1)
@@ -837,6 +837,7 @@ void AlternarAmigos(int amigo)
         }
     }
 }
+
 // FAZER TUDO QUE EU FIZ NOS MENU  DE RELATORIO DE LISTAR, AQUI NO MODIFICAR E NOS DE EXCLUIR!!!!!!!!!!!!!!!!!!!!!
 int ModificarAmigos()
 {
