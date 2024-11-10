@@ -621,7 +621,7 @@ void OpcaoMenuRelatorioListarAmigos(int opr)
     }
     else if (opr == 2)
     {
-        // lista por apelido que o usuario digitar;
+        // listar por apelido que o usuario digitar;
         erro = ListarAmigosPorApelido();
     }
     else if (opr == 3)
