@@ -843,7 +843,7 @@ int ListarLocais()
 
     return 1;
 }
-    // ARRUMAR !!!!!!!!!!!!!!!!!!!!!, TA COM ALGUM PROBLEMA DE NAO TA RETORNANDO MAIS QUE 1!!!!!!!!!!!!!!!!!!!!!! (talvez tenha que criar um contador dentro da struct, but i ain't sure bout tha shee)
+    
 int ListarLocaisPorEstado()
 {
     char estado[50];
@@ -854,6 +854,7 @@ int ListarLocaisPorEstado()
         return -5;
     }
 
+    // ARRUMAR !!!!!!!!!!!!!!!!!!!!!, TA COM ALGUM PROBLEMA DE NAO TA RETORNANDO MAIS QUE 1!!!!!!!!!!!!!!!!!!!!!! (talvez tenha que criar um contador dentro da struct, but i ain't sure bout tha shee)
     system("clear");
     printf("\nDigite o estado: ");
     fgets(estado, sizeof(estado), stdin); // Usando fgets em vez de gets()
