@@ -81,6 +81,7 @@ void MenuRelatorioListarLocais();             // menu para perguntar se sera lis
 void OpcaoMenu(int op);                       // recebe opcao do menu e faz a validacao e procede;
 void OpcaoMenuAmigo(int op);                  // recebe opcao do menu de amigos e faz validacao e procede;
 void OpcaoMenuLocal(int op);                  // recebe opcao do menu de local e faz validacao e procede;
+void OpcaoMenuCategoria(int op);              // recebe opcao do menu de categoria e faz validacao e procede;
 void OpcaoMenuRelatorio(int op);              // recebe opcao do menu de relatorios e faz validacao e procede;
 void OpcaoMenuRelatorioListarAmigos(int opr); // recebe a opcao se vai ser todos ou especifico com apelido e procede;
 void OpcaoMenuRelatorioListarLocais(int opr); // recebe a opcao se vai ser todos ou especifico com apelido e procede;
@@ -90,23 +91,27 @@ void AlternarAmigos(int amigo);               // modifica os dados do amigo na h
 void AlternarLocais(int local);               // modifica os dados do local na hora de alternar;
 void ExcluirAmigos(int amigo);                // dispara qual amigo o usuario deseja excluir;
 void ExcluirLocais(int local);                // dispara qual local o usuario deseja excluir;
+void VoltarMenuPrincipal();                   // volta/chama o menu principal e ja le a opcao direto;
+void VoltarMenuRelatorio();                   // volta/chama o menu de relatorio e ja le a opcao direto;
 void LimpaPonteiroAmigo(Amigo *amigo);        // limpa o ponteiro de amigos;
 void LimpaPonteiroLocal(Local *local);        // limpa o ponteiro de locais;
 void Pausar(int pause);                       // verifica se o pause eh true ou false e pausa;
 void LimparBuffer();                          // limpa o buffer do teclado;
 
-int IncluirAmigos();                          // inclui na funcao o amigo criado na funcao "cria amigo";
-int ModificarAmigos();                        // alterar amigo;
-int DeletarAmigos();                          // deleta um amigo;
-int IncluirLocais();                          // inclui na funcao o local criado na funcao "cria local";
-int ModificarLocais();                        // alterar local;
-int DeletarLocais();                          // deleta um local;
-int ValidarData(int dia, int mes, int ano);   // valida data que o usuario digitar;
-int ListarAmigos();                           // lista os amigos que ja estao cadastrados;
-int ListarLocais();                           // lista os locais que ja estao cadastrados;
-int ListarAmigosPorApelido();                 // faz a logica de listar amigo por apelido;
-int ListarLocaisPorEstado();                  // faz a logica de listar locais por estado;
-int Bissexto(int ano);                        // verifica se o ano eh bissexto para poder arrumar dias e mes
+int IncluirAmigos();                        // inclui na funcao o amigo criado na funcao "cria amigo";
+int ModificarAmigos();                      // alterar amigo;
+int DeletarAmigos();                        // deleta um amigo;
+int IncluirLocais();                        // inclui na funcao o local criado na funcao "cria local";
+int ModificarLocais();                      // alterar local;
+int DeletarLocais();                        // deleta um local;
+int ValidarData(int dia, int mes, int ano); // valida data que o usuario digitar;
+int ListarAmigos();                         // lista os amigos que ja estao cadastrados;
+int ListarLocais();                         // lista os locais que ja estao cadastrados;
+int ListarAmigosPorApelido();               // faz a logica de listar amigo por apelido;
+int ListarLocaisPorEstado();                // faz a logica de listar locais por estado;
+int ListarLocaisPorCidade();                // faz a logica de listar locais por cidade;
+int ListarLocaisPorBairro();                // faz a logica de listar locais por bairro;
+int Bissexto(int ano);                      // verifica se o ano eh bissexto para poder arrumar dias e mes
 
 Amigo CriaAmigo(); // funcao para criar um amigo;
 Local CriaLocal(); // funcao para criar um local;
@@ -122,10 +127,7 @@ int main()
 
     while (op != 6)
     {
-        Menu();
-        scanf("%i", &op);
-        LimparBuffer();
-        OpcaoMenu(op);
+        VoltarMenuPrincipal();
     }
 
     return 0;
@@ -136,61 +138,61 @@ void MenssagemErro(int erro)
     switch (erro)
     {
     case 0:
-        system("clear");
+        system("cls");
         printf("\nErro. Opcao invalida.\n");
         break;
     case -1:
-        system("clear");
+        system("cls");
         printf("\nErro. Quantidade de amigos cheia.\n");
         break;
 
     case -2:
-        system("clear");
+        system("cls");
         printf("\nErro. Amigos Vazios.\n");
         break;
     case -3:
-        system("clear");
+        system("cls");
         printf("\nErro. Amigo invalido.\n");
         break;
     case -4:
-        system("clear");
+        system("cls");
         printf("\nErro. Quantidade de locais cheia.\n");
         break;
     case -5:
-        system("clear");
+        system("cls");
         printf("\nErro. Locais vazio.\n");
         break;
     case -6:
-        system("clear");
+        system("cls");
         printf("\nErro. Local invalido.\n");
         break;
     case -7:
-        system("clear");
+        system("cls");
         printf("\nErro. Alocacao de memoria fracassada.\n");
         break;
     case -8:
-        system("clear");
+        system("cls");
         printf("\nErro. Ano invalido.\n");
         break;
     case -9:
-        system("clear");
+        system("cls");
         printf("\nErro. Mes invalido.\n");
         break;
     case -10:
-        system("clear");
+        system("cls");
         printf("\nErro. Dia invalido.\n");
         break;
     case -11:
-        system("clear");
+        system("cls");
         printf("\nErro. Local invalido ou nao encontrado.\n");
         break;
     case -12:
-        system("clear");
+        system("cls");
         printf("\nErro. Amigo invalido ou nao encontrado.\n");
         break;
 
     default:
-        system("clear");
+        system("cls");
         printf("\nErro.\n");
         break;
     }
@@ -198,7 +200,7 @@ void MenssagemErro(int erro)
 
 void Menu()
 {
-    system("clear");
+    system("cls");
     printf("\n1. Manter amigo\n");
     printf("\n2. Manter local\n");
     printf("\n3. Manter categoria\n");
@@ -210,7 +212,7 @@ void Menu()
 void MenuAmigo()
 {
 
-    system("clear");
+    system("cls");
     printf("\n1. Cadastrar Amigo\n");
     printf("\n2. Modificar Amigo\n");
     printf("\n3. Excluir Amigo\n");
@@ -220,7 +222,7 @@ void MenuAmigo()
 void MenuLocal()
 {
 
-    system("clear");
+    system("cls");
     printf("\n1. Cadastrar Local\n");
     printf("\n2. Modificar Local\n");
     printf("\n3. Excluir Local\n");
@@ -230,7 +232,7 @@ void MenuLocal()
 void MenuCategoria()
 {
 
-    system("clear");
+    system("cls");
     printf("\n1. Cadastrar Categoria\n");
     printf("\n2. Modificar Categoria\n");
     printf("\n3. Excluir Categoria\n");
@@ -240,7 +242,7 @@ void MenuCategoria()
 void MenuEncontro()
 {
 
-    system("clear");
+    system("cls");
     printf("\n1. Cadastrar Encontro\n");
     printf("\n2. Modificar Encontro\n");
     printf("\n3. Excluir Encontro\n");
@@ -249,7 +251,7 @@ void MenuEncontro()
 
 void MenuRelatorio()
 {
-    system("clear");
+    system("cls");
     printf("\n1. Listar Amigos\n");
     printf("\n2. Listar Locais\n");
     printf("\n3. Listar Categorias\n");
@@ -260,20 +262,22 @@ void MenuRelatorio()
 
 void MenuRelatorioListarAmigos()
 {
-    system("clear");
+    system("cls");
     printf("\n1. Listar todos\n");
     printf("\n2. Buscar por apelido\n");
     printf("\n3. Voltar\n");
+    printf("\n4. Voltar Menu Principal\n");
 }
 
 void MenuRelatorioListarLocais()
 {
-    system("clear");
+    system("cls");
     printf("\n1. Listar todos\n");
     printf("\n2. Listar por estado\n");
     printf("\n3. Listar por cidade\n");
     printf("\n4. Listar por bairro\n");
     printf("\n5. Voltar\n");
+    printf("\n6. Voltar Menu Principal\n");
 }
 
 void OpcaoMenu(int op)
@@ -284,9 +288,7 @@ void OpcaoMenu(int op)
     {
         MenssagemErro(0);
         Pausar(1);
-        Menu();
-        scanf("%i", &op);
-        LimparBuffer();
+        VoltarMenuPrincipal();
     }
 
     if (op == 1)
@@ -308,24 +310,23 @@ void OpcaoMenu(int op)
         MenuCategoria();
         scanf("%i", &opm);
         LimparBuffer();
-        //TERMINAR CATEGORIA;
+        // TERMINAR CATEGORIA;
     }
     else if (op == 4)
     {
         MenuEncontro();
         scanf("%i", &opm);
         LimparBuffer();
-        //TERMINAR ENCONTRO;
+        // TERMINAR ENCONTRO;
     }
     else if (op == 5)
     {
-        MenuRelatorio();
-        scanf("%i", &opm);
-        LimparBuffer();
-        OpcaoMenuRelatorio(opm);
+        VoltarMenuRelatorio();
     }
     else if (op == 6)
     {
+        system("cls");
+        printf("\nBye Bye..\n");
         exit(0);
     }
 }
@@ -338,7 +339,7 @@ Amigo CriaAmigo()
     int erro = -1;
     char strAux[100];
 
-    system("clear");
+    system("cls");
 
     printf("\nNome:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
@@ -347,7 +348,7 @@ Amigo CriaAmigo()
     strcpy(amigo.nome, strAux);
     LimparBuffer();
 
-    system("clear");
+    system("cls");
     printf("\nApelido:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -355,7 +356,7 @@ Amigo CriaAmigo()
     strcpy(amigo.apelido, strAux);
     LimparBuffer();
 
-    system("clear");
+    system("cls");
     printf("\nEmail:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -363,7 +364,7 @@ Amigo CriaAmigo()
     strcpy(amigo.email, strAux);
     LimparBuffer();
 
-    system("clear");
+    system("cls");
     printf("\nTelefone:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -373,7 +374,7 @@ Amigo CriaAmigo()
 
     while (erro < 0)
     {
-        system("clear"); // força o usuario digitar data de nascimento seguindo os parametros de data
+        system("cls"); // força o usuario digitar data de nascimento seguindo os parametros de data
         printf("\nData Nascimento [dd/mm/yy]:\n");
         scanf("%i%i%i", &amigo.datanasc.dia, &amigo.datanasc.mes, &amigo.datanasc.ano);
         LimparBuffer();
@@ -393,7 +394,7 @@ Local CriaLocal()
     Local local;
     char strAux[100];
 
-    system("clear");
+    system("cls");
     printf("\nNome do encontro:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -401,7 +402,7 @@ Local CriaLocal()
     strcpy(local.nome_encontro, strAux);
     LimparBuffer();
 
-    system("clear");
+    system("cls");
     printf("\nEstado:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -409,7 +410,7 @@ Local CriaLocal()
     strcpy(local.endereco.estado, strAux);
     LimparBuffer();
 
-    system("clear");
+    system("cls");
     printf("\nCidade:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -417,7 +418,7 @@ Local CriaLocal()
     strcpy(local.endereco.cidade, strAux);
     LimparBuffer();
 
-    system("clear");
+    system("cls");
     printf("\nBairro:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -425,7 +426,7 @@ Local CriaLocal()
     strcpy(local.endereco.bairro, strAux);
     LimparBuffer();
 
-    system("clear");
+    system("cls");
     printf("\nLogradouro:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -433,7 +434,7 @@ Local CriaLocal()
     strcpy(local.endereco.logradouro, strAux);
     LimparBuffer();
 
-    system("clear");
+    system("cls");
     printf("\nNumero:\n");
     scanf("%i", &local.endereco.numero);
     LimparBuffer();
@@ -463,7 +464,7 @@ int IncluirAmigos()
     }
 
     Amigos[NumAmigos] = CriaAmigo();
-    system("clear");
+    system("cls");
     ImprimirAmigos(Amigos[NumAmigos]);
     NumAmigos++;
 
@@ -492,7 +493,7 @@ int IncluirLocais()
     }
 
     Locais[NumLocais] = CriaLocal();
-    system("clear");
+    system("cls");
     ImprimirLocais(Locais[NumLocais]);
     NumLocais++;
 
@@ -547,7 +548,7 @@ void OpcaoMenuAmigo(int op)
     }
     else if (op == 4)
     {
-        return;
+        VoltarMenuPrincipal();
     }
 
     if (erro <= 0)
@@ -590,7 +591,7 @@ void OpcaoMenuLocal(int op)
     }
     else if (op == 4)
     {
-        return;
+        VoltarMenuPrincipal();
     }
 
     if (erro <= 0)
@@ -605,6 +606,50 @@ void OpcaoMenuLocal(int op)
     OpcaoMenuLocal(opm);
 }
 
+void OpcaoMenuCategoria(int op)
+{
+    int erro = 1;
+    int opm;
+
+    while (op < 1 || op > 4)
+    {
+        MenssagemErro(0);
+        Pausar(1);
+        MenuCategoria();
+        scanf("%i", &op);
+        LimparBuffer();
+    }
+
+    if (op == 1)
+    {
+        //erro = IncluirCategorias();
+    }
+    else if (op == 2)
+    {
+        //erro = ModificarCategorias();
+    }
+    else if (op == 3)
+    {
+        //erro = DeletarCategorias();
+    }
+    else if (op == 4)
+    {
+        VoltarMenuPrincipal();
+    }
+
+    if (erro <= 0)
+    {
+        MenssagemErro(erro);
+    }
+
+    Pausar(1);
+    MenuCategoria();
+    scanf("%i", &opm);
+    LimparBuffer();
+    OpcaoMenuCategoria(opm);
+}
+
+
 void OpcaoMenuRelatorio(int op)
 {
     int opr;
@@ -614,9 +659,7 @@ void OpcaoMenuRelatorio(int op)
     {
         MenssagemErro(0);
         Pausar(1);
-        MenuRelatorio();
-        scanf("%i", &op);
-        LimparBuffer();
+        VoltarMenuRelatorio();
     }
 
     switch (op)
@@ -668,8 +711,9 @@ void OpcaoMenuRelatorio(int op)
 
     case 6:
     {
-        return;
+        VoltarMenuPrincipal();
     }
+
     }
 
     if (erro <= 0)
@@ -678,21 +722,17 @@ void OpcaoMenuRelatorio(int op)
     }
 
     Pausar(1);
-    MenuRelatorio();
-    scanf("%i", &opr);
-    LimparBuffer();
-    OpcaoMenuRelatorio(opr);
+    VoltarMenuRelatorio();
 }
 
 void OpcaoMenuRelatorioListarAmigos(int opr)
 {
     int erro = 1;
-    int op;
+    int aux;
 
-    while (opr < 1 || opr > 3)
+    while (opr < 1 || opr > 4)
     {
         MenssagemErro(0);
-        Pausar(1);
         MenuRelatorioListarAmigos();
         scanf("%i", &opr);
         LimparBuffer();
@@ -701,33 +741,39 @@ void OpcaoMenuRelatorioListarAmigos(int opr)
     if (opr == 1)
     {
         erro = ListarAmigos();
-        Pausar(1);
     }
     else if (opr == 2)
     {
         erro = ListarAmigosPorApelido();
-        Pausar(1);
     }
     else if (opr == 3)
     {
-        MenuRelatorio();
-        scanf("%i", &op);
-        LimparBuffer();
-        OpcaoMenuRelatorio(op);
+        VoltarMenuRelatorio();
+    }
+    else if (opr == 4)
+    {
+        VoltarMenuPrincipal();
     }
 
     if (erro <= 0)
     {
         MenssagemErro(erro);
+        Pausar(1);
     }
+
+    Pausar(1);
+    MenuRelatorioListarAmigos();
+    scanf("%i", &aux);
+    LimparBuffer();
+    OpcaoMenuRelatorioListarAmigos(aux);
 }
 
 void OpcaoMenuRelatorioListarLocais(int opr)
 {
     int erro = 1;
-    int op;
+    int aux;
 
-    while (opr < 1 || opr > 5)
+    while (opr < 1 || opr > 6)
     {
         MenssagemErro(0);
         Pausar(1);
@@ -739,33 +785,38 @@ void OpcaoMenuRelatorioListarLocais(int opr)
     if (opr == 1)
     {
         erro = ListarLocais();
-        Pausar(1);
     }
     else if (opr == 2)
     {
         erro = ListarLocaisPorEstado();
-        Pausar(1);
     }
     else if (opr == 3)
     {
-        // lista por cidade;
+        erro = ListarLocaisPorCidade();
     }
     else if (opr == 4)
     {
-        // listar por bairro;
+        erro = ListarLocaisPorBairro();
     }
     else if (opr == 5)
     {
-        MenuRelatorio();
-        scanf("%i", &op);
-        LimparBuffer();
-        OpcaoMenuRelatorio(op);
+        VoltarMenuRelatorio();
+    }
+    else if (opr == 6)
+    {
+        VoltarMenuPrincipal();
     }
 
     if (erro <= 0)
     {
         MenssagemErro(erro);
     }
+
+    Pausar(1);
+    MenuRelatorioListarLocais();
+    scanf("%i", &aux);
+    LimparBuffer();
+    OpcaoMenuRelatorioListarLocais(aux);
 }
 
 int ListarAmigos()
@@ -777,7 +828,7 @@ int ListarAmigos()
         return -2;
     }
 
-    system("clear");
+    system("cls");
     for (i = 0; i < NumAmigos; i++)
     {
         printf("\n");
@@ -798,21 +849,21 @@ int ListarAmigosPorApelido()
         return -2;
     }
 
-    system("clear");
-    printf("\nDigite o apelido do amigo: ");
+    system("cls");
+    printf("\nDigite o apelido do amigo: \n");
     fgets(apelido, sizeof(apelido), stdin); // Usando fgets em vez de gets()
     apelido[strcspn(apelido, "\n")] = '\0'; // Remover a nova linha caso presente
     LimparBuffer();
 
-    system("clear");
+    system("cls");
     for (i = 0; i < NumAmigos; i++)
     {
         if (strcmp(Amigos[i].apelido, apelido) == 0)
-        {   
+        {
+            printf("\n");
             printf("\n-- Amigo Numero [%i] --\n", i + 1);
             ImprimirAmigos(Amigos[i]);
             encontrado = 1;
-            break;
         }
     }
 
@@ -833,7 +884,7 @@ int ListarLocais()
         return -5;
     }
 
-    system("clear");
+    system("cls");
     for (i = 0; i < NumLocais; i++)
     {
         printf("\n");
@@ -843,7 +894,7 @@ int ListarLocais()
 
     return 1;
 }
-    
+
 int ListarLocaisPorEstado()
 {
     char estado[50];
@@ -854,22 +905,56 @@ int ListarLocaisPorEstado()
         return -5;
     }
 
-    // ARRUMAR !!!!!!!!!!!!!!!!!!!!!, TA COM ALGUM PROBLEMA DE NAO TA RETORNANDO MAIS QUE 1!!!!!!!!!!!!!!!!!!!!!! (talvez tenha que criar um contador dentro da struct, but i ain't sure bout tha shee)
-    system("clear");
-    printf("\nDigite o estado: ");
+    system("cls");
+    printf("\nDigite o estado: \n");
     fgets(estado, sizeof(estado), stdin); // Usando fgets em vez de gets()
     estado[strcspn(estado, "\n")] = '\0'; // Remover a nova linha caso presente
     LimparBuffer();
 
-    system("clear");
+    system("cls");
     for (i = 0; i < NumLocais; i++)
     {
         if (strcmp(Locais[i].endereco.estado, estado) == 0)
-        {   
+        {
+            printf("\n");
             printf("\n-- Local Numero [%i] --\n", i + 1);
             ImprimirLocais(Locais[i]);
             encontrado = 1;
-            break;
+        }
+    }
+
+    if (!encontrado)
+    {
+        return -11;
+    }
+    return 1;
+}
+
+int ListarLocaisPorCidade()
+{
+    char cidade[50];
+    int i, encontrado = 0;
+
+    if (NumLocais <= 0)
+    {
+        return -5;
+    }
+
+    system("cls");
+    printf("\nDigite o cidade: \n");
+    fgets(cidade, sizeof(cidade), stdin); // Usando fgets em vez de gets()
+    cidade[strcspn(cidade, "\n")] = '\0'; // Remover a nova linha caso presente
+    LimparBuffer();
+
+    system("cls");
+    for (i = 0; i < NumLocais; i++)
+    {
+        if (strcmp(Locais[i].endereco.cidade, cidade) == 0)
+        {
+            printf("\n");
+            printf("\n-- Local Numero [%i] --\n", i + 1);
+            ImprimirLocais(Locais[i]);
+            encontrado = 1;
         }
     }
 
@@ -880,12 +965,49 @@ int ListarLocaisPorEstado()
 
     return 1;
 }
+
+int ListarLocaisPorBairro()
+{
+    char bairro[50];
+    int i, encontrado = 0;
+
+    if (NumLocais <= 0)
+    {
+        return -5;
+    }
+
+    system("cls");
+    printf("\nDigite o bairro: \n");
+    fgets(bairro, sizeof(bairro), stdin); // Usando fgets em vez de gets()
+    bairro[strcspn(bairro, "\n")] = '\0'; // Remover a nova linha caso presente
+    LimparBuffer();
+
+    system("cls");
+    for (i = 0; i < NumLocais; i++)
+    {
+        if (strcmp(Locais[i].endereco.bairro, bairro) == 0)
+        {
+            printf("\n");
+            printf("\n-- Local Numero [%i] --\n", i + 1);
+            ImprimirLocais(Locais[i]);
+            encontrado = 1;
+        }
+    }
+
+    if (!encontrado)
+    {
+        return -11;
+    }
+    
+    return 1;
+}
+
 void AlternarAmigos(int amigo)
 {
     int erro = -1;
     char strAux[100];
 
-    system("clear");
+    system("cls");
     printf("\nNome:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -905,7 +1027,7 @@ void AlternarAmigos(int amigo)
     strcpy(Amigos[amigo].nome, strAux);
     LimparBuffer();
 
-    system("clear");
+    system("cls");
     printf("\nApelido:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -925,7 +1047,7 @@ void AlternarAmigos(int amigo)
     strcpy(Amigos[amigo].apelido, strAux);
     LimparBuffer();
 
-    system("clear");
+    system("cls");
     printf("\nEmail:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -945,7 +1067,7 @@ void AlternarAmigos(int amigo)
     strcpy(Amigos[amigo].email, strAux);
     LimparBuffer();
 
-    system("clear");
+    system("cls");
     printf("\nTelefone:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -967,7 +1089,7 @@ void AlternarAmigos(int amigo)
 
     while (erro < 0)
     {
-        system("clear");
+        system("cls");
         printf("\nData Nascimento [dd/mm/yy]:\n");
         scanf("%i%i%i", &Amigos[amigo].datanasc.dia, &Amigos[amigo].datanasc.mes, &Amigos[amigo].datanasc.ano);
         LimparBuffer();
@@ -984,7 +1106,7 @@ void AlternarLocais(int local)
 {
     char strAux[100];
 
-    system("clear");
+    system("cls");
     printf("\nNome do encontro:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -1001,7 +1123,7 @@ void AlternarLocais(int local)
         return;
     }
 
-    system("clear");
+    system("cls");
     printf("\nEstado:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -1018,7 +1140,7 @@ void AlternarLocais(int local)
         return;
     }
 
-    system("clear");
+    system("cls");
     printf("\nCidade:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -1037,7 +1159,7 @@ void AlternarLocais(int local)
     strcpy(Locais[local].endereco.cidade, strAux);
     LimparBuffer();
 
-    system("clear");
+    system("cls");
     printf("\nBairro:\n");
     fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
     strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
@@ -1056,7 +1178,7 @@ void AlternarLocais(int local)
     strcpy(Locais[local].endereco.estado, strAux);
     LimparBuffer();
 
-    system("clear");
+    system("cls");
     printf("\nNumero:\n");
     scanf("%i", &Locais[local].endereco.numero);
 }
@@ -1090,7 +1212,7 @@ int ModificarAmigos()
         }
     }
 
-    system("clear");
+    system("cls");
     ImprimirAmigos(Amigos[amigo]);
 
     return 1;
@@ -1126,7 +1248,7 @@ int ModificarLocais()
         }
     }
 
-    system("clear");
+    system("cls");
     ImprimirLocais(Locais[local]);
 
     return 1;
@@ -1155,7 +1277,7 @@ int DeletarAmigos()
         ExcluirAmigos(amigo);
     }
 
-    system("clear");
+    system("cls");
     printf("\nExclusao bem sucedida.\n");
 
     return 1;
@@ -1189,7 +1311,7 @@ int DeletarLocais()
         }
     }
 
-    system("clear");
+    system("cls");
     printf("\nExclusao bem sucedida.\n");
 
     return 1;
@@ -1225,6 +1347,24 @@ void ExcluirLocais(int local)
     Locais[local] = Locais[NumLocais - 1];
 
     NumLocais--;
+}
+
+void VoltarMenuPrincipal()
+{
+    int op;
+    Menu();
+    scanf("%i", &op);
+    LimparBuffer();
+    OpcaoMenu(op);
+}
+
+void VoltarMenuRelatorio()
+{
+    int op;
+    MenuRelatorio();
+    scanf("%i", &op);
+    LimparBuffer();
+    OpcaoMenuRelatorio(op);
 }
 
 void LimpaPonteiroAmigo(Amigo *amigo)
@@ -1285,5 +1425,5 @@ void Pausar(int pause)
 }
 void LimparBuffer()
 {
-    __fpurge(stdin);
+    fflush(stdin);
 }
