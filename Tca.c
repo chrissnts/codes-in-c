@@ -65,12 +65,8 @@ typedef struct
 } Encontro;
 
 // COISAS QUE TALVEZ MODIFIQUE.
-// 1- COLOCAR UM MENU PARA DELETAR 1 OU TODOS (SE FOR 1, VAI SER POR UMA CARACTERISTICA.)
-// 2- ADICIONAR MENU PARA MODIFICAR TUDO OU APENAS UMA PARTE, TEREI QUE FAZER UMA OPCAO PARA CADA PROVAVELMENTE.
-// 3- FAZER ALTERAÇÕES DO PAUSE, POR EXEMPLO, CRIAR UMA FUNCAO PARA VERIFICAR SE O PAUSE EH TRUE OU FALSE, SE FOR PAUSAR SE NAO FOR PASSAR DIRETO. ----
-// 4- FAZER UMA VERIFICACAO SE AMIGO, E ETC JA EXISTE NA HORA DE CRIAR, E SO CRIAR SE NAO EXISTIR.
-// 5- NAO DEIXAR O USUARIO EXCLUIR UM AMIGO SE ELE ESTIVER EM UM ENCONTRO;
-// 6- 
+// 1- FAZER UMA VERIFICACAO SE AMIGO, E ETC JA EXISTE NA HORA DE CRIAR, E SO CRIAR SE NAO EXISTIR.
+// 2- NAO DEIXAR O USUARIO EXCLUIR UM AMIGO SE ELE ESTIVER EM UM ENCONTRO;
 
 void MensagemErro(int erro); // imprime mensagens de erro;
 
@@ -107,8 +103,8 @@ void ExcluirCategorias(int categoria);   // dispara qual categoria o usuario des
 void VoltarMenuPrincipal(); // volta/chama o menu principal e ja le a opcao direto;
 void VoltarMenuRelatorio(); // volta/chama o menu de relatorio e ja le a opcao direto;
 
-void LimpaPonteiroAmigo(Amigo *amigo);              // limpa o ponteiro de amigos;
-void LimpaPonteiroLocal(Local *local);              // limpa o ponteiro de locais;
+void LimpaPonteiroAmigo(Amigo *amigo);             // limpa o ponteiro de amigos;
+void LimpaPonteiroLocal(Local *local);             // limpa o ponteiro de locais;
 void LimpaPonteiroCategoria(Categoria *categoria); // limpa ponteiro de categorias;
 
 void Pausar(int pause); // verifica se o pause eh true ou false e pausa;
@@ -229,7 +225,6 @@ void MensagemErro(int erro)
         LimparTela();
         printf("\nErro. Categoria Invalida.\n");
         break;
-    
 
     default:
         LimparTela();
@@ -864,7 +859,7 @@ void OpcaoMenuRelatorioListarAmigos(int opr)
     if (erro <= 0)
     {
         MensagemErro(erro);
-        Pausar(1);
+        //Pausar(1);
     }
 
     Pausar(1);
@@ -1372,24 +1367,27 @@ void AlternarCategorias(int categoria)
     }
     strcpy(Categorias[categoria].nome, strAux);
     LimparBuffer();
-    
 }
 
 int ModificarAmigos()
 {
-    // Modifica o amigo que o usuario escolheu, no caso na mesma posicao que estava o anterior;
-
-    int amigo = -1;
+    int amigo;
+    int aux;
+    char op;
 
     if (NumAmigos <= 0)
     {
         return -2;
     }
 
-    while (amigo < 0 || amigo >= NumAmigos)
+    LimparTela();
+    printf("\nRealmente deseja proseguir? (s) (n)\n");
+    scanf("%c", &op);
+    LimparBuffer();
+
+    if (op == 's' || op == 'S')
     {
         ListarAmigos();
-        printf("\n");
         printf("\nSelecione o amigo que deseja modificar: [ %i - %i]: ", 1, NumAmigos);
         scanf("%i", &amigo);
         LimparBuffer();
@@ -1404,6 +1402,18 @@ int ModificarAmigos()
             AlternarAmigos(amigo);
         }
     }
+    else if (op == 'n' || op || 'N')
+    {
+        LimparTela();
+        MenuAmigo();
+        scanf("%i", &aux);
+        LimparBuffer();
+        OpcaoMenuAmigo(aux);
+    }
+    else if (op != 's' || op != 'S' || op != 'n' || op != 'N')
+    {
+        return 0;
+    }
 
     LimparTela();
     ImprimirAmigos(Amigos[amigo]);
@@ -1414,19 +1424,23 @@ int ModificarAmigos()
 int ModificarLocais()
 {
 
-    // Modifica o local que o usuario escolheu, no caso na mesma posicao que estava o anterior;
-
-    int local = -1;
+    int local;
+    char op;
+    int aux;
 
     if (NumLocais <= 0)
     {
         return -5;
     }
 
-    while (local < 0 || local >= NumLocais)
+    LimparTela();
+    printf("\nRealmente deseja proseguir? (s) (n)\n");
+    scanf("%c", &op);
+    LimparBuffer();
+
+    if (op == 's' || op == 'S')
     {
         ListarLocais();
-        printf("\n");
         printf("\nSelecione o local que deseja modificar: [ %i - %i]: ", 1, NumLocais);
         scanf("%i", &local);
         LimparBuffer();
@@ -1441,6 +1455,18 @@ int ModificarLocais()
             AlternarLocais(local);
         }
     }
+    else if (op == 'n' || op == 'N')
+    {
+        LimparTela();
+        MenuLocal();
+        scanf("%i", &aux);
+        LimparBuffer();
+        OpcaoMenuLocal(aux);
+    }
+    else if (op != 's' || op != 'S' || op != 'n' || op != 'N')
+    {
+        return 0;
+    }
 
     LimparTela();
     ImprimirLocais(Locais[local]);
@@ -1448,21 +1474,27 @@ int ModificarLocais()
     return 1;
 }
 
+// fazer laço para caso usuario digite errado;
 int ModificarCategorias()
 {
-    // Modifica a categoria que o usuario escolheu, no caso na mesma posicao que estava o anterior;
 
     int categoria = -1;
+    int aux;
+    char op;
 
     if (NumCategorias <= 0)
     {
         return -14;
     }
 
-    while (categoria < 0 || categoria >= NumCategorias)
+    LimparTela();
+    printf("\nRealmente deseja proseguir? (s) (n)\n");
+    scanf("%c", &op);
+    LimparBuffer();
+
+    if (op == 's' || op == 'S')
     {
         ListarCategorias();
-        printf("\n");
         printf("\nSelecione o categoria que deseja modificar: [ %i - %i]: ", 1, NumCategorias);
         scanf("%i", &categoria);
         LimparBuffer();
@@ -1477,6 +1509,18 @@ int ModificarCategorias()
             AlternarCategorias(categoria);
         }
     }
+    else if (op == 'n' || op == 'N')
+    {
+        LimparTela();
+        MenuCategoria();
+        scanf("%i", &aux);
+        LimparBuffer();
+        OpcaoMenuCategoria(aux);
+    }
+    else if (op != 's' || op != 'S' || op != 'n' || op != 'N')
+    {
+        return 0;
+    }
 
     LimparTela();
     ImprimirCategorias(Categorias[categoria]);
@@ -1486,48 +1530,75 @@ int ModificarCategorias()
 
 int DeletarAmigos()
 {
-    int amigo = -1;
+    int amigo;
+    int aux;
+    char op;
 
     if (NumAmigos <= 0)
     {
         return -2;
     }
-    ListarAmigos();
-    printf("\n");
-    printf("\nSelecione o amigo que deseja deletar: [ %i - %i]: ", 1, NumAmigos);
-    scanf("%i", &amigo);
-    LimparBuffer();
-    amigo--;
 
-    if (amigo < 0 || amigo >= NumAmigos)
+    LimparTela();
+    printf("\nRealmente deseja proseguir? (s) (n)\n");
+    scanf("%c", &op);
+    LimparBuffer();
+
+    if (op == 's' || op == 'S')
     {
-        return -3;
+        ListarAmigos();
+        printf("\nSelecione o amigo que deseja deletar: [ %i - %i]: ", 1, NumAmigos);
+        scanf("%i", &amigo);
+        LimparBuffer();
+        amigo--;
+
+        if (amigo < 0 || amigo >= NumAmigos)
+        {
+            return -3;
+        }
+        else
+        {
+            ExcluirAmigos(amigo);
+        }
     }
-    else
+    else if (op == 'n' || op == 'N')
     {
-        ExcluirAmigos(amigo);
+        LimparTela();
+        MenuAmigo();
+        scanf("%i", &aux);
+        LimparBuffer();
+        OpcaoMenuAmigo(aux);
+    }
+    else if (op != 's' || op != 'S' || op != 'n' || op != 'N')
+    {
+        return 0;
     }
 
     LimparTela();
-    printf("\nExclusao bem sucedida.\n");
-
+    printf("\nExclusao Sucedida.\n");
     return 1;
 }
 
 int DeletarLocais()
 {
 
-    int local = -1;
+    int local;
+    char op;
+    int aux;
 
     if (NumLocais <= 0)
     {
         return -5;
     }
 
-    while (local < 0 || local >= NumLocais)
+    LimparTela();
+    printf("\nRealmente deseja proseguir? (s) (n)\n");
+    scanf("%c", &op);
+    LimparBuffer();
+
+    if (op == 's' || op == 'S')
     {
         ListarLocais();
-        printf("\n");
         printf("\nSelecione o local que deseja deletar: [ %i - %i]: ", 1, NumLocais);
         scanf("%i", &local);
         LimparBuffer();
@@ -1542,40 +1613,72 @@ int DeletarLocais()
             ExcluirLocais(local);
         }
     }
+    else if (op == 'n' || op == 'N')
+    {
+        LimparTela();
+        MenuLocal();
+        scanf("%i", &aux);
+        LimparBuffer();
+        OpcaoMenuLocal(aux);
+    }
+    else if (op != 's' || op != 'S' || op != 'n' || op != 'N')
+    {
+        return 0;
+    }
 
     LimparTela();
     printf("\nExclusao bem sucedida.\n");
-
     return 1;
 }
-
+// fazer laço para caso usuario digite errado;
 int DeletarCategorias()
 {
-    int categoria = -1;
+    int categoria;
+    int aux;
+    char op;
 
     if (NumCategorias <= 0)
     {
         return -14;
     }
-    ListarCategorias();
-    printf("\n");
-    printf("\nSelecione a categoria que deseja deletar: [ %i - %i]: ", 1, NumCategorias);
-    scanf("%i", &categoria);
-    LimparBuffer();
-    categoria--;
 
-    if (categoria < 0 || categoria >= NumCategorias)
+    LimparTela();
+    printf("\nRealmente deseja proseguir? (s) (n)\n");
+    scanf("%c", &op);
+    LimparBuffer();
+
+    if (op == 's' || op == 'S')
     {
-        return -15;
+        ListarCategorias();
+        printf("\nSelecione o categoria que deseja deletar: [ %i - %i]: ", 1, NumCategorias);
+        scanf("%i", &categoria);
+        LimparBuffer();
+        categoria--;
+
+        if (categoria < 0 || categoria >= NumCategorias)
+        {
+            return -15;
+        }
+        else
+        {
+            ExcluirCategorias(categoria);
+        }
     }
-    else
+    else if (op == 'n' || op == 'N')
     {
-        ExcluirCategorias(categoria);
+        LimparTela();
+        MenuCategoria();
+        scanf("%i", &aux);
+        LimparBuffer();
+        OpcaoMenuCategoria(aux);
+    }
+    else if (op != 's' || op != 'S' || op != 'n' || op != 'N')
+    {
+        return 0;
     }
 
     LimparTela();
-    printf("\nExclusao bem sucedida.\n");
-
+    printf("\nExclusao Sucedida.\n");
     return 1;
 }
 
@@ -1613,7 +1716,7 @@ void ExcluirLocais(int local)
 
 void ExcluirCategorias(int categoria)
 {
-   if (NumCategorias <= 0 || categoria < 0 || categoria >= NumCategorias)
+    if (NumCategorias <= 0 || categoria < 0 || categoria >= NumCategorias)
     {
         return;
     }
@@ -1708,9 +1811,9 @@ void Pausar(int pause)
 }
 void LimparBuffer()
 {
-    __fpurge(stdin);
+    fflush(stdin);
 }
 void LimparTela()
 {
-    system("clear");
+    system("cls");
 }
