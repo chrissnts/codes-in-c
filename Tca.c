@@ -67,38 +67,47 @@ typedef struct
 // COISAS QUE TALVEZ MODIFIQUE.
 // 1- FAZER UMA VERIFICACAO SE AMIGO, E ETC JA EXISTE NA HORA DE CRIAR, E SO CRIAR SE NAO EXISTIR.
 // 2- NAO DEIXAR O USUARIO EXCLUIR UM AMIGO SE ELE ESTIVER EM UM ENCONTRO;
+// 4 - PEDIR QUAL ATRIBUTO O USUARIO DESEJA MODIFICAR;
 
 void MensagemErro(int erro); // imprime mensagens de erro;
 
-void Menu();                          // imprime menu principal;
-void MenuAmigo();                     // imprime menu amigo;
-void MenuLocal();                     // imprime menu local;
-void MenuCategoria();                 // imprime menu categoria;
-void MenuEncontro();                  // imprime menu encontro;
-void MenuRelatorio();                 // imprime menu relatorio;
+void Menu();          // imprime menu principal;
+void MenuAmigo();     // imprime menu amigo;
+void MenuLocal();     // imprime menu local;
+void MenuCategoria(); // imprime menu categoria;
+void MenuEncontro();  // imprime menu encontro; ----------------
+void MenuRelatorio(); // imprime menu relatorio;
+
 void MenuRelatorioListarAmigos();     // menu para perguntar se sera listados todos ou especifico por apelido;
 void MenuRelatorioListarLocais();     // menu para perguntar se sera listados todos ou especifico;
 void MenuRelatorioListarCategorias(); // menu para perguntar se sera listado;
+void MenuRelatorioListarEncontros(); // menu para perguntar se sera listado; -----------
 
-void OpcaoMenu(int op);                           // recebe opcao do menu e faz a validacao e procede;
-void OpcaoMenuAmigo(int op);                      // recebe opcao do menu de amigos e faz validacao e procede;
-void OpcaoMenuLocal(int op);                      // recebe opcao do menu de local e faz validacao e procede;
-void OpcaoMenuCategoria(int op);                  // recebe opcao do menu de categoria e faz validacao e procede;
-void OpcaoMenuRelatorio(int op);                  // recebe opcao do menu de relatorios e faz validacao e procede;
+void OpcaoMenu(int op);          // recebe opcao do menu, faz a validacao e procede;
+void OpcaoMenuAmigo(int op);     // recebe opcao do menu de amigos, faz validacao e procede;
+void OpcaoMenuLocal(int op);     // recebe opcao do menu de local, faz validacao e procede;
+void OpcaoMenuCategoria(int op); // recebe opcao do menu de categoria, faz validacao e procede;
+void OpcaoMenuEncontro(int op);  // recebe opcao do menu de encontro, faz validacao e procede; -----------------
+void OpcaoMenuRelatorio(int op); // recebe opcao do menu de relatorios, faz validacao e procede;
+
 void OpcaoMenuRelatorioListarAmigos(int opr);     // recebe a opcao se vai ser todos ou especifico com apelido e procede;
 void OpcaoMenuRelatorioListarLocais(int opr);     // recebe a opcao se vai ser todos ou especifico com apelido e procede;
-void OpcaoMenuRelatorioListarCategorias(int opr); // recebe a opca se vai ser todos ou deseja voltar e procede;
+void OpcaoMenuRelatorioListarCategorias(int opr); // recebe a opcao se vai ser todos ou deseja voltar e procede;
+void OpcaoMenuRelatorioListarEncontros(int opr);  // recebe a opcao se vai ser todos ou especifico e procede; -----------------
 
 void ImprimirAmigos(Amigo amigos);             // imprime amigos;
 void ImprimirLocais(Local locais);             // imprime locais;
 void ImprimirCategorias(Categoria categorias); // imprime categorias;
+void ImprimirEncontros(Encontro encontros);    // imprime encontros; ------------------
 
 void AlternarAmigos(int amigo);          // modifica os dados do amigo na hora de alternar;
 void AlternarLocais(int local);          // modifica os dados do local na hora de alternar;
 void AlternarCategorias(int categorias); // modifica os dados da categoria na hora de alternar;
+void AlternarEncontros(int encontros);   // modifica os dados do encontro na hora de alternar; -------------------
 void ExcluirAmigos(int amigo);           // dispara qual amigo o usuario deseja excluir;
 void ExcluirLocais(int local);           // dispara qual local o usuario deseja excluir;
 void ExcluirCategorias(int categoria);   // dispara qual categoria o usuario deseja excluir;
+void ExcluirEncontros(int encontro);     // dispara qual categoria o usuario deseja excluir; ------------
 
 void VoltarMenuPrincipal(); // volta/chama o menu principal e ja le a opcao direto;
 void VoltarMenuRelatorio(); // volta/chama o menu de relatorio e ja le a opcao direto;
@@ -106,6 +115,7 @@ void VoltarMenuRelatorio(); // volta/chama o menu de relatorio e ja le a opcao d
 void LimpaPonteiroAmigo(Amigo *amigo);             // limpa o ponteiro de amigos;
 void LimpaPonteiroLocal(Local *local);             // limpa o ponteiro de locais;
 void LimpaPonteiroCategoria(Categoria *categoria); // limpa ponteiro de categorias;
+void LimpaPonteiroEncontro(Encontro *encontro);    // limpa ponteiro de encontros; ---------
 
 void Pausar(int pause); // verifica se o pause eh true ou false e pausa;
 void LimparBuffer();    // limpa o buffer do teclado;
@@ -113,13 +123,16 @@ void LimparTela();      // limpa a tela (criei por conta da miseria do linux);
 
 int IncluirAmigos();       // inclui na funcao o amigo criado na funcao "cria amigo";
 int IncluirLocais();       // inclui na funcao o local criado na funcao "cria local";
-int IncluirCategorias();   // inlcui na funcao o amigo criado na funcao "cria ategoria"
+int IncluirCategorias();   // inlcui na funcao o encontro criado na funcao "cria categoria"
+int IncluirEncontros();    // inlcui na funcao o encontro criado na funcao "cria encontro" ---------------
 int ModificarAmigos();     // alterar amigo;
 int ModificarLocais();     // alterar local;
 int ModificarCategorias(); // alterar categorias;
+int ModificarEncontros();  // alterar encontros; --------------
 int DeletarAmigos();       // deleta um amigo;
 int DeletarLocais();       // deleta um local;
 int DeletarCategorias();   // deleta uma categoria;
+int DeletarEncontros();    // deleta um encontro; --------
 
 int ListarAmigos();           // lista os amigos que ja estao cadastrados;
 int ListarAmigosPorApelido(); // faz a logica de listar amigo por apelido;
@@ -128,6 +141,7 @@ int ListarLocaisPorEstado();  // faz a logica de listar locais por estado;
 int ListarLocaisPorCidade();  // faz a logica de listar locais por cidade;
 int ListarLocaisPorBairro();  // faz a logica de listar locais por bairro;
 int ListarCategorias();       // lista as categorias que ja estao cadastradas;
+int ListarEncontros();        // lista os encontros que ja estao cadastradao; ---------
 
 int ValidarData(int dia, int mes, int ano); // valida data que o usuario digitar;
 int Bissexto(int ano);                      // verifica se o ano eh bissexto para poder arrumar dias e mes
@@ -139,8 +153,9 @@ Categoria CriaCategoria(); // funcao para criar uma categoria;
 Amigo *Amigos;
 Local *Locais;
 Categoria *Categorias;
+Encontro *Encontros;
 
-int NumAmigos = 0, NumLocais = 0, NumCategorias = 0;
+int NumAmigos = 0, NumLocais = 0, NumCategorias = 0, NumEncontros = 0;
 
 int main()
 {
@@ -225,6 +240,17 @@ void MensagemErro(int erro)
         LimparTela();
         printf("\nErro. Categoria Invalida.\n");
         break;
+    case -16:
+        LimparTela();
+        printf("\nErro. Encontros Vazios.\n");
+        break;
+    case -17:
+        LimparTela();
+        printf("\nErro. Encontro invalido.\n");
+        break;
+    case -18:
+        LimparTela();
+        printf("\nErro. Quantidade de encontros cheia.\n");
 
     default:
         LimparTela();
@@ -360,7 +386,7 @@ void OpcaoMenu(int op)
         MenuEncontro();
         scanf("%i", &opm);
         LimparBuffer();
-        // TERMINAR ENCONTRO;
+        OpcaoMenuEncontro(opm);
     }
     else if (op == 5)
     {
@@ -612,6 +638,15 @@ void ImprimirCategorias(Categoria categorias)
     printf("\nTipo de Categoria: %s\n", categorias.nome);
 }
 
+void ImprimirEncontros(Encontro encontros)
+{
+    printf("\nAmigo: %s\n", encontros.amigos.nome);
+    printf("\nCategoria: %s\n", encontros.categoria.nome);
+    printf("\nData: [%02i/%02i/%i]\n", encontros.data.dia, encontros.data.mes, encontros.data.ano);
+    printf("\nHorario: [%02im:%02ih]\n", encontros.horario.hora, encontros.horario.minuto);
+    printf("\nDescricao: %s \n", encontros.descricao);
+}
+
 void OpcaoMenuAmigo(int op)
 {
 
@@ -742,6 +777,49 @@ void OpcaoMenuCategoria(int op)
     OpcaoMenuCategoria(opm);
 }
 
+void OpcaoMenuEncontro(int op)
+{
+    int erro = 1;
+    int opm;
+
+    while (op < 1 || op > 4)
+    {
+        MensagemErro(0);
+        Pausar(1);
+        MenuEncontro();
+        scanf("%i", &op);
+        LimparBuffer();
+    }
+
+    if (op == 1)
+    {
+        //erro = IncluirEncontros(); ------------ FAZER ESSA PARTE E DA CONTINUIDADE;
+    }
+    else if (op == 2)
+    {
+        //erro = ModificarEncontros();  ------------ FAZER ESSA PARTE E DA CONTINUIDADE;
+    }
+    else if (op == 3)
+    {
+        //erro = DeletarEncontros();  ------------ FAZER ESSA PARTE E DA CONTINUIDADE;
+    }
+    else if (op == 4)
+    {
+        VoltarMenuPrincipal();
+    }
+
+    if (erro <= 0)
+    {
+        MensagemErro(erro);
+    }
+
+    Pausar(1);
+    MenuEncontro();
+    scanf("%i", &opm);
+    LimparBuffer();
+    OpcaoMenuEncontro(opm);
+}
+
 void OpcaoMenuRelatorio(int op)
 {
     int opr;
@@ -859,7 +937,6 @@ void OpcaoMenuRelatorioListarAmigos(int opr)
     if (erro <= 0)
     {
         MensagemErro(erro);
-        //Pausar(1);
     }
 
     Pausar(1);
@@ -1162,6 +1239,26 @@ int ListarCategorias()
     return 1;
 }
 
+int ListarEncontros()
+{
+    int i;
+
+    if (NumEncontros <= 0)
+    {
+        return -16;
+    }
+
+    LimparTela();
+    for (i = 0; i < NumEncontros; i++)
+    {
+        printf("\n");
+        printf("\n-- Encontro Numero [%i] --\n", i + 1);
+        ImprimirEncontros(Encontros[i]);
+    }
+
+    return 1;
+}
+
 void AlternarAmigos(int amigo)
 {
     int erro = -1;
@@ -1258,6 +1355,7 @@ void AlternarAmigos(int amigo)
         if (erro < 0)
         {
             MensagemErro(erro);
+            Pausar(1);
         }
     }
 }
