@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #define MAXLOCAL 100
 #define MAXAMIGO 100
 #define MAXCATEGORIA 100
+#define MAXCENCONTRO 100
 
 typedef struct
 {
@@ -81,7 +83,8 @@ void MenuRelatorio(); // imprime menu relatorio;
 void MenuRelatorioListarAmigos();     // menu para perguntar se sera listados todos ou especifico por apelido;
 void MenuRelatorioListarLocais();     // menu para perguntar se sera listados todos ou especifico;
 void MenuRelatorioListarCategorias(); // menu para perguntar se sera listado;
-void MenuRelatorioListarEncontros(); // menu para perguntar se sera listado; -----------
+void MenuRelatorioListarEncontros();  // menu para perguntar se sera listado; -----------
+
 
 void OpcaoMenu(int op);          // recebe opcao do menu, faz a validacao e procede;
 void OpcaoMenuAmigo(int op);     // recebe opcao do menu de amigos, faz validacao e procede;
@@ -94,6 +97,7 @@ void OpcaoMenuRelatorioListarAmigos(int opr);     // recebe a opcao se vai ser t
 void OpcaoMenuRelatorioListarLocais(int opr);     // recebe a opcao se vai ser todos ou especifico com apelido e procede;
 void OpcaoMenuRelatorioListarCategorias(int opr); // recebe a opcao se vai ser todos ou deseja voltar e procede;
 void OpcaoMenuRelatorioListarEncontros(int opr);  // recebe a opcao se vai ser todos ou especifico e procede; -----------------
+
 
 void ImprimirAmigos(Amigo amigos);             // imprime amigos;
 void ImprimirLocais(Local locais);             // imprime locais;
@@ -348,6 +352,8 @@ void MenuRelatorioListarCategorias()
     printf("\n2. Voltar\n");
     printf("\n3. Voltar Menu Principal\n");
 }
+
+
 
 void OpcaoMenu(int op)
 {
@@ -793,15 +799,15 @@ void OpcaoMenuEncontro(int op)
 
     if (op == 1)
     {
-        //erro = IncluirEncontros(); ------------ FAZER ESSA PARTE E DA CONTINUIDADE;
+        // erro = IncluirEncontros(); ------------ FAZER ESSA PARTE E DA CONTINUIDADE;
     }
     else if (op == 2)
     {
-        //erro = ModificarEncontros();  ------------ FAZER ESSA PARTE E DA CONTINUIDADE;
+        // erro = ModificarEncontros();  ------------ FAZER ESSA PARTE E DA CONTINUIDADE;
     }
     else if (op == 3)
     {
-        //erro = DeletarEncontros();  ------------ FAZER ESSA PARTE E DA CONTINUIDADE;
+        // erro = DeletarEncontros();  ------------ FAZER ESSA PARTE E DA CONTINUIDADE;
     }
     else if (op == 4)
     {
@@ -886,7 +892,7 @@ void OpcaoMenuRelatorio(int op)
 
     case 5:
 
-        // LOGICA PARA RELATORIO DE CATEGORIA;
+        // LOGICA PARA LISTAR POR CATEGORIA;
         break;
 
     case 6:
@@ -1482,8 +1488,9 @@ int ModificarAmigos()
     printf("\nRealmente deseja proseguir? (s) (n)\n");
     scanf("%c", &op);
     LimparBuffer();
+    op = tolower(op);
 
-    if (op == 's' || op == 'S')
+    if (op == 's')
     {
         ListarAmigos();
         printf("\nSelecione o amigo que deseja modificar: [ %i - %i]: ", 1, NumAmigos);
@@ -1500,7 +1507,7 @@ int ModificarAmigos()
             AlternarAmigos(amigo);
         }
     }
-    else if (op == 'n' || op || 'N')
+    else if (op == 'n')
     {
         LimparTela();
         MenuAmigo();
@@ -1508,7 +1515,7 @@ int ModificarAmigos()
         LimparBuffer();
         OpcaoMenuAmigo(aux);
     }
-    else if (op != 's' || op != 'S' || op != 'n' || op != 'N')
+    else if (op != 's' || op != 'n')
     {
         return 0;
     }
@@ -1535,8 +1542,9 @@ int ModificarLocais()
     printf("\nRealmente deseja proseguir? (s) (n)\n");
     scanf("%c", &op);
     LimparBuffer();
+    op = tolower(op);
 
-    if (op == 's' || op == 'S')
+    if (op == 's')
     {
         ListarLocais();
         printf("\nSelecione o local que deseja modificar: [ %i - %i]: ", 1, NumLocais);
@@ -1553,7 +1561,7 @@ int ModificarLocais()
             AlternarLocais(local);
         }
     }
-    else if (op == 'n' || op == 'N')
+    else if (op == 'n')
     {
         LimparTela();
         MenuLocal();
@@ -1561,7 +1569,7 @@ int ModificarLocais()
         LimparBuffer();
         OpcaoMenuLocal(aux);
     }
-    else if (op != 's' || op != 'S' || op != 'n' || op != 'N')
+    else if (op != 's' || op != 'n')
     {
         return 0;
     }
@@ -1589,8 +1597,9 @@ int ModificarCategorias()
     printf("\nRealmente deseja proseguir? (s) (n)\n");
     scanf("%c", &op);
     LimparBuffer();
+    op = tolower(op);
 
-    if (op == 's' || op == 'S')
+    if (op == 's')
     {
         ListarCategorias();
         printf("\nSelecione o categoria que deseja modificar: [ %i - %i]: ", 1, NumCategorias);
@@ -1607,7 +1616,7 @@ int ModificarCategorias()
             AlternarCategorias(categoria);
         }
     }
-    else if (op == 'n' || op == 'N')
+    else if (op == 'n')
     {
         LimparTela();
         MenuCategoria();
@@ -1615,7 +1624,7 @@ int ModificarCategorias()
         LimparBuffer();
         OpcaoMenuCategoria(aux);
     }
-    else if (op != 's' || op != 'S' || op != 'n' || op != 'N')
+    else if (op != 's' || op != 'n')
     {
         return 0;
     }
@@ -1641,8 +1650,9 @@ int DeletarAmigos()
     printf("\nRealmente deseja proseguir? (s) (n)\n");
     scanf("%c", &op);
     LimparBuffer();
+    op = tolower(op);
 
-    if (op == 's' || op == 'S')
+    if (op == 's')
     {
         ListarAmigos();
         printf("\nSelecione o amigo que deseja deletar: [ %i - %i]: ", 1, NumAmigos);
@@ -1659,7 +1669,7 @@ int DeletarAmigos()
             ExcluirAmigos(amigo);
         }
     }
-    else if (op == 'n' || op == 'N')
+    else if (op == 'n')
     {
         LimparTela();
         MenuAmigo();
@@ -1667,7 +1677,7 @@ int DeletarAmigos()
         LimparBuffer();
         OpcaoMenuAmigo(aux);
     }
-    else if (op != 's' || op != 'S' || op != 'n' || op != 'N')
+    else if (op != 's' || op != 'n')
     {
         return 0;
     }
@@ -1693,8 +1703,9 @@ int DeletarLocais()
     printf("\nRealmente deseja proseguir? (s) (n)\n");
     scanf("%c", &op);
     LimparBuffer();
+    op = tolower(op);
 
-    if (op == 's' || op == 'S')
+    if (op == 's')
     {
         ListarLocais();
         printf("\nSelecione o local que deseja deletar: [ %i - %i]: ", 1, NumLocais);
@@ -1711,7 +1722,7 @@ int DeletarLocais()
             ExcluirLocais(local);
         }
     }
-    else if (op == 'n' || op == 'N')
+    else if (op == 'n')
     {
         LimparTela();
         MenuLocal();
@@ -1719,7 +1730,7 @@ int DeletarLocais()
         LimparBuffer();
         OpcaoMenuLocal(aux);
     }
-    else if (op != 's' || op != 'S' || op != 'n' || op != 'N')
+    else if (op != 's' || op != 'n')
     {
         return 0;
     }
@@ -1744,8 +1755,9 @@ int DeletarCategorias()
     printf("\nRealmente deseja proseguir? (s) (n)\n");
     scanf("%c", &op);
     LimparBuffer();
+    op = tolower(op);
 
-    if (op == 's' || op == 'S')
+    if (op == 's')
     {
         ListarCategorias();
         printf("\nSelecione o categoria que deseja deletar: [ %i - %i]: ", 1, NumCategorias);
@@ -1762,7 +1774,7 @@ int DeletarCategorias()
             ExcluirCategorias(categoria);
         }
     }
-    else if (op == 'n' || op == 'N')
+    else if (op == 'n')
     {
         LimparTela();
         MenuCategoria();
@@ -1770,7 +1782,7 @@ int DeletarCategorias()
         LimparBuffer();
         OpcaoMenuCategoria(aux);
     }
-    else if (op != 's' || op != 'S' || op != 'n' || op != 'N')
+    else if (op != 's' || op != 'n')
     {
         return 0;
     }
