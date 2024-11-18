@@ -893,6 +893,7 @@ void OpcaoMenuRelatorio(int op)
     case 5:
 
         // LOGICA PARA LISTAR POR CATEGORIA;
+        // IDEIA QUE TIVE!!!!!!!! FAZER UM LAÇO COMUM DE CATEGORIAS E OS ENCONTROS COM ESSA CATEGORIAA, SIMPLES MAS NAO SEI COMO FAZER AINDA!!!!!!!!!!!!!!!!!!!!
         break;
 
     case 6:
