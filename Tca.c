@@ -60,8 +60,8 @@ typedef struct
 {
     Data data;
     Hora horario;
-    Amigo amigos;
-    Categoria categoria;
+    Amigo *amigos;
+    Categoria *categoria;
     char *descricao;
 
 } Encontro;
