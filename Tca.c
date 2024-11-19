@@ -62,7 +62,11 @@ typedef struct
     Hora horario;
     Amigo *amigos;
     Categoria *categoria;
+    Local *locais;
     char *descricao;
+    int numamigos;
+    int numcategorias;
+    int numlocais;
 
 } Encontro;
 
@@ -101,7 +105,6 @@ void ImprimirAmigos(Amigo amigos);             // imprime amigos;
 void ImprimirLocais(Local locais);             // imprime locais;
 void ImprimirCategorias(Categoria categorias); // imprime categorias;
 void ImprimirEncontros(Encontro encontros);    // imprime encontros; ------------------
-void ImprimirTodos();                          // imprime todos;
 
 void AlternarAmigos(int amigo);          // modifica os dados do amigo na hora de alternar;
 void AlternarLocais(int local);          // modifica os dados do local na hora de alternar;
@@ -534,26 +537,71 @@ Categoria CriaCategoria()
     return categoria;
 }
 
+// TESTAR!!!!!!!!!!! TA TRAVANDO E DANDO ERRRO, RESOLVERR!!!
 Encontro CriaEncontro()
 {
     int i;
-    int amigo;
+    int amigo, categoria, local;
+    int erro = -1;
     Encontro encontro;
 
+    LimparTela();
     printf("\n--- Amigos ---\n");
     for (i = 0; i < NumAmigos; i++)
     {
-
         printf("\n%i. %s\n", i + 1, Amigos[i].nome);
     }
     printf("\nDigite o amigo que deseja incluir no encontro:\n");
     scanf("%i", &amigo);
     LimparBuffer();
     amigo--;
+    strcpy(encontro.amigos[encontro.numamigos].nome, Amigos[amigo].nome);
+    encontro.numamigos++;
 
-    // TESTAR!!!!!!!!!!! AINDA NAO TERMINEI E NAO SEI OQUE FAZERRRRRRRR, BASICAMENTE SE EU CONSEGUIR RESOLVER ESSE, OS OUTROS VAO SER O MESMO!!!
+    LimparTela();
+    printf("\n--- Categorias ---\n");
+    for (i = 0; i < NumCategorias; i++)
+    {
+        printf("\n%i. %s\n", i + 1, Categorias[i].nome);
+    }
+    printf("\nDigite a categoria que deseja adicionar o amigo:\n");
+    scanf("%i", &categoria);
+    LimparBuffer();
+    categoria--;
+    strcpy(encontro.categoria[encontro.numcategorias].nome, Categorias[categoria].nome);
+    encontro.numcategorias++;
 
-    strcpy(encontro.amigos[NumEncontros].nome, Amigos[amigo].nome);
+    LimparTela();
+    printf("\n--- Locais ---\n");
+    for (i = 0; i < NumLocais; i++)
+    {
+        printf("\n%i. %s\n", i + 1, Locais[i].nome_local);
+    }
+    printf("\nDigite o local que deseja ir com o amigo:\n");
+    scanf("%i", &local);
+    LimparBuffer();
+    local--;
+    strcpy(encontro.locais[encontro.numlocais].nome_local, Locais[local].nome_local);
+    encontro.numlocais++;
+
+    while (erro < 0)
+    {
+        LimparTela(); 
+        printf("\nData [dd/mm/yy]:\n");
+        scanf("%i%i%i", &encontro.data.dia, &encontro.data.mes, &encontro.data.ano);
+        LimparBuffer();
+        erro = ValidarData(encontro.data.dia, encontro.data.mes, encontro.data.ano);
+
+        if (erro < 0)
+        {
+            MensagemErro(erro);
+            Pausar(1);
+        }
+    }
+
+    // CRIAR VALIDAR HORARIO, BASICAMENTE MESMA LOGICA DO VALIDAR DATA!!!!!!!!!!!!
+    
+
     return encontro;
 }
 
@@ -704,8 +752,8 @@ void ImprimirCategorias(Categoria categorias)
 
 void ImprimirEncontros(Encontro encontros)
 {
-    printf("\nAmigo: %s\n", encontros.amigos->nome);
-    printf("\nCategoria: %s\n", encontros.categoria->nome);
+    printf("\nAmigo: %s\n", encontros.amigos[encontros.numamigos].nome);
+    printf("\nCategoria: %s\n", encontros.categoria[encontros.numcategorias].nome);
     printf("\nData: [%02i/%02i/%i]\n", encontros.data.dia, encontros.data.mes, encontros.data.ano);
     printf("\nHorario: [%02im:%02ih]\n", encontros.horario.hora, encontros.horario.minuto);
     printf("\nDescricao: %s \n", encontros.descricao);
@@ -1639,7 +1687,6 @@ int ModificarLocais()
     return 1;
 }
 
-// fazer laço para caso usuario digite errado;
 int ModificarCategorias()
 {
 
@@ -1798,7 +1845,6 @@ int DeletarLocais()
     printf("\nExclusao bem sucedida.\n");
     return 1;
 }
-// fazer laço para caso usuario digite errado;
 int DeletarCategorias()
 {
     int categoria;
@@ -1917,31 +1963,6 @@ void VoltarMenuRelatorio()
     OpcaoMenuRelatorio(op);
 }
 
-void ImprimirTodos()
-{
-    int i;
-
-    LimparTela();
-
-    for (i = 0; i < NumAmigos; i++)
-    {
-        printf("\n--- Amigo [%i] ---\n", i + 1);
-        printf("\n- Nome: %s\n", Amigos->nome);
-    }
-
-    for (i = 0; i < NumLocais; i++)
-    {
-        printf("\n--- Local[%i] ---\n", i + 1);
-        printf("\n- Nome do Local: %s\n", Locais->nome_local);
-    }
-
-    for (i = 0; i < NumCategorias; i++)
-    {
-        printf("\n--- AMIGO [%i] ---\n", i + 1);
-        ImprimirCategorias(Categorias[i]);
-    }
-}
-
 void LimpaPonteiroAmigo(Amigo *amigo)
 {
     free(amigo->nome);
@@ -2005,9 +2026,9 @@ void Pausar(int pause)
 }
 void LimparBuffer()
 {
-    __fpurge(stdin);
+    fflush(stdin);
 }
 void LimparTela()
 {
-    system("clear");
+    system("cls");
 }
