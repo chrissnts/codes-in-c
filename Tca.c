@@ -151,6 +151,7 @@ int ListarEncontros();        // lista os encontros que ja estao cadastradao; --
 
 int ValidarData(int dia, int mes, int ano); // valida data que o usuario digitar;
 int Bissexto(int ano);                      // verifica se o ano eh bissexto para poder arrumar dias e mes
+int ValidarHorario(int hora, int min);
 
 Amigo CriaAmigo();         // funcao para criar um amigo;
 Local CriaLocal();         // funcao para criar um local;
@@ -261,6 +262,14 @@ void MensagemErro(int erro)
     case -19:
         LimparTela();
         printf("\nErro. Amigos, Locais ou Categorias vazias, inclua todos.\n");
+        break;
+    case -20:
+        LimparTela();
+        printf("\nErro. Hora invalida.\n");
+        break;
+    case -21:
+        LimparTela();
+        printf("\nErro. Minuto invalido.\n");
         break;
     default:
         LimparTela();
@@ -537,56 +546,103 @@ Categoria CriaCategoria()
     return categoria;
 }
 
-// TESTAR!!!!!!!!!!! TA TRAVANDO E DANDO ERRRO, RESOLVERR!!!
+// ERROO!!!!!!!!!!!!!!!!!!!
+// numamigos, numcategorias, numlocais ESTA INDEFINIDO!!!!, TEM QUE INICIALIZAR EM 0, MAS AINDA NAO SEI ONDE FAZER ISSO E COMO, POIS NAO PODE FAZER DENTRO DA ESTRUTURA;
 Encontro CriaEncontro()
 {
+
     int i;
     int amigo, categoria, local;
     int erro = -1;
     Encontro encontro;
 
-    LimparTela();
-    printf("\n--- Amigos ---\n");
-    for (i = 0; i < NumAmigos; i++)
-    {
-        printf("\n%i. %s\n", i + 1, Amigos[i].nome);
-    }
-    printf("\nDigite o amigo que deseja incluir no encontro:\n");
-    scanf("%i", &amigo);
-    LimparBuffer();
-    amigo--;
-    strcpy(encontro.amigos[encontro.numamigos].nome, Amigos[amigo].nome);
-    encontro.numamigos++;
-
-    LimparTela();
-    printf("\n--- Categorias ---\n");
-    for (i = 0; i < NumCategorias; i++)
-    {
-        printf("\n%i. %s\n", i + 1, Categorias[i].nome);
-    }
-    printf("\nDigite a categoria que deseja adicionar o amigo:\n");
-    scanf("%i", &categoria);
-    LimparBuffer();
-    categoria--;
-    strcpy(encontro.categoria[encontro.numcategorias].nome, Categorias[categoria].nome);
-    encontro.numcategorias++;
-
-    LimparTela();
-    printf("\n--- Locais ---\n");
-    for (i = 0; i < NumLocais; i++)
-    {
-        printf("\n%i. %s\n", i + 1, Locais[i].nome_local);
-    }
-    printf("\nDigite o local que deseja ir com o amigo:\n");
-    scanf("%i", &local);
-    LimparBuffer();
-    local--;
-    strcpy(encontro.locais[encontro.numlocais].nome_local, Locais[local].nome_local);
-    encontro.numlocais++;
-
     while (erro < 0)
     {
-        LimparTela(); 
+        LimparTela();
+        printf("\n--- Amigos ---\n");
+        for (i = 0; i < NumAmigos; i++)
+        {
+            printf("\n%i. %s\n", i + 1, Amigos[i].nome);
+        }
+
+        printf("\nDigite o amigo que deseja incluir no encontro:\n");
+        scanf("%i", &amigo);
+        LimparBuffer();
+        amigo--;
+        if (amigo < 0 || amigo >= NumAmigos)
+        {
+            erro = -3;
+            MensagemErro(erro);
+            Pausar(1);
+        }
+        else
+        {
+            encontro.amigos[encontro.numamigos].nome = (char *)malloc((strlen(Amigos[amigo].nome) + 1) * sizeof(char));
+            strcpy(encontro.amigos[encontro.numamigos].nome, Amigos[amigo].nome);
+            encontro.numamigos++;
+        }
+    }
+
+    erro = -1;
+    while (erro < 0)
+    {
+        LimparTela();
+        printf("\n--- Categorias ---\n");
+        for (i = 0; i < NumCategorias; i++)
+        {
+            printf("\n%i. %s\n", i + 1, Categorias[i].nome);
+        }
+
+        printf("\nDigite a categoria que deseja adicionar o amigo:\n");
+        scanf("%i", &categoria);
+        LimparBuffer();
+        categoria--;
+        if (categoria < 0 || categoria >= NumCategorias)
+        {
+            erro = -15;
+            MensagemErro(erro);
+            Pausar(1);
+        }
+        else
+        {
+            encontro.categoria[encontro.numcategorias].nome = (char *)malloc((strlen(Categorias[categoria].nome) + 1) * sizeof(char));
+            strcpy(encontro.categoria[encontro.numcategorias].nome, Categorias[categoria].nome);
+            encontro.numcategorias++;
+        }
+    }
+
+    erro = -1;
+    while (erro < 0)
+    {
+        LimparTela();
+        printf("\n--- Locais ---\n");
+        for (i = 0; i < NumLocais; i++)
+        {
+            printf("\n%i. %s\n", i + 1, Locais[i].nome_local);
+        }
+
+        printf("\nDigite o local que deseja ir com o amigo:\n");
+        scanf("%i", &local);
+        LimparBuffer();
+        local--;
+        if (local < 0 || local >= NumLocais)
+        {
+            erro = -6;
+            MensagemErro(erro);
+            Pausar(1);
+        }
+        else
+        {
+            encontro.locais[encontro.numlocais].nome_local = (char *)malloc((strlen(Locais[local].nome_local) + 1) * sizeof(char));
+            strcpy(encontro.locais[encontro.numlocais].nome_local, Locais[local].nome_local);
+            encontro.numlocais++;
+        }
+    }
+
+    erro = -1;
+    while (erro < 0)
+    {
+        LimparTela();
         printf("\nData [dd/mm/yy]:\n");
         scanf("%i%i%i", &encontro.data.dia, &encontro.data.mes, &encontro.data.ano);
         LimparBuffer();
@@ -599,8 +655,21 @@ Encontro CriaEncontro()
         }
     }
 
-    // CRIAR VALIDAR HORARIO, BASICAMENTE MESMA LOGICA DO VALIDAR DATA!!!!!!!!!!!!
-    
+    // TESTAR, AINDA NAO TESTEI PQ NAO TA CHEGANDO NESSA PARTE POR QUE TA BUGANDO ANTES!!!!:
+    erro = -1;
+    while (erro < 0)
+    {
+        LimparTela();
+        printf("\nHorario [hora : min]:\n");
+        scanf("%i%i", &encontro.horario.hora, &encontro.horario.minuto);
+        LimparBuffer();
+        erro = ValidarHorario(encontro.horario.hora, encontro.horario.minuto);
+        if (erro < 0)
+        {
+            MensagemErro(erro);
+            Pausar(1);
+        }
+    }
 
     return encontro;
 }
@@ -2014,6 +2083,20 @@ int ValidarData(int dia, int mes, int ano)
     {
         return -10;
     }
+    return 1;
+}
+
+int ValidarHorario(int hora, int min)
+{
+    if (hora < 1 || hora > 24)
+    {
+        return -20;
+    }
+    else if (min <= 0 || min >= 60)
+    {
+        return -21;
+    }
+
     return 1;
 }
 
