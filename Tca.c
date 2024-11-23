@@ -547,7 +547,7 @@ Categoria CriaCategoria()
 }
 
 // ERROO!!!!!!!!!!!!!!!!!!!
-// inicializei dentro da propia funcao de criar encontro, nao sei se faz sentido, ainda tenho que testa, mas talvez faça sentido;
+// inicializei dentro da propia funcao de criar encontro, nao sei se faz sentido, ainda tenho que testa, mas talvez faça sentido (nao sei por que o amigo ele vai, porem em jantar ele trava denovo);
 Encontro CriaEncontro()
 {
 
