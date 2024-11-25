@@ -73,7 +73,7 @@ typedef struct
 // COISAS QUE TALVEZ MODIFIQUE.
 // 1- FAZER UMA VERIFICACAO SE AMIGO, E ETC JA EXISTE NA HORA DE CRIAR, E SO CRIAR SE NAO EXISTIR.
 // 2- NAO DEIXAR O USUARIO EXCLUIR UM AMIGO SE ELE ESTIVER EM UM ENCONTRO;
-// 4 - PEDIR QUAL ATRIBUTO O USUARIO DESEJA MODIFICAR;]
+// 4 - PEDIR QUAL ATRIBUTO O USUARIO DESEJA MODIFICAR;
 
 void MensagemErro(int erro); // imprime mensagens de erro;
 
@@ -156,6 +156,7 @@ int ValidarHorario(int hora, int min);
 Amigo CriaAmigo();         // funcao para criar um amigo;
 Local CriaLocal();         // funcao para criar um local;
 Categoria CriaCategoria(); // funcao para criar uma categoria;
+Encontro CriaEncontro();   // funcao para criar um encontro;
 
 Amigo *Amigos;
 Local *Locais;
@@ -163,6 +164,8 @@ Categoria *Categorias;
 Encontro *Encontros;
 
 int NumAmigos = 0, NumLocais = 0, NumCategorias = 0, NumEncontros = 0;
+
+
 
 int main()
 {
@@ -551,10 +554,11 @@ Categoria CriaCategoria()
 Encontro CriaEncontro()
 {
 
+    
+    Encontro encontro;
     int i;
     int amigo, categoria, local;
     int erro = -1;
-    Encontro encontro;
 
     encontro.numamigos = 0;
     encontro.numcategorias = 0;
@@ -584,7 +588,7 @@ Encontro CriaEncontro()
             encontro.amigos[encontro.numamigos].nome = (char *)malloc((strlen(Amigos[amigo].nome) + 1) * sizeof(char));
             strcpy(encontro.amigos[encontro.numamigos].nome, Amigos[amigo].nome);
             encontro.numamigos++;
-            break;
+            
         }
     }
 
@@ -613,7 +617,7 @@ Encontro CriaEncontro()
             encontro.categoria[encontro.numcategorias].nome = (char *)malloc((strlen(Categorias[categoria].nome) + 1) * sizeof(char));
             strcpy(encontro.categoria[encontro.numcategorias].nome, Categorias[categoria].nome);
             encontro.numcategorias++;
-            break;
+            
         }
     }
 
@@ -642,7 +646,7 @@ Encontro CriaEncontro()
             encontro.locais[encontro.numlocais].nome_local = (char *)malloc((strlen(Locais[local].nome_local) + 1) * sizeof(char));
             strcpy(encontro.locais[encontro.numlocais].nome_local, Locais[local].nome_local);
             encontro.numlocais++;
-            break;
+            
         }
     }
 
