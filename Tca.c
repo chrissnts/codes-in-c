@@ -77,12 +77,13 @@ typedef struct
 
 void MensagemErro(int erro); // imprime mensagens de erro;
 
-void Menu();          // imprime menu principal;
-void MenuAmigo();     // imprime menu amigo;
-void MenuLocal();     // imprime menu local;
-void MenuCategoria(); // imprime menu categoria;
-void MenuEncontro();  // imprime menu encontro; ----------------
-void MenuRelatorio(); // imprime menu relatorio;
+void Menu();               // imprime menu principal;
+void MenuAmigo();          // imprime menu amigo;
+void MenuLocal();          // imprime menu local;
+void MenuCategoria();      // imprime menu categoria;
+void MenuEncontro();       // imprime menu encontro; ----------------
+void MenuRelatorio();      // imprime menu relatorio;
+void MenuModificarAmigo(); // imprime menu para qual o usuario deseja modificar;
 
 void MenuRelatorioListarAmigos();     // menu para perguntar se sera listados todos ou especifico por apelido;
 void MenuRelatorioListarLocais();     // menu para perguntar se sera listados todos ou especifico;
@@ -106,7 +107,7 @@ void ImprimirLocais(Local locais);             // imprime locais;
 void ImprimirCategorias(Categoria categorias); // imprime categorias;
 void ImprimirEncontros(Encontro encontros);    // imprime encontros; ------------------
 
-void AlternarAmigos(int amigo);          // modifica os dados do amigo na hora de alternar;
+void AlternarAmigos(int amigo, int op);  // modifica os dados do amigo na hora de alternar;
 void AlternarLocais(int local);          // modifica os dados do local na hora de alternar;
 void AlternarCategorias(int categorias); // modifica os dados da categoria na hora de alternar;
 void AlternarEncontros(int encontros);   // modifica os dados do encontro na hora de alternar; -------------------
@@ -164,8 +165,6 @@ Categoria *Categorias;
 Encontro *Encontros;
 
 int NumAmigos = 0, NumLocais = 0, NumCategorias = 0, NumEncontros = 0;
-
-
 
 int main()
 {
@@ -371,6 +370,18 @@ void MenuRelatorioListarCategorias()
     printf("\n3. Voltar Menu Principal\n");
 }
 
+void MenuModificarAmigo()
+{
+    LimparTela();
+    printf("\n1. Nome\n");
+    printf("\n2. Apelido\n");
+    printf("\n3. Email\n");
+    printf("\n4. Telefone\n");
+    printf("\n5. Data de nascimento\n");
+    printf("\n6. Voltar\n");
+    printf("\n7. Voltar Menu Principal\n");
+}
+
 void OpcaoMenu(int op)
 {
     int opm;
@@ -554,7 +565,6 @@ Categoria CriaCategoria()
 Encontro CriaEncontro()
 {
 
-    
     Encontro encontro;
     int i;
     int amigo, categoria, local;
@@ -588,7 +598,6 @@ Encontro CriaEncontro()
             encontro.amigos[encontro.numamigos].nome = (char *)malloc((strlen(Amigos[amigo].nome) + 1) * sizeof(char));
             strcpy(encontro.amigos[encontro.numamigos].nome, Amigos[amigo].nome);
             encontro.numamigos++;
-            
         }
     }
 
@@ -617,7 +626,6 @@ Encontro CriaEncontro()
             encontro.categoria[encontro.numcategorias].nome = (char *)malloc((strlen(Categorias[categoria].nome) + 1) * sizeof(char));
             strcpy(encontro.categoria[encontro.numcategorias].nome, Categorias[categoria].nome);
             encontro.numcategorias++;
-            
         }
     }
 
@@ -646,7 +654,6 @@ Encontro CriaEncontro()
             encontro.locais[encontro.numlocais].nome_local = (char *)malloc((strlen(Locais[local].nome_local) + 1) * sizeof(char));
             strcpy(encontro.locais[encontro.numlocais].nome_local, Locais[local].nome_local);
             encontro.numlocais++;
-            
         }
     }
 
@@ -1452,104 +1459,116 @@ int ListarEncontros()
     return 1;
 }
 
-void AlternarAmigos(int amigo)
+void AlternarAmigos(int amigo, int op)
 {
     int erro = -1;
     char strAux[100];
 
-    LimparTela();
-    printf("\nNome:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
-
-    if (Amigos[amigo].nome != NULL)
+    switch (op)
     {
-        free(Amigos[amigo].nome);
-    }
-
-    Amigos[amigo].nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
-
-    if (Amigos[amigo].nome == NULL)
-    {
-        MensagemErro(-7);
-        return;
-    }
-    strcpy(Amigos[amigo].nome, strAux);
-    LimparBuffer();
-
-    LimparTela();
-    printf("\nApelido:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
-
-    if (Amigos[amigo].apelido != NULL)
-    {
-        free(Amigos[amigo].apelido);
-    }
-
-    Amigos[amigo].apelido = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
-
-    if (Amigos[amigo].apelido == NULL)
-    {
-        MensagemErro(-7);
-        return;
-    }
-    strcpy(Amigos[amigo].apelido, strAux);
-    LimparBuffer();
-
-    LimparTela();
-    printf("\nEmail:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
-
-    if (Amigos[amigo].email != NULL)
-    {
-        free(Amigos[amigo].email);
-    }
-
-    Amigos[amigo].email = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
-
-    if (Amigos[amigo].email == NULL)
-    {
-        MensagemErro(-7);
-        return;
-    }
-    strcpy(Amigos[amigo].email, strAux);
-    LimparBuffer();
-
-    LimparTela();
-    printf("\nTelefone:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
-
-    if (Amigos[amigo].telefone != NULL)
-    {
-        free(Amigos[amigo].telefone);
-    }
-
-    Amigos[amigo].telefone = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
-
-    if (Amigos[amigo].telefone == NULL)
-    {
-        MensagemErro(-7);
-        return;
-    }
-    strcpy(Amigos[amigo].telefone, strAux);
-    LimparBuffer();
-
-    while (erro < 0)
-    {
+    case 1:
         LimparTela();
-        printf("\nData Nascimento [dd/mm/yy]:\n");
-        scanf("%i%i%i", &Amigos[amigo].datanasc.dia, &Amigos[amigo].datanasc.mes, &Amigos[amigo].datanasc.ano);
-        LimparBuffer();
-        erro = ValidarData(Amigos[amigo].datanasc.dia, Amigos[amigo].datanasc.mes, Amigos[amigo].datanasc.ano);
+        printf("\nNome:\n");
+        fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
+        strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
 
-        if (erro < 0)
+        if (Amigos[amigo].nome != NULL)
         {
-            MensagemErro(erro);
-            Pausar(1);
+            free(Amigos[amigo].nome);
         }
+
+        Amigos[amigo].nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+
+        if (Amigos[amigo].nome == NULL)
+        {
+            MensagemErro(-7);
+            return;
+        }
+        strcpy(Amigos[amigo].nome, strAux);
+        LimparBuffer();
+        break;
+
+        LimparTela();
+        printf("\nApelido:\n");
+        fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
+        strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+
+        if (Amigos[amigo].apelido != NULL)
+        {
+            free(Amigos[amigo].apelido);
+        }
+
+        Amigos[amigo].apelido = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+
+        if (Amigos[amigo].apelido == NULL)
+        {
+            MensagemErro(-7);
+            return;
+        }
+        strcpy(Amigos[amigo].apelido, strAux);
+        LimparBuffer();
+        break;
+
+    case 2:
+        LimparTela();
+        printf("\nEmail:\n");
+        fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
+        strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+
+        if (Amigos[amigo].email != NULL)
+        {
+            free(Amigos[amigo].email);
+        }
+
+        Amigos[amigo].email = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+
+        if (Amigos[amigo].email == NULL)
+        {
+            MensagemErro(-7);
+            return;
+        }
+        strcpy(Amigos[amigo].email, strAux);
+        LimparBuffer();
+        break;
+
+    case 3:
+        LimparTela();
+        printf("\nTelefone:\n");
+        fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
+        strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+
+        if (Amigos[amigo].telefone != NULL)
+        {
+            free(Amigos[amigo].telefone);
+        }
+
+        Amigos[amigo].telefone = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+
+        if (Amigos[amigo].telefone == NULL)
+        {
+            MensagemErro(-7);
+            return;
+        }
+        strcpy(Amigos[amigo].telefone, strAux);
+        LimparBuffer();
+        break;
+
+    case 4:
+        while (erro < 0)
+        {
+            LimparTela();
+            printf("\nData Nascimento [dd/mm/yy]:\n");
+            scanf("%i%i%i", &Amigos[amigo].datanasc.dia, &Amigos[amigo].datanasc.mes, &Amigos[amigo].datanasc.ano);
+            LimparBuffer();
+            erro = ValidarData(Amigos[amigo].datanasc.dia, Amigos[amigo].datanasc.mes, Amigos[amigo].datanasc.ano);
+
+            if (erro < 0)
+            {
+                MensagemErro(erro);
+                Pausar(1);
+            }
+        }
+        break;
     }
 }
 
@@ -1660,11 +1679,13 @@ void AlternarCategorias(int categoria)
     LimparBuffer();
 }
 
+// DANDO ERRO TAMBEM!!!!!!, IMPLEMENTAR NAS OUTRAS MODIFICACOES TAMBEM!!!!!!!!!!
 int ModificarAmigos()
 {
     int amigo;
     int aux;
     char op;
+    int opm;
 
     if (NumAmigos <= 0)
     {
@@ -1691,7 +1712,26 @@ int ModificarAmigos()
         }
         else
         {
-            AlternarAmigos(amigo);
+            LimparTela();
+            MenuModificarAmigo();
+            scanf("%i", &opm);
+            LimparBuffer();
+            if (opm == 6)
+            {
+                LimparTela();
+                MenuAmigo();
+                scanf("%i", &aux);
+                LimparBuffer();
+                OpcaoMenuAmigo(aux);
+            }
+            else if (opm = 7)
+            {
+                VoltarMenuPrincipal();
+            }
+            else
+            {
+                AlternarAmigos(amigo, opm);
+            }
         }
     }
     else if (op == 'n')
@@ -2120,9 +2160,9 @@ void Pausar(int pause)
 }
 void LimparBuffer()
 {
-    fflush(stdin);
+    __fpurge(stdin);
 }
 void LimparTela()
 {
-    system("cls");
+    system("clear");
 }
