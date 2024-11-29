@@ -580,12 +580,12 @@ Encontro CriaEncontro()
     int erro = -1;
     char op = 'x';
 
-    encontro.numamigos = 0;
-    encontro.numcategorias = 0;
-    encontro.numlocais = 0;
     encontro.amigos = 0;
     encontro.categoria = 0;
     encontro.locais = 0;
+    encontro.numamigos = 0;
+    encontro.numlocais = 0;
+    encontro.numcategorias = 0;
 
     while (erro < 0)
     {
@@ -602,8 +602,7 @@ Encontro CriaEncontro()
         amigo--;
         if (amigo < 0 || amigo >= NumAmigos)
         {
-            erro = -3;
-            MensagemErro(erro);
+            MensagemErro(-3);
             Pausar(1);
         }
         else
@@ -619,17 +618,32 @@ Encontro CriaEncontro()
                     encontro.amigos = (Amigo *)realloc(encontro.amigos, (encontro.numamigos + 1) * sizeof(Amigo));
                 }
 
-                // ERRADO!!!!!!!!! FAZER O QUE ESTAVA FAZENDO ANTES (USAR COPY)!!!!
-                encontro.amigos[encontro.numamigos] = Amigos[amigo];
-                encontro.numamigos++;
-                printf("\n%s",encontro.amigos[encontro.numamigos].nome);
-               
+                // ERRADO!!!!!!!!!
+                if (encontro.amigos != NULL)
+                {
+                    encontro.amigos[encontro.numamigos].nome = (char *)malloc((strlen(Amigos[amigo].nome) + 1) * sizeof(char));
+                    strcpy(encontro.amigos[encontro.numamigos].nome, Amigos[amigo].nome);
+                    encontro.numamigos++;
+                    printf("\n%s", encontro.amigos[encontro.numamigos].nome);
+                }
+                else
+                {
+                    MensagemErro(-7);
+                    Pausar(1);
+                }
+
                 printf("\nDeseja incluir mais algum amigo? (s) (n)\n");
-                scanf("%c", &op);
+                scanf(" %c", &op);
                 LimparBuffer();
                 op = tolower(op);
 
-                if (op == 'n')
+                // DANDO ERRO DE OPCAO INVALIDA SE DIGITA CERTO!!!!!
+                if (op != 's' || op != 'n')
+                {
+                    MensagemErro(0);
+                    Pausar(1);
+                }
+                else if (op == 'n')
                 {
                     break;
                 }
@@ -654,14 +668,11 @@ Encontro CriaEncontro()
         categoria--;
         if (categoria < 0 || categoria >= NumCategorias)
         {
-            erro = -15;
-            MensagemErro(erro);
+            MensagemErro(-15);
             Pausar(1);
         }
         else
         {
-
-            
         }
     }
 
@@ -681,14 +692,11 @@ Encontro CriaEncontro()
         local--;
         if (local < 0 || local >= NumLocais)
         {
-            erro = -6;
-            MensagemErro(erro);
+            MensagemErro(-6);
             Pausar(1);
         }
         else
         {
-
-            
         }
     }
 
@@ -1731,7 +1739,7 @@ int ModificarAmigos()
 
     LimparTela();
     printf("\nRealmente deseja proseguir? (s) (n)\n");
-    scanf("%c", &op);
+    scanf(" %c", &op);
     LimparBuffer();
     op = tolower(op);
 
@@ -1790,7 +1798,7 @@ int ModificarLocais()
 
     LimparTela();
     printf("\nRealmente deseja proseguir? (s) (n)\n");
-    scanf("%c", &op);
+    scanf(" %c", &op);
     LimparBuffer();
     op = tolower(op);
 
@@ -1848,7 +1856,7 @@ int ModificarCategorias()
 
     LimparTela();
     printf("\nRealmente deseja proseguir? (s) (n)\n");
-    scanf("%c", &op);
+    scanf(" %c", &op);
     LimparBuffer();
     op = tolower(op);
 
@@ -1901,7 +1909,7 @@ int DeletarAmigos()
 
     LimparTela();
     printf("\nRealmente deseja proseguir? (s) (n)\n");
-    scanf("%c", &op);
+    scanf(" %c", &op);
     LimparBuffer();
     op = tolower(op);
 
@@ -1954,7 +1962,7 @@ int DeletarLocais()
 
     LimparTela();
     printf("\nRealmente deseja proseguir? (s) (n)\n");
-    scanf("%c", &op);
+    scanf(" %c", &op);
     LimparBuffer();
     op = tolower(op);
 
@@ -2005,7 +2013,7 @@ int DeletarCategorias()
 
     LimparTela();
     printf("\nRealmente deseja proseguir? (s) (n)\n");
-    scanf("%c", &op);
+    scanf(" %c", &op);
     LimparBuffer();
     op = tolower(op);
 
@@ -2187,9 +2195,9 @@ void Pausar(int pause)
 }
 void LimparBuffer()
 {
-    __fpurge(stdin);
+    fflush(stdin);
 }
 void LimparTela()
 {
-    system("clear");
+    system("cls");
 }
