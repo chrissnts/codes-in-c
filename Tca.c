@@ -61,7 +61,7 @@ typedef struct
     Data data;
     Hora horario;
     Amigo *amigos;
-    Categoria *categoria;
+    Categoria *categorias;
     Local *locais;
     char *descricao;
     int numamigos;
@@ -248,7 +248,7 @@ void MensagemErro(int erro)
 
     case -15:
         LimparTela();
-        printf("\nErro. Categoria Invalida.\n");
+        printf("\nErro. Categoria Invalida ou nao encontrada.\n");
         break;
     case -16:
         LimparTela();
@@ -273,6 +273,18 @@ void MensagemErro(int erro)
     case -21:
         LimparTela();
         printf("\nErro. Minuto invalido.\n");
+        break;
+    case -22:
+        LimparTela();
+        printf("\nErro. Amigo ja incluido no encontro.\n");
+        break;
+    case -23:
+        LimparTela();
+        printf("\nErro. Local ja incluido no encontro.\n");
+        break;
+    case -24:
+        LimparTela();
+        printf("\nErro. Categoria ja incluido no encontro.\n");
         break;
     default:
         LimparTela();
@@ -577,17 +589,17 @@ Encontro CriaEncontro()
     Encontro encontro;
     int i;
     int amigo, categoria, local;
-    int erro = -1;
-    char op = 'x';
+    int incluir = 1, erro;
+    char op;
 
     encontro.amigos = 0;
-    encontro.categoria = 0;
+    encontro.categorias = 0;
     encontro.locais = 0;
     encontro.numamigos = 0;
     encontro.numlocais = 0;
     encontro.numcategorias = 0;
 
-    while (erro < 0)
+    while (incluir)
     {
         LimparTela();
         printf("\n--- Amigos ---\n");
@@ -605,79 +617,68 @@ Encontro CriaEncontro()
             MensagemErro(-3);
             Pausar(1);
         }
-        else
+        else if (strcmp(Amigos[amigo].apelido, encontro.amigos[amigo].apelido) == 0)
         {
-            do
-            {
-                if (encontro.amigos == 0)
-                {
-                    encontro.amigos = (Amigo *)malloc(1 * sizeof(Amigo));
-                }
-                else
-                {
-                    encontro.amigos = (Amigo *)realloc(encontro.amigos, (encontro.numamigos + 1) * sizeof(Amigo));
-                }
-
-                // ERRADO!!!!!!!!!
-                if (encontro.amigos != NULL)
-                {
-                    encontro.amigos[encontro.numamigos].nome = (char *)malloc((strlen(Amigos[amigo].nome) + 1) * sizeof(char));
-                    strcpy(encontro.amigos[encontro.numamigos].nome, Amigos[amigo].nome);
-                    encontro.numamigos++;
-                    printf("\n%s", encontro.amigos[encontro.numamigos].nome);
-                }
-                else
-                {
-                    MensagemErro(-7);
-                    Pausar(1);
-                }
-
-                printf("\nDeseja incluir mais algum amigo? (s) (n)\n");
-                scanf(" %c", &op);
-                LimparBuffer();
-                op = tolower(op);
-
-                // DANDO ERRO DE OPCAO INVALIDA SE DIGITA CERTO!!!!!
-                if (op != 's' || op != 'n')
-                {
-                    MensagemErro(0);
-                    Pausar(1);
-                }
-                else if (op == 'n')
-                {
-                    break;
-                }
-
-            } while (op != 'n');
-        }
-    }
-
-    erro = -1;
-    while (erro < 0)
-    {
-        LimparTela();
-        printf("\n--- Categorias ---\n");
-        for (i = 0; i < NumCategorias; i++)
-        {
-            printf("\n%i. %s\n", i + 1, Categorias[i].nome);
-        }
-
-        printf("\nDigite a categoria que deseja adicionar o amigo:\n");
-        scanf("%i", &categoria);
-        LimparBuffer();
-        categoria--;
-        if (categoria < 0 || categoria >= NumCategorias)
-        {
-            MensagemErro(-15);
+            MensagemErro(-22);
             Pausar(1);
         }
         else
         {
+            if (encontro.amigos == 0)
+            {
+                encontro.amigos = (Amigo *)malloc(1 * sizeof(Amigo));
+            }
+            else
+            {
+                encontro.amigos = (Amigo *)realloc(encontro.amigos, (encontro.numamigos + 1) * sizeof(Amigo));
+            }
+
+            if (encontro.amigos != NULL)
+            {
+                encontro.amigos[encontro.numamigos].nome = (char *)malloc((strlen(Amigos[amigo].nome) + 1) * sizeof(char));
+                strcpy(encontro.amigos[encontro.numamigos].nome, Amigos[amigo].nome);
+                encontro.amigos[encontro.numamigos].apelido = (char *)malloc((strlen(Amigos[amigo].apelido) + 1) * sizeof(char));
+                strcpy(encontro.amigos[encontro.numamigos].apelido, Amigos[amigo].apelido);
+                encontro.amigos[encontro.numamigos].email = (char *)malloc((strlen(Amigos[amigo].email) + 1) * sizeof(char));
+                strcpy(encontro.amigos[encontro.numamigos].email, Amigos[amigo].email);
+                encontro.amigos[encontro.numamigos].telefone = (char *)malloc((strlen(Amigos[amigo].telefone) + 1) * sizeof(char));
+                strcpy(encontro.amigos[encontro.numamigos].telefone, Amigos[amigo].telefone);
+                encontro.amigos[encontro.numamigos].datanasc.dia = Amigos[amigo].datanasc.dia;
+                encontro.amigos[encontro.numamigos].datanasc.mes = Amigos[amigo].datanasc.mes;
+                encontro.amigos[encontro.numamigos].datanasc.ano = Amigos[amigo].datanasc.ano;
+                printf("\nAmigo incluido com sucesso! %i\n", encontro.numamigos);
+                encontro.numamigos++;
+            }
+            else
+            {
+                MensagemErro(-7);
+                Pausar(1);
+            }
+
+            op = 'x';
+            while (op != 's' && op != 'n')
+            {
+                printf("\nDeseja incluir mais algum amigo? (s) (n)\n");
+                scanf("%c", &op);
+                LimparBuffer();
+                op = tolower(op);
+                if (op == 's' || op == 'n')
+                {
+                    break;
+                }
+
+                MensagemErro(0);
+                Pausar(1);
+            }
+
+            if (op == 'n')
+            {
+                incluir = 0;
+            }
         }
     }
 
-    erro = -1;
-    while (erro < 0)
+    while (incluir)
     {
         LimparTela();
         printf("\n--- Locais ---\n");
@@ -692,11 +693,133 @@ Encontro CriaEncontro()
         local--;
         if (local < 0 || local >= NumLocais)
         {
-            MensagemErro(-6);
+            MensagemErro(-11);
+            Pausar(1);
+        }
+        // DANDO ERRO, MAS ARRUMAR (QUERO FAZER UMA VERIFICACAO PARA NAO DEIXAR INCLUIR O MESMO AMIGO DE NOVO)
+        else if (strcmp(Locais[local].nome_local, encontro.locais[local].nome_local) == 0)
+        {
+            MensagemErro(-23);
             Pausar(1);
         }
         else
         {
+            while (incluir)
+            {
+                if (encontro.numlocais == 0)
+                {
+                    encontro.locais = (Local *)malloc(1 * sizeof(Local));
+                }
+                else
+                {
+                    encontro.locais = (Local *)realloc(encontro.locais, (encontro.numlocais + 1) * sizeof(Local));
+                }
+
+                if (encontro.locais != NULL)
+                {
+                    encontro.locais[encontro.numlocais].nome_local = (char *)malloc((strlen(Locais[local].nome_local) + 1) * sizeof(char));
+                    strcpy(encontro.locais[encontro.numlocais].nome_local, Locais[local].nome_local);
+                    printf("\Local incluido com sucesso! %i\n", encontro.numlocais);
+                    encontro.locais++;
+                }
+                else
+                {
+                    MensagemErro(-7);
+                    Pausar(1);
+                }
+
+                op = 'x';
+                while (op != 's' && op != 'n')
+                {
+                    printf("\nDeseja incluir mais algum local? (s) (n)\n");
+                    scanf("%c", &op);
+                    LimparBuffer();
+                    op = tolower(op);
+                    if (op == 's' || op == 'n')
+                    {
+                        break;
+                    }
+                    MensagemErro(0);
+                    Pausar(1);
+                }
+
+                if (op == 'n')
+                {
+                    incluir = 0;
+                }
+            }
+        }
+    }
+
+        while (incluir)
+    {
+        LimparTela();
+        printf("\n--- Categorias ---\n");
+        for (i = 0; i < NumCategorias; i++)
+        {
+            printf("\n%i. %s\n", i + 1, Categorias[i].nome);
+        }
+
+        printf("\nDigite a categoria que deseja incluir no encontro:\n");
+        scanf("%i", &categoria);
+        LimparBuffer();
+        categoria--;
+        if (categoria < 0 || categoria >= NumCategorias)
+        {
+            MensagemErro(-15);
+            Pausar(1);
+        }
+        else if (strcmp(Categorias[categoria].nome, encontro.categorias[categoria].nome) == 0)
+        {
+            MensagemErro(-24);
+            Pausar(1);
+        }
+        else
+        {
+            while (incluir)
+            {
+                if (encontro.numcategorias == 0)
+                {
+                    encontro.categorias = (Categoria *)malloc(1 * sizeof(Categoria));
+                }
+                else
+                {
+                    encontro.categorias = (Categoria *)realloc(encontro.categorias, (encontro.numcategorias + 1) * sizeof(Categoria));
+                }
+
+                if (encontro.categorias != NULL)
+                {
+                    encontro.categorias[encontro.numcategorias].nome = (char *)malloc((strlen(Categorias[categoria].nome) + 1) * sizeof(char));
+                    strcpy(encontro.categorias[encontro.numcategorias].nome, Categorias[categoria].nome);
+                    printf("\nCategoria incluida com sucesso! %i\n", encontro.numcategorias);
+                    encontro.categorias++;
+                }
+                else
+                {
+                    MensagemErro(-7);
+                    Pausar(1);
+                }
+
+                op = 'x';
+                while (op != 's' && op != 'n')
+                {
+                    printf("\nDeseja incluir mais alguma categoria? (s) (n)\n");
+                    scanf("%c", &op);
+                    LimparBuffer();
+                    op = tolower(op);
+                    if (op == 's' || op == 'n')
+                    {
+                        break;
+                    }
+                    MensagemErro(0);
+                    Pausar(1);
+                }
+
+                if (op == 'n')
+                {
+                    incluir = 0;
+                }
+            }
         }
     }
 
@@ -883,7 +1006,7 @@ void ImprimirCategorias(Categoria categorias)
 void ImprimirEncontros(Encontro encontros)
 {
     printf("\nAmigo: %s\n", encontros.amigos[encontros.numamigos].nome);
-    printf("\nCategoria: %s\n", encontros.categoria[encontros.numcategorias].nome);
+    printf("\nCategoria: %s\n", encontros.categorias[encontros.numcategorias].nome);
     printf("\nData: [%02i/%02i/%i]\n", encontros.data.dia, encontros.data.mes, encontros.data.ano);
     printf("\nHorario: [%02im:%02ih]\n", encontros.horario.hora, encontros.horario.minuto);
     printf("\nDescricao: %s \n", encontros.descricao);
