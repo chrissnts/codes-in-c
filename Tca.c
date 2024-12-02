@@ -383,6 +383,16 @@ void MenuRelatorioListarCategorias()
     printf("\n3. Voltar Menu Principal\n");
 }
 
+void MenuRelatorioListarEncontros()
+{
+    LimparTela();
+    printf("\n1. Listar Todos\n");
+    printf("\n2. Listar por Amigos\n");
+    printf("\n3. Listar por Locais\n");
+    printf("\n4. Voltar\n");
+    printf("\n4. Voltar Menu Principal\n");
+}
+
 void MenuModificarAmigo()
 {
     LimparTela();
@@ -1066,10 +1076,9 @@ void ImprimirCategorias(Categoria categorias)
 
 void ImprimirEncontros(Encontro encontros)
 {   
-    // ERRO!!!!! ARRUMAR, NAO SEI COMO IMPRIMIR O AMIGO, CATEGORIA NEM LOCAL!!!!!
-    printf("\nAmigo: %s\n", );
-    printf("\nCategoria: %s\n", );
-    printf("\nLocal: %s\n", );
+    printf("\nAmigo: %s\n", encontros.amigos->nome);
+    printf("\nCategoria: %s\n", encontros.categorias->nome);
+    printf("\nLocal: %s\n", encontros.categorias->nome);
     printf("\nData: [%02i/%02i/%i]\n", encontros.data.dia, encontros.data.mes, encontros.data.ano);
     printf("\nHorario: [%02ih:%02im]\n", encontros.horario.hora, encontros.horario.minuto);
     printf("\nDescricao: %s \n", encontros.descricao);
@@ -1308,8 +1317,19 @@ void OpcaoMenuRelatorio(int op)
         break;
 
     case 4:
-
-        // LOGICA PARA LISTAR ENCONTROS;
+        if (NumEncontros <= 0)
+        {
+            erro = -16;
+        }
+        else
+        {
+            MenuRelatorioListarEncontros();
+            scanf("%i", &opr);
+            LimparBuffer();
+            //  Fazer essa funcao!!
+            OpcaoMenuRelatorioListarEncontros(opr);
+            return;
+        }
         break;
 
     case 5:
@@ -2381,9 +2401,9 @@ void Pausar(int pause)
 }
 void LimparBuffer()
 {
-    fflush(stdin);
+    __fpurge(stdin);
 }
 void LimparTela()
 {
-    system("cls");
+    system("clear");
 }
