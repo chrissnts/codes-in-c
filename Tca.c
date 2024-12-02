@@ -582,7 +582,6 @@ Categoria CriaCategoria()
     return categoria;
 }
 
-// ERROO!!!!!!!!!!!!!!!!!!!
 Encontro CriaEncontro()
 {
 
@@ -590,7 +589,7 @@ Encontro CriaEncontro()
     int i;
     int amigo, categoria, local;
     int incluir = 1, erro;
-    char op;
+    char op, strAux[100];
 
     encontro.amigos = 0;
     encontro.categorias = 0;
@@ -617,67 +616,87 @@ Encontro CriaEncontro()
             MensagemErro(-3);
             Pausar(1);
         }
-        else if (strcmp(Amigos[amigo].apelido, encontro.amigos[amigo].apelido) == 0)
-        {
-            MensagemErro(-22);
-            Pausar(1);
-        }
         else
         {
-            if (encontro.amigos == 0)
-            {
-                encontro.amigos = (Amigo *)malloc(1 * sizeof(Amigo));
-            }
-            else
-            {
-                encontro.amigos = (Amigo *)realloc(encontro.amigos, (encontro.numamigos + 1) * sizeof(Amigo));
-            }
+            int amigonoencontro = 0;
 
-            if (encontro.amigos != NULL)
+            for (i = 0; i < encontro.numamigos; i++)
             {
-                encontro.amigos[encontro.numamigos].nome = (char *)malloc((strlen(Amigos[amigo].nome) + 1) * sizeof(char));
-                strcpy(encontro.amigos[encontro.numamigos].nome, Amigos[amigo].nome);
-                encontro.amigos[encontro.numamigos].apelido = (char *)malloc((strlen(Amigos[amigo].apelido) + 1) * sizeof(char));
-                strcpy(encontro.amigos[encontro.numamigos].apelido, Amigos[amigo].apelido);
-                encontro.amigos[encontro.numamigos].email = (char *)malloc((strlen(Amigos[amigo].email) + 1) * sizeof(char));
-                strcpy(encontro.amigos[encontro.numamigos].email, Amigos[amigo].email);
-                encontro.amigos[encontro.numamigos].telefone = (char *)malloc((strlen(Amigos[amigo].telefone) + 1) * sizeof(char));
-                strcpy(encontro.amigos[encontro.numamigos].telefone, Amigos[amigo].telefone);
-                encontro.amigos[encontro.numamigos].datanasc.dia = Amigos[amigo].datanasc.dia;
-                encontro.amigos[encontro.numamigos].datanasc.mes = Amigos[amigo].datanasc.mes;
-                encontro.amigos[encontro.numamigos].datanasc.ano = Amigos[amigo].datanasc.ano;
-                printf("\nAmigo incluido com sucesso! %i\n", encontro.numamigos);
-                encontro.numamigos++;
-            }
-            else
-            {
-                MensagemErro(-7);
-                Pausar(1);
-            }
-
-            op = 'x';
-            while (op != 's' && op != 'n')
-            {
-                printf("\nDeseja incluir mais algum amigo? (s) (n)\n");
-                scanf("%c", &op);
-                LimparBuffer();
-                op = tolower(op);
-                if (op == 's' || op == 'n')
+                if (strcmp(Amigos[amigo].apelido, encontro.amigos[i].apelido) == 0)
                 {
+                    amigonoencontro = 1;
                     break;
                 }
-
-                MensagemErro(0);
-                Pausar(1);
             }
 
-            if (op == 'n')
+            if (amigonoencontro)
             {
-                incluir = 0;
+                MensagemErro(-22);
+                Pausar(1);
+            }
+            else
+            {
+
+                if (encontro.amigos == 0)
+                {
+                    encontro.amigos = (Amigo *)malloc(1 * sizeof(Amigo));
+                }
+                else
+                {
+                    encontro.amigos = (Amigo *)realloc(encontro.amigos, (encontro.numamigos + 1) * sizeof(Amigo));
+                }
+
+                if (encontro.amigos != NULL)
+                {
+                    encontro.amigos[encontro.numamigos].nome = (char *)malloc((strlen(Amigos[amigo].nome) + 1) * sizeof(char));
+                    strcpy(encontro.amigos[encontro.numamigos].nome, Amigos[amigo].nome);
+                    /*encontro.amigos[encontro.numamigos].apelido = (char *)malloc((strlen(Amigos[amigo].apelido) + 1) * sizeof(char));
+                    strcpy(encontro.amigos[encontro.numamigos].apelido, Amigos[amigo].apelido);
+                    encontro.amigos[encontro.numamigos].email = (char *)malloc((strlen(Amigos[amigo].email) + 1) * sizeof(char));
+                    strcpy(encontro.amigos[encontro.numamigos].email, Amigos[amigo].email);
+                    encontro.amigos[encontro.numamigos].telefone = (char *)malloc((strlen(Amigos[amigo].telefone) + 1) * sizeof(char));
+                    strcpy(encontro.amigos[encontro.numamigos].telefone, Amigos[amigo].telefone);
+                    encontro.amigos[encontro.numamigos].datanasc.dia = Amigos[amigo].datanasc.dia;
+                    encontro.amigos[encontro.numamigos].datanasc.mes = Amigos[amigo].datanasc.mes;
+                    encontro.amigos[encontro.numamigos].datanasc.ano = Amigos[amigo].datanasc.ano;
+                    */
+                    LimparTela();
+                    printf("\nAmigo incluido com sucesso\n");
+                    encontro.numamigos++;
+                    Pausar(1);
+                }
+                else
+                {
+                    MensagemErro(-7);
+                    exit(0);
+                }
+
+                op = 'x';
+                while (op != 's' && op != 'n')
+                {
+                    LimparTela();
+                    printf("\nDeseja incluir mais algum amigo? (s) (n)\n");
+                    scanf("%c", &op);
+                    LimparBuffer();
+                    op = tolower(op);
+                    if (op == 's' || op == 'n')
+                    {
+                        break;
+                    }
+
+                    MensagemErro(0);
+                    Pausar(1);
+                }
+
+                if (op == 'n')
+                {
+                    incluir = 0;
+                }
             }
         }
     }
 
+    incluir = 1;
     while (incluir)
     {
         LimparTela();
@@ -696,17 +715,28 @@ Encontro CriaEncontro()
             MensagemErro(-11);
             Pausar(1);
         }
-        // DANDO ERRO, MAS ARRUMAR (QUERO FAZER UMA VERIFICACAO PARA NAO DEIXAR INCLUIR O MESMO AMIGO DE NOVO)
-        else if (strcmp(Locais[local].nome_local, encontro.locais[local].nome_local) == 0)
-        {
-            MensagemErro(-23);
-            Pausar(1);
-        }
         else
         {
-            while (incluir)
+            int localnoencontro = 0;
+
+            for (i = 0; i < encontro.numlocais; i++)
             {
-                if (encontro.numlocais == 0)
+                if (strcmp(Locais[local].nome_local, encontro.locais[i].nome_local) == 0)
+                {
+                    localnoencontro = 1;
+                    break;
+                }
+            }
+
+            if (localnoencontro)
+            {
+                MensagemErro(-23);
+                Pausar(1);
+            }
+            else
+            {
+
+                if (encontro.locais == 0)
                 {
                     encontro.locais = (Local *)malloc(1 * sizeof(Local));
                 }
@@ -719,18 +749,21 @@ Encontro CriaEncontro()
                 {
                     encontro.locais[encontro.numlocais].nome_local = (char *)malloc((strlen(Locais[local].nome_local) + 1) * sizeof(char));
                     strcpy(encontro.locais[encontro.numlocais].nome_local, Locais[local].nome_local);
-                    printf("\Local incluido com sucesso! %i\n", encontro.numlocais);
-                    encontro.locais++;
+                    LimparTela();
+                    printf("\nLocal incluido com sucesso\n");
+                    encontro.numlocais++;
+                    Pausar(1);
                 }
                 else
                 {
                     MensagemErro(-7);
-                    Pausar(1);
+                    exit(0);
                 }
 
                 op = 'x';
                 while (op != 's' && op != 'n')
                 {
+                    LimparTela();
                     printf("\nDeseja incluir mais algum local? (s) (n)\n");
                     scanf("%c", &op);
                     LimparBuffer();
@@ -739,6 +772,7 @@ Encontro CriaEncontro()
                     {
                         break;
                     }
+
                     MensagemErro(0);
                     Pausar(1);
                 }
@@ -751,7 +785,8 @@ Encontro CriaEncontro()
         }
     }
 
-        while (incluir)
+    incluir = 1;
+    while (incluir)
     {
         LimparTela();
         printf("\n--- Categorias ---\n");
@@ -769,16 +804,28 @@ Encontro CriaEncontro()
             MensagemErro(-15);
             Pausar(1);
         }
-        else if (strcmp(Categorias[categoria].nome, encontro.categorias[categoria].nome) == 0)
-        {
-            MensagemErro(-24);
-            Pausar(1);
-        }
         else
         {
-            while (incluir)
+            int categorianoencontro = 0;
+
+            for (i = 0; i < encontro.categorias; i++)
             {
-                if (encontro.numcategorias == 0)
+                if (strcmp(Categorias[categoria].nome, encontro.categorias[i].nome) == 0)
+                {
+                    categorianoencontro = 1;
+                    break;
+                }
+            }
+
+            if (categorianoencontro)
+            {
+                MensagemErro(-24);
+                Pausar(1);
+            }
+            else
+            {
+
+                if (encontro.categorias == 0)
                 {
                     encontro.categorias = (Categoria *)malloc(1 * sizeof(Categoria));
                 }
@@ -791,18 +838,21 @@ Encontro CriaEncontro()
                 {
                     encontro.categorias[encontro.numcategorias].nome = (char *)malloc((strlen(Categorias[categoria].nome) + 1) * sizeof(char));
                     strcpy(encontro.categorias[encontro.numcategorias].nome, Categorias[categoria].nome);
-                    printf("\nCategoria incluida com sucesso! %i\n", encontro.numcategorias);
-                    encontro.categorias++;
+                    LimparTela();
+                    printf("\nCategoria incluida com sucesso\n");
+                    encontro.numcategorias++;
+                    Pausar(1);
                 }
                 else
                 {
                     MensagemErro(-7);
-                    Pausar(1);
+                    exit(0);
                 }
 
                 op = 'x';
                 while (op != 's' && op != 'n')
                 {
+                    LimparTela();
                     printf("\nDeseja incluir mais alguma categoria? (s) (n)\n");
                     scanf("%c", &op);
                     LimparBuffer();
@@ -811,6 +861,7 @@ Encontro CriaEncontro()
                     {
                         break;
                     }
+
                     MensagemErro(0);
                     Pausar(1);
                 }
@@ -827,7 +878,7 @@ Encontro CriaEncontro()
     while (erro < 0)
     {
         LimparTela();
-        printf("\nData [dd/mm/yy]:\n");
+        printf("\nData do encontro [dd/mm/yy]:\n");
         scanf("%i%i%i", &encontro.data.dia, &encontro.data.mes, &encontro.data.ano);
         LimparBuffer();
         erro = ValidarData(encontro.data.dia, encontro.data.mes, encontro.data.ano);
@@ -839,12 +890,11 @@ Encontro CriaEncontro()
         }
     }
 
-    // TESTAR, AINDA NAO TESTEI PQ NAO TA CHEGANDO NESSA PARTE POR QUE TA BUGANDO ANTES!!!!:
     erro = -1;
     while (erro < 0)
     {
         LimparTela();
-        printf("\nHorario [hora : min]:\n");
+        printf("\nHorario do encontro [hora : min]:\n");
         scanf("%i%i", &encontro.horario.hora, &encontro.horario.minuto);
         LimparBuffer();
         erro = ValidarHorario(encontro.horario.hora, encontro.horario.minuto);
@@ -854,6 +904,13 @@ Encontro CriaEncontro()
             Pausar(1);
         }
     }
+
+    printf("\nDescricao do encontro:\n");
+    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
+    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+    encontro.descricao = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+    strcpy(encontro.descricao, strAux);
+    LimparBuffer();
 
     return encontro;
 }
@@ -877,6 +934,7 @@ int IncluirAmigos()
     if (!Amigos)
     {
         return -7;
+        exit(0);
     }
 
     Amigos[NumAmigos] = CriaAmigo();
@@ -906,6 +964,7 @@ int IncluirLocais()
     if (!Locais)
     {
         return -7;
+        exit(0);
     }
 
     Locais[NumLocais] = CriaLocal();
@@ -935,6 +994,7 @@ int IncluirCategorias()
     if (!Categorias)
     {
         return -7;
+        exit(0);
     }
 
     Categorias[NumCategorias] = CriaCategoria();
@@ -969,6 +1029,7 @@ int IncluirEncontros()
     if (!Encontros)
     {
         return -7;
+        exit(0);
     }
 
     Encontros[NumEncontros] = CriaEncontro();
@@ -1004,11 +1065,13 @@ void ImprimirCategorias(Categoria categorias)
 }
 
 void ImprimirEncontros(Encontro encontros)
-{
-    printf("\nAmigo: %s\n", encontros.amigos[encontros.numamigos].nome);
-    printf("\nCategoria: %s\n", encontros.categorias[encontros.numcategorias].nome);
+{   
+    // ERRO!!!!! ARRUMAR, NAO SEI COMO IMPRIMIR O AMIGO, CATEGORIA NEM LOCAL!!!!!
+    printf("\nAmigo: %s\n", );
+    printf("\nCategoria: %s\n", );
+    printf("\nLocal: %s\n", );
     printf("\nData: [%02i/%02i/%i]\n", encontros.data.dia, encontros.data.mes, encontros.data.ano);
-    printf("\nHorario: [%02im:%02ih]\n", encontros.horario.hora, encontros.horario.minuto);
+    printf("\nHorario: [%02ih:%02im]\n", encontros.horario.hora, encontros.horario.minuto);
     printf("\nDescricao: %s \n", encontros.descricao);
 }
 
@@ -1648,7 +1711,7 @@ void AlternarAmigos(int amigo, int op)
         if (Amigos[amigo].nome == NULL)
         {
             MensagemErro(-7);
-            return;
+            exit(0);
         }
         strcpy(Amigos[amigo].nome, strAux);
         LimparBuffer();
@@ -1670,7 +1733,7 @@ void AlternarAmigos(int amigo, int op)
         if (Amigos[amigo].apelido == NULL)
         {
             MensagemErro(-7);
-            return;
+            exit(0);
         }
         strcpy(Amigos[amigo].apelido, strAux);
         LimparBuffer();
@@ -1692,7 +1755,7 @@ void AlternarAmigos(int amigo, int op)
         if (Amigos[amigo].email == NULL)
         {
             MensagemErro(-7);
-            return;
+            exit(0);
         }
         strcpy(Amigos[amigo].email, strAux);
         LimparBuffer();
@@ -1714,7 +1777,7 @@ void AlternarAmigos(int amigo, int op)
         if (Amigos[amigo].telefone == NULL)
         {
             MensagemErro(-7);
-            return;
+            exit(0);
         }
         strcpy(Amigos[amigo].telefone, strAux);
         LimparBuffer();
@@ -1758,7 +1821,7 @@ void AlternarLocais(int local, int op)
         if (Locais[local].nome_local == NULL)
         {
             MensagemErro(-7);
-            return;
+            exit(0);
         }
         strcpy(Locais[local].nome_local, strAux);
     }
@@ -1777,7 +1840,7 @@ void AlternarLocais(int local, int op)
     if (Locais[local].endereco.estado == NULL)
     {
         MensagemErro(-7);
-        return;
+        exit(0);
     }
     strcpy(Locais[local].endereco.estado, strAux);
 
@@ -1795,7 +1858,7 @@ void AlternarLocais(int local, int op)
     if (Locais[local].endereco.cidade == NULL)
     {
         MensagemErro(-7);
-        return;
+        exit(0);
     }
     strcpy(Locais[local].endereco.cidade, strAux);
     LimparBuffer();
@@ -1814,7 +1877,7 @@ void AlternarLocais(int local, int op)
     if (Locais[local].endereco.bairro == NULL)
     {
         MensagemErro(-7);
-        return;
+        exit(0);
     }
     strcpy(Locais[local].endereco.bairro, strAux);
     LimparBuffer();
@@ -1842,7 +1905,7 @@ void AlternarCategorias(int categoria)
     if (Categorias[categoria].nome == NULL)
     {
         MensagemErro(-7);
-        return;
+        exit(0);
     }
     strcpy(Categorias[categoria].nome, strAux);
     LimparBuffer();
