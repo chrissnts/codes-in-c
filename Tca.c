@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <windows.h>
 
 #define MAXLOCAL 100
 #define MAXAMIGO 100
@@ -70,9 +71,9 @@ typedef struct
 
 } Encontro;
 
-// COISAS QUE TALVEZ MODIFIQUE.
-// 1- NAO DEIXAR O USUARIO EXCLUIR UM AMIGO SE ELE ESTIVER EM UM ENCONTRO;
-// 2 - PEDIR QUAL ATRIBUTO O USUARIO DESEJA MODIFICAR;
+// COISAS IMPORTANTES!!
+// NAO DEIXAR O USUARIO EXCLUIR UM AMIGO SE ELE ESTIVER EM UM ENCONTRO;
+// DAR UM JEITO DE VERIFICAR SE A OPCAO EH INVALIDA QUANDO FOR MODIFICAR, VOU TER QUE MEXER COM WHILE OBVIAMENTE, QUERO FAZER O MAIS FACIL POSSIVEL E BASICO!!!!!!
 
 void MensagemErro(int erro); // imprime mensagens de erro;
 
@@ -315,12 +316,24 @@ void MensagemErro(int erro)
 
     case -26:
         LimparTela();
-        printf("\nErro. Local ja existe. Nao pode haver local com o mesmo nome\n");
+        printf("\nErro. Local ja existe. Nao pode haver local com o mesmo nome.\n");
         break;
 
     case -27:
         LimparTela();
-        printf("\nErro. Categoria ja existe. Nao pode haver categorias com o mesmo nome\n");
+        printf("\nErro. Categoria ja existe. Nao pode haver categorias com o mesmo nome.\n");
+        break;
+    case -28:
+        LimparTela();
+        printf("\nTodos os amigos ja adicionados. Indo para locais...");
+        break;
+    case -29:
+        LimparTela();
+        printf("\nTodos os locais ja adicionados. Indo para categoria...");
+        break;
+    case -30:
+        LimparTela();
+        printf("\nTodos os categorias ja adicionadas. Indo para data...");
         break;
 
     default:
@@ -703,7 +716,8 @@ Encontro CriaEncontro()
     int i;
     int amigo, categoria, local;
     int incluir = 1, erro;
-    char op, strAux[100];
+    char op;
+    char strAux[100];
 
     encontro.amigos = 0;
     encontro.categorias = 0;
@@ -793,18 +807,28 @@ Encontro CriaEncontro()
                     scanf("%c", &op);
                     LimparBuffer();
                     op = tolower(op);
-                    if (op == 's' || op == 'n')
+                    if (op == 's')
                     {
-                        break;
+                        if (NumAmigos <= encontro.numamigos)
+                        {
+                            MensagemErro(-28);
+                            Sleep(15000);
+                            incluir = 0;
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
-
-                    MensagemErro(0);
-                    Pausar(1);
-                }
-
-                if (op == 'n')
-                {
-                    incluir = 0;
+                    else if (op == 'n')
+                    {
+                        incluir = 0;
+                    }
+                    else
+                    {
+                        MensagemErro(0);
+                        Pausar(1);
+                    }
                 }
             }
         }
@@ -882,18 +906,28 @@ Encontro CriaEncontro()
                     scanf("%c", &op);
                     LimparBuffer();
                     op = tolower(op);
-                    if (op == 's' || op == 'n')
+                    if (op == 's')
                     {
-                        break;
+                        if (NumLocais <= encontro.numlocais)
+                        {
+                            MensagemErro(-29);
+                            Sleep(15000);
+                            incluir = 0;
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
-
-                    MensagemErro(0);
-                    Pausar(1);
-                }
-
-                if (op == 'n')
-                {
-                    incluir = 0;
+                    else if (op == 'n')
+                    {
+                        incluir = 0;
+                    }
+                    else
+                    {
+                        MensagemErro(0);
+                        Pausar(1);
+                    }
                 }
             }
         }
@@ -922,7 +956,7 @@ Encontro CriaEncontro()
         {
             int categorianoencontro = 0;
 
-            for (i = 0; i < encontro.categorias; i++)
+            for (i = 0; i < encontro.numcategorias; i++)
             {
                 if (strcmp(Categorias[categoria].nome, encontro.categorias[i].nome) == 0)
                 {
@@ -971,18 +1005,28 @@ Encontro CriaEncontro()
                     scanf("%c", &op);
                     LimparBuffer();
                     op = tolower(op);
-                    if (op == 's' || op == 'n')
+                    if (op == 's')
                     {
-                        break;
+                        if (NumCategorias <= encontro.numcategorias)
+                        {
+                            MensagemErro(-30);
+                            Sleep(15000);
+                            incluir = 0;
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
-
-                    MensagemErro(0);
-                    Pausar(1);
-                }
-
-                if (op == 'n')
-                {
-                    incluir = 0;
+                    else if (op == 'n')
+                    {
+                        incluir = 0;
+                    }
+                    else
+                    {
+                        MensagemErro(0);
+                        Pausar(1);
+                    }
                 }
             }
         }
@@ -2063,6 +2107,27 @@ void AlterarLocais(int local, int op)
     else if (op == 5)
     {
         LimparTela();
+        printf("\nLogradouro:\n");
+        fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
+        strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+        if (Locais[local].endereco.logradouro != NULL)
+        {
+            free(Locais[local].endereco.logradouro);
+        }
+
+        Locais[local].endereco.logradouro = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+
+        if (Locais[local].endereco.logradouro == NULL)
+        {
+            MensagemErro(-7);
+            exit(0);
+        }
+        strcpy(Locais[local].endereco.logradouro, strAux);
+        LimparBuffer();
+    }
+    else if (op == 6)
+    {
+        LimparTela();
         printf("\nNumero:\n");
         scanf("%i", &Locais[local].endereco.numero);
         LimparBuffer();
@@ -2093,7 +2158,7 @@ void AlterarCategorias(int categoria)
     LimparBuffer();
 }
 
-// TESTAAAAAAAAAAAAAR!!!!!!!!!!
+
 int ModificarAmigos()
 {
     int amigo;
@@ -2158,12 +2223,12 @@ int ModificarAmigos()
     }
 
     LimparTela();
-    printf("\nModificado com sucesso!\n");
+    printf("\nModificado com sucesso.\n");
 
     return 1;
 }
 
-// TESTAAAAAAAAAAAAAR!!!!!!!!!!
+
 int ModificarLocais()
 {
 
@@ -2229,19 +2294,18 @@ int ModificarLocais()
     }
 
     LimparTela();
-    ImprimirLocais(Locais[local]);
+    printf("\nModificado com sucesso.\n");
 
     return 1;
 }
 
-// TESTAAAAAAAAAAAAAR!!!!!!!!!!
+
 int ModificarCategorias()
 {
 
     int categoria = -1;
     int aux;
     char op;
-    int opm;
 
     if (NumCategorias <= 0)
     {
@@ -2293,12 +2357,12 @@ int ModificarCategorias()
     }
 
     LimparTela();
-    ImprimirCategorias(Categorias[categoria]);
+    printf("\nModificado com sucesso.\n");
 
     return 1;
 }
 
-// TESTAAAAAAAAAAAAAR!!!!!!!!!!
+
 int DeletarAmigos()
 {
     int amigo;
@@ -2358,7 +2422,7 @@ int DeletarAmigos()
     return 1;
 }
 
-// TESTAAAAAAAAAAAAAR!!!!!!!!!!
+
 int DeletarLocais()
 {
 
@@ -2419,7 +2483,7 @@ int DeletarLocais()
     return 1;
 }
 
-// TESTAAAAAAAAAAAAAR!!!!!!!!!!
+
 int DeletarCategorias()
 {
     int categoria;
@@ -2529,7 +2593,7 @@ void ExcluirCategorias(int categoria)
 
 void ExcluirEncontros(int encontro)
 {
-    //Fazer Funcao para excluir encontros!!!!!!!!!!!!
+    // Fazer Funcao para excluir encontros!!!!!!!!!!!!
 }
 
 void VoltarMenuPrincipal()
@@ -2574,8 +2638,7 @@ void LimpaPonteiroCategoria(Categoria *categoria)
 
 void LimpaPonteiroEncontro(Encontro *encontro)
 {
-    //Fazer funcao para limpar os ponteiros de encontro;
-
+    // Fazer funcao para limpar os ponteiros de encontro;
 }
 
 int Bissexto(int ano)
@@ -2633,9 +2696,9 @@ void Pausar(int pause)
 }
 void LimparBuffer()
 {
-    __fpurge(stdin);
+    fflush(stdin);
 }
 void LimparTela()
 {
-    system("clear");
+    system("cls");
 }
