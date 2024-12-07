@@ -73,7 +73,6 @@ typedef struct
 
 // COISAS IMPORTANTES!!
 // NAO DEIXAR O USUARIO EXCLUIR UM AMIGO SE ELE ESTIVER EM UM ENCONTRO;
-// DAR UM JEITO DE VERIFICAR SE A OPCAO EH INVALIDA QUANDO FOR MODIFICAR, VOU TER QUE MEXER COM WHILE OBVIAMENTE, QUERO FAZER O MAIS FACIL POSSIVEL E BASICO!!!!!!
 
 void MensagemErro(int erro); // imprime mensagens de erro;
 
@@ -81,41 +80,42 @@ void Menu();                // imprime menu principal;
 void MenuAmigo();           // imprime menu amigo;
 void MenuLocal();           // imprime menu local;
 void MenuCategoria();       // imprime menu categoria;
-void MenuEncontro();        // imprime menu encontro; ----------------
+void MenuEncontro();        // imprime menu encontro;
 void MenuRelatorio();       // imprime menu relatorio;
 void MenuModificarAmigo();  // imprime menu para qual o usuario deseja modificar;
 void MenuModificarLocais(); // imprime menu para qual o usuario deseja modificar;
 
-void MenuRelatorioListarAmigos();     // menu para perguntar se sera listados todos ou especifico por apelido;
-void MenuRelatorioListarLocais();     // menu para perguntar se sera listados todos ou especifico;
-void MenuRelatorioListarCategorias(); // menu para perguntar se sera listado;
-void MenuRelatorioListarEncontros();  // menu para perguntar se sera listado; -----------
+void MenuRelatorioListarAmigos();                // menu para perguntar se sera listados todos ou especifico por apelido;
+void MenuRelatorioListarLocais();                // menu para perguntar se sera listados todos ou especifico;
+void MenuRelatorioListarCategorias();            // menu para perguntar se sera listado;
+void MenuRelatorioListarEncontros();             // menu para perguntar se sera listado;
+void MenuRelatorioListarEncontrosPorCategoria(); // menu para perguntar por qual categoria quer que liste;
 
 void OpcaoMenu(int op);          // recebe opcao do menu, faz a validacao e procede;
 void OpcaoMenuAmigo(int op);     // recebe opcao do menu de amigos, faz validacao e procede;
 void OpcaoMenuLocal(int op);     // recebe opcao do menu de local, faz validacao e procede;
 void OpcaoMenuCategoria(int op); // recebe opcao do menu de categoria, faz validacao e procede;
-void OpcaoMenuEncontro(int op);  // recebe opcao do menu de encontro, faz validacao e procede; -----------------
+void OpcaoMenuEncontro(int op);  // recebe opcao do menu de encontro, faz validacao e procede;
 void OpcaoMenuRelatorio(int op); // recebe opcao do menu de relatorios, faz validacao e procede;
 
 void OpcaoMenuRelatorioListarAmigos(int opr);     // recebe a opcao se vai ser todos ou especifico com apelido e procede;
 void OpcaoMenuRelatorioListarLocais(int opr);     // recebe a opcao se vai ser todos ou especifico com apelido e procede;
 void OpcaoMenuRelatorioListarCategorias(int opr); // recebe a opcao se vai ser todos ou deseja voltar e procede;
-void OpcaoMenuRelatorioListarEncontros(int opr);  // recebe a opcao se vai ser todos ou especifico e procede; -----------------
+void OpcaoMenuRelatorioListarEncontros(int opr);  // recebe a opcao se vai ser todos ou especifico e procede;
 
 void ImprimirAmigos(Amigo amigos);             // imprime amigos;
 void ImprimirLocais(Local locais);             // imprime locais;
 void ImprimirCategorias(Categoria categorias); // imprime categorias;
-void ImprimirEncontros(Encontro encontros);    // imprime encontros; ------------------
+void ImprimirEncontros(Encontro encontros);    // imprime encontros; -
 
 void AlterarAmigos(int amigo, int op);        // modifica os dados do amigo na hora de Alterar;
 void AlterarLocais(int local, int op);        // modifica os dados do local na hora de Alterar;
 void AlterarCategorias(int categorias);       // modifica os dados da categoria na hora de Alterar;
-void AlterarEncontros(int encontros, int op); // modifica os dados do encontro na hora de Alterar; -------------------
+void AlterarEncontros(int encontros, int op); // modifica os dados do encontro na hora de Alterar;
 void ExcluirAmigos(int amigo);                // dispara qual amigo o usuario deseja excluir;
 void ExcluirLocais(int local);                // dispara qual local o usuario deseja excluir;
 void ExcluirCategorias(int categoria);        // dispara qual categoria o usuario deseja excluir;
-void ExcluirEncontros(int encontro);          // dispara qual categoria o usuario deseja excluir; ------------
+void ExcluirEncontros(int encontro);          // dispara qual categoria o usuario deseja excluir;
 
 void VoltarMenuPrincipal(); // volta/chama o menu principal e ja le a opcao direto;
 void VoltarMenuRelatorio(); // volta/chama o menu de relatorio e ja le a opcao direto;
@@ -445,6 +445,30 @@ void MenuRelatorioListarEncontros()
     printf("\n3. Listar por Locais\n");
     printf("\n4. Voltar\n");
     printf("\n5. Voltar Menu Principal\n");
+}
+
+// ARRUMAR, FAZER LOGICA CERTA!!!!!!!!!!!!!!!!!
+void MenuRelatorioListarEncontrosPorCategoria()
+{
+    int i, j;
+    LimparTela();
+    printf("\n--- Categorias ---\n");
+    for (i = 0; i < NumCategorias; i++)
+    {
+        printf("\n- %s -\n", Categorias[i].nome);
+
+        if (strcmp(Categorias[i].nome, Encontros[i].categorias[i].nome) == 0)
+        {
+            for (j = 0; j < NumEncontros; j++)
+            {
+                printf("\nAmigo: %s\n", Encontros[i].amigos->nome);
+                printf("\nLocal: %s\n", Encontros[i].categorias->nome);
+                printf("\nData: [%02i/%02i/%i]\n", Encontros[i].data.dia, Encontros[i].data.mes, Encontros[i].data.ano);
+                printf("\nHorario: [%02ih:%02im]\n", Encontros[i].horario.hora, Encontros[i].horario.minuto);
+                printf("\nDescricao: %s \n", Encontros[i].descricao);
+            }
+        }
+    }
 }
 
 void MenuModificarAmigo()
@@ -1478,16 +1502,21 @@ void OpcaoMenuRelatorio(int op)
             MenuRelatorioListarEncontros();
             scanf("%i", &opr);
             LimparBuffer();
-            //  Fazer essa funcao!!
             OpcaoMenuRelatorioListarEncontros(opr);
             return;
         }
         break;
 
     case 5:
-
-        // LOGICA PARA LISTAR POR CATEGORIA;
-        // IDEIA QUE TIVE!!!!!!!! FAZER UM LAÇO COMUM DE CATEGORIAS E OS ENCONTROS COM ESSA CATEGORIAA, SIMPLES MAS NAO SEI COMO FAZER AINDA!!!!!!!!!!!!!!!!!!!!
+        if (NumEncontros <= 0)
+        {
+            erro = -16;
+        }
+        else
+        {
+            MenuRelatorioListarEncontrosPorCategoria();
+            return;
+        }
         break;
 
     case 6:
