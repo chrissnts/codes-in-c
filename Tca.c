@@ -335,6 +335,10 @@ void MensagemErro(int erro)
         LimparTela();
         printf("\nTodos os categorias ja adicionadas. Indo para data...");
         break;
+    case -31:
+        LimparTela();
+        printf("\nErro. Amigo qual deseja excluir esta em um encontro. Impossivel exclui-lo.");
+        break;
 
     default:
         LimparTela();
@@ -474,7 +478,6 @@ void OpcaoMenu(int op)
     {
         MensagemErro(0);
         Pausar(1);
-        Sleep(1500);
         VoltarMenuPrincipal();
     }
 
@@ -550,7 +553,6 @@ Amigo CriaAmigo()
     {
         MensagemErro(-25);
         Pausar(1);
-        Sleep(1500);
         MenuAmigo();
         scanf("%i", &op);
         LimparBuffer();
@@ -593,7 +595,6 @@ Amigo CriaAmigo()
         {
             MensagemErro(erro);
             Pausar(1);
-            Sleep(1500);
         }
     }
     return amigo;
@@ -628,7 +629,6 @@ Local CriaLocal()
     {
         MensagemErro(-26);
         Pausar(1);
-        Sleep(1500);
         MenuLocal();
         scanf("%i", &op);
         LimparBuffer();
@@ -704,7 +704,6 @@ Categoria CriaCategoria()
     {
         MensagemErro(-27);
         Pausar(1);
-        Sleep(1500);
         MenuCategoria();
         scanf("%i", &op);
         LimparBuffer();
@@ -748,7 +747,6 @@ Encontro CriaEncontro()
         {
             MensagemErro(-3);
             Pausar(1);
-            Sleep(1500);
         }
         else
         {
@@ -767,7 +765,6 @@ Encontro CriaEncontro()
             {
                 MensagemErro(-22);
                 Pausar(1);
-                Sleep(1500);
             }
             else
             {
@@ -799,7 +796,6 @@ Encontro CriaEncontro()
                     printf("\nAmigo incluido com sucesso\n");
                     encontro.numamigos++;
                     Pausar(1);
-                    Sleep(1500);
                 }
                 else
                 {
@@ -820,7 +816,7 @@ Encontro CriaEncontro()
                         if (NumAmigos <= encontro.numamigos)
                         {
                             MensagemErro(-28);
-                            Sleep(1500);
+                            Sleep(1000);
                             incluir = 0;
                         }
                         else
@@ -836,7 +832,6 @@ Encontro CriaEncontro()
                     {
                         MensagemErro(0);
                         Pausar(1);
-                        Sleep(1500);
                     }
                 }
             }
@@ -861,7 +856,6 @@ Encontro CriaEncontro()
         {
             MensagemErro(-11);
             Pausar(1);
-            Sleep(1500);
         }
         else
         {
@@ -880,7 +874,6 @@ Encontro CriaEncontro()
             {
                 MensagemErro(-23);
                 Pausar(1);
-                Sleep(1500);
             }
             else
             {
@@ -902,7 +895,6 @@ Encontro CriaEncontro()
                     printf("\nLocal incluido com sucesso\n");
                     encontro.numlocais++;
                     Pausar(1);
-                    Sleep(1500);
                 }
                 else
                 {
@@ -923,7 +915,7 @@ Encontro CriaEncontro()
                         if (NumLocais <= encontro.numlocais)
                         {
                             MensagemErro(-29);
-                            Sleep(1500);
+                            Sleep(1000);
                             incluir = 0;
                         }
                         else
@@ -939,7 +931,6 @@ Encontro CriaEncontro()
                     {
                         MensagemErro(0);
                         Pausar(1);
-                        Sleep(1500);
                     }
                 }
             }
@@ -964,7 +955,6 @@ Encontro CriaEncontro()
         {
             MensagemErro(-15);
             Pausar(1);
-            Sleep(1500);
         }
         else
         {
@@ -983,7 +973,6 @@ Encontro CriaEncontro()
             {
                 MensagemErro(-24);
                 Pausar(1);
-                Sleep(1500);
             }
             else
             {
@@ -1005,7 +994,6 @@ Encontro CriaEncontro()
                     printf("\nCategoria incluida com sucesso\n");
                     encontro.numcategorias++;
                     Pausar(1);
-                    Sleep(1500);
                 }
                 else
                 {
@@ -1026,7 +1014,7 @@ Encontro CriaEncontro()
                         if (NumCategorias <= encontro.numcategorias)
                         {
                             MensagemErro(-30);
-                            Sleep(1500);
+                            Sleep(1000);
                             incluir = 0;
                         }
                         else
@@ -1042,7 +1030,6 @@ Encontro CriaEncontro()
                     {
                         MensagemErro(0);
                         Pausar(1);
-                        Sleep(1500);
                     }
                 }
             }
@@ -1062,7 +1049,6 @@ Encontro CriaEncontro()
         {
             MensagemErro(erro);
             Pausar(1);
-            Sleep(1500);
         }
     }
 
@@ -1078,7 +1064,6 @@ Encontro CriaEncontro()
         {
             MensagemErro(erro);
             Pausar(1);
-            Sleep(1500);
         }
     }
 
@@ -1261,7 +1246,6 @@ void OpcaoMenuAmigo(int op)
     {
         MensagemErro(0);
         Pausar(1);
-        Sleep(1500);
         MenuAmigo();
         scanf("%i", &op);
         LimparBuffer();
@@ -1290,7 +1274,6 @@ void OpcaoMenuAmigo(int op)
     }
 
     Pausar(1);
-    Sleep(1500);
     MenuAmigo();
     scanf("%i", &opm);
     LimparBuffer();
@@ -1306,7 +1289,6 @@ void OpcaoMenuLocal(int op)
     {
         MensagemErro(0);
         Pausar(1);
-        Sleep(1500);
         MenuLocal();
         scanf("%i", &op);
         LimparBuffer();
@@ -1335,7 +1317,6 @@ void OpcaoMenuLocal(int op)
     }
 
     Pausar(1);
-    Sleep(1500);
     MenuLocal();
     scanf("%i", &opm);
     LimparBuffer();
@@ -1351,7 +1332,6 @@ void OpcaoMenuCategoria(int op)
     {
         MensagemErro(0);
         Pausar(1);
-        Sleep(1500);
         MenuCategoria();
         scanf("%i", &op);
         LimparBuffer();
@@ -1380,7 +1360,6 @@ void OpcaoMenuCategoria(int op)
     }
 
     Pausar(1);
-    Sleep(1500);
     MenuCategoria();
     scanf("%i", &opm);
     LimparBuffer();
@@ -1396,7 +1375,6 @@ void OpcaoMenuEncontro(int op)
     {
         MensagemErro(0);
         Pausar(1);
-        Sleep(1500);
         MenuEncontro();
         scanf("%i", &op);
         LimparBuffer();
@@ -1425,7 +1403,6 @@ void OpcaoMenuEncontro(int op)
     }
 
     Pausar(1);
-    Sleep(1500);
     MenuEncontro();
     scanf("%i", &opm);
     LimparBuffer();
@@ -1441,7 +1418,6 @@ void OpcaoMenuRelatorio(int op)
     {
         MensagemErro(0);
         Pausar(1);
-        Sleep(1500);
         VoltarMenuRelatorio();
     }
 
@@ -1526,7 +1502,6 @@ void OpcaoMenuRelatorio(int op)
     }
 
     Pausar(1);
-    Sleep(1500);
     VoltarMenuRelatorio();
 }
 
@@ -1566,7 +1541,6 @@ void OpcaoMenuRelatorioListarAmigos(int opr)
     }
 
     Pausar(1);
-    Sleep(1500);
     MenuRelatorioListarAmigos();
     scanf("%i", &aux);
     LimparBuffer();
@@ -1582,7 +1556,6 @@ void OpcaoMenuRelatorioListarLocais(int opr)
     {
         MensagemErro(0);
         Pausar(1);
-        Sleep(1500);
         MenuRelatorioListarLocais();
         scanf("%i", &opr);
         LimparBuffer();
@@ -1619,7 +1592,6 @@ void OpcaoMenuRelatorioListarLocais(int opr)
     }
 
     Pausar(1);
-    Sleep(1500);
     MenuRelatorioListarLocais();
     scanf("%i", &aux);
     LimparBuffer();
@@ -1635,7 +1607,6 @@ void OpcaoMenuRelatorioListarCategorias(int opr)
     {
         MensagemErro(0);
         Pausar(1);
-        Sleep(1500);
         MenuRelatorioListarCategorias();
         scanf("%i", &opr);
         LimparBuffer();
@@ -1660,7 +1631,6 @@ void OpcaoMenuRelatorioListarCategorias(int opr)
     }
 
     Pausar(1);
-    Sleep(1500);
     MenuRelatorioListarCategorias();
     scanf("%i", &aux);
     LimparBuffer();
@@ -1676,7 +1646,6 @@ void OpcaoMenuRelatorioListarEncontros(int opr)
     {
         MensagemErro(0);
         Pausar(1);
-        Sleep(1500);
         MenuRelatorioListarEncontros();
         scanf("%i", &opr);
         LimparBuffer();
@@ -1692,8 +1661,9 @@ void OpcaoMenuRelatorioListarEncontros(int opr)
         // erro = ListarEncontrosAmigos();
     }
     else if (opr == 3)
-    { // Fazer essa funcao ainda;
-      // erro = ListarEncontrosLocais();
+    {
+        // Fazer essa funcao ainda;
+        // erro = ListarEncontrosLocais();
     }
 
     else if (opr == 4)
@@ -1711,7 +1681,6 @@ void OpcaoMenuRelatorioListarEncontros(int opr)
     }
 
     Pausar(1);
-    Sleep(1500);
     MenuRelatorioListarEncontros();
     scanf("%i", &aux);
     LimparBuffer();
@@ -2049,7 +2018,6 @@ void AlterarAmigos(int amigo, int op)
             {
                 MensagemErro(erro);
                 Pausar(1);
-                Sleep(1500);
             }
         }
     }
@@ -2195,13 +2163,12 @@ void AlterarCategorias(int categoria)
     LimparBuffer();
 }
 
-
 int ModificarAmigos()
 {
     int amigo;
     int aux;
     char op;
-    int opm;
+    int opm = 1;
 
     if (NumAmigos <= 0)
     {
@@ -2218,11 +2185,22 @@ int ModificarAmigos()
     {
         if (NumAmigos == 1)
         {
-            LimparTela();
-            MenuModificarAmigo();
-            scanf("%i", &opm);
-            LimparBuffer();
-            AlterarAmigos(0, opm);
+            while (1)
+            {
+                LimparTela();
+                MenuModificarAmigo();
+                scanf("%i", &opm);
+                LimparBuffer();
+                if (opm < 1 || opm > 5)
+                {
+                    MensagemErro(0);
+                    Pausar(1);
+                    continue;
+                }
+
+                AlterarAmigos(0, opm);
+                break;
+            }
         }
         else
         {
@@ -2238,11 +2216,22 @@ int ModificarAmigos()
             }
             else
             {
-                LimparTela();
-                MenuModificarAmigo();
-                scanf("%i", &opm);
-                LimparBuffer();
-                AlterarAmigos(amigo, opm);
+                while (1)
+                {
+                    LimparTela();
+                    MenuModificarAmigo();
+                    scanf("%i", &opm);
+                    LimparBuffer();
+                    if (opm < 1 || opm > 5)
+                    {
+                        MensagemErro(0);
+                        Pausar(1);
+                        continue;
+                    }
+
+                    AlterarAmigos(amigo, opm);
+                    break;
+                }
             }
         }
     }
@@ -2264,7 +2253,6 @@ int ModificarAmigos()
 
     return 1;
 }
-
 
 int ModificarLocais()
 {
@@ -2289,11 +2277,23 @@ int ModificarLocais()
     {
         if (NumLocais == 1)
         {
-            LimparTela();
-            MenuModificarLocais();
-            scanf("%i", &opm);
-            LimparBuffer();
-            AlterarLocais(0, opm);
+
+            while (1)
+            {
+                LimparTela();
+                MenuModificarLocais();
+                scanf("%i", &opm);
+                LimparBuffer();
+                if (opm < 1 || opm > 6)
+                {
+                    MensagemErro(0);
+                    Pausar(1);
+                    continue;
+                }
+
+                AlterarLocais(0, opm);
+                break;
+            }
         }
         else
         {
@@ -2309,11 +2309,22 @@ int ModificarLocais()
             }
             else
             {
-                LimparTela();
-                MenuModificarLocais();
-                scanf("%i", &opm);
-                LimparBuffer();
-                AlterarLocais(local, opm);
+                while (1)
+                {
+                    LimparTela();
+                    MenuModificarLocais();
+                    scanf("%i", &opm);
+                    LimparBuffer();
+                    if (opm < 1 || opm > 6)
+                    {
+                        MensagemErro(0);
+                        Pausar(1);
+                        continue;
+                    }
+
+                    AlterarLocais(local, opm);
+                    break;
+                }
             }
         }
     }
@@ -2335,7 +2346,6 @@ int ModificarLocais()
 
     return 1;
 }
-
 
 int ModificarCategorias()
 {
@@ -2399,7 +2409,6 @@ int ModificarCategorias()
     return 1;
 }
 
-
 int DeletarAmigos()
 {
     int amigo;
@@ -2421,7 +2430,15 @@ int DeletarAmigos()
     {
         if (NumAmigos == 1)
         {
-            ExcluirAmigos(0);
+            for (int i = 0; i < Encontros->numamigos; i++)
+            {
+                if (strcmp(Amigos[0].nome, Encontros[i].amigos[i].nome) == 0)
+                {
+                    return -31;
+                    break;
+                }
+                ExcluirAmigos(0);
+            }
         }
         else
         {
@@ -2437,7 +2454,16 @@ int DeletarAmigos()
             }
             else
             {
-                ExcluirAmigos(amigo);
+                // COM ERRO!!!!!!!! ARRUMARRR
+                for (int i = 0; i < Encontros->numamigos; i++)
+                {
+                    if (strcmp(Amigos[amigo].nome, Encontros[i].amigos[i].nome) == 0)
+                    {
+                        return -31;
+                        break;
+                    }
+                    ExcluirAmigos(amigo);
+                }
             }
         }
     }
@@ -2458,7 +2484,6 @@ int DeletarAmigos()
     printf("\nExclusao Sucedida.\n");
     return 1;
 }
-
 
 int DeletarLocais()
 {
@@ -2519,7 +2544,6 @@ int DeletarLocais()
     printf("\nExclusao bem sucedida.\n");
     return 1;
 }
-
 
 int DeletarCategorias()
 {
@@ -2675,7 +2699,7 @@ void LimpaPonteiroCategoria(Categoria *categoria)
 
 void LimpaPonteiroEncontro(Encontro *encontro)
 {
-    // Fazer funcao para limpar os ponteiros de encontro;
+
     free(encontro->amigos->nome);
     free(encontro->amigos->apelido);
     free(encontro->amigos->email);
@@ -2744,22 +2768,22 @@ void Pausar(int pause)
 }
 void LimparBuffer()
 {
-    #ifdef _WIN32
+#ifdef _WIN32
     fflush(stdin);
 #elif __linux__
     __fpurge(stdin);
 #else
-    #error "Sistema operacional não suportado."
+#error "Sistema operacional não suportado."
 #endif
 }
 
 void LimparTela()
 {
-    #ifdef _WIN32
+#ifdef _WIN32
     system("cls");
 #elif __linux__
-    system("clear");
+    system("clear")
 #else
-    #error "Sistema operacional não suportado."
+#error "Sistema operacional não suportado."
 #endif
 }
