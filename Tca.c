@@ -72,7 +72,8 @@ typedef struct
 } Encontro;
 
 // COISAS IMPORTANTES!!
-// NAO DEIXAR O USUARIO EXCLUIR UM AMIGO SE ELE ESTIVER EM UM ENCONTRO;
+// NAO DEIXAR O USUARIO EXCLUIR UM AMIGO SE ELE ESTIVER EM UM ENCONTRO (OU PERGUNTAR SE O USUARIO REALMENTE QUER, SE ELE QUISER ENTAO DELETAR O ENCONTRO);
+// EXCLUIR AS INFORMACOES DO ENCONTRO SE AS INFORMACOES FOREM EXCLUIDAS NORMALMENTE;
 
 void MensagemErro(int erro); // imprime mensagens de erro;
 
@@ -174,6 +175,7 @@ int main()
 
     while (op != 6)
     {
+
         VoltarMenuPrincipal();
     }
 
@@ -447,26 +449,29 @@ void MenuRelatorioListarEncontros()
     printf("\n5. Voltar Menu Principal\n");
 }
 
-// ARRUMAR, FAZER LOGICA CERTA!!!!!!!!!!!!!!!!!
+// ARRUMAR, VOU FICAR MALUCO!!!!!!!!!!!!!!!!!!!!!!!!!!!
 void MenuRelatorioListarEncontrosPorCategoria()
 {
     int i, j;
     LimparTela();
     printf("\n--- Categorias ---\n");
-    for (i = 0; i < NumCategorias; i++)
-    {
-        printf("\n- %s -\n", Categorias[i].nome);
 
-        if (strcmp(Categorias[i].nome, Encontros[i].categorias[i].nome) == 0)
+    for (i = 0; i < Encontros->numcategorias; i++)
+    {
+        printf("\n- %s -\n", Encontros[i].categorias->nome);
+
+        for (j = 0; j < NumEncontros; j++)
         {
-            for (j = 0; j < NumEncontros; j++)
+            if (strcmp(Encontros[j].categorias->nome, Categorias[i].nome) == 0)
             {
-                printf("\nAmigo: %s\n", Encontros[i].amigos->nome);
-                printf("\nLocal: %s\n", Encontros[i].categorias->nome);
-                printf("\nData: [%02i/%02i/%i]\n", Encontros[i].data.dia, Encontros[i].data.mes, Encontros[i].data.ano);
-                printf("\nHorario: [%02ih:%02im]\n", Encontros[i].horario.hora, Encontros[i].horario.minuto);
-                printf("\nDescricao: %s \n", Encontros[i].descricao);
+                printf("\nAmigo: %s\n", Encontros[j].amigos->nome);
+                printf("\nLocal: %s\n", Encontros[j].categorias->nome);
+                printf("\nData: [%02i/%02i/%i]\n", Encontros[j].data.dia, Encontros[j].data.mes, Encontros[j].data.ano);
+                printf("\nHorario: [%02ih:%02im]\n", Encontros[j].horario.hora, Encontros[j].horario.minuto);
+                printf("\nDescricao: %s \n", Encontros[j].descricao);
+                printf("\n");
             }
+
         }
     }
 }
@@ -817,8 +822,9 @@ Encontro CriaEncontro()
                     encontro.amigos[encontro.numamigos].datanasc.ano = Amigos[amigo].datanasc.ano;
                     */
                     LimparTela();
-                    printf("\nAmigo incluido com sucesso\n");
+                    printf("\nAmigo incluido com sucesso.\n");
                     encontro.numamigos++;
+                    Encontros->numamigos++;
                     Pausar(1);
                 }
                 else
@@ -916,8 +922,9 @@ Encontro CriaEncontro()
                     encontro.locais[encontro.numlocais].nome_local = (char *)malloc((strlen(Locais[local].nome_local) + 1) * sizeof(char));
                     strcpy(encontro.locais[encontro.numlocais].nome_local, Locais[local].nome_local);
                     LimparTela();
-                    printf("\nLocal incluido com sucesso\n");
+                    printf("\nLocal incluido com sucesso.\n");
                     encontro.numlocais++;
+                    Encontros->numlocais++;
                     Pausar(1);
                 }
                 else
@@ -1015,8 +1022,9 @@ Encontro CriaEncontro()
                     encontro.categorias[encontro.numcategorias].nome = (char *)malloc((strlen(Categorias[categoria].nome) + 1) * sizeof(char));
                     strcpy(encontro.categorias[encontro.numcategorias].nome, Categorias[categoria].nome);
                     LimparTela();
-                    printf("\nCategoria incluida com sucesso\n");
+                    printf("\nCategoria incluida com sucesso.\n");
                     encontro.numcategorias++;
+                    Encontros->numcategorias++;
                     Pausar(1);
                 }
                 else
@@ -1515,7 +1523,7 @@ void OpcaoMenuRelatorio(int op)
         else
         {
             MenuRelatorioListarEncontrosPorCategoria();
-            return;
+            // testar;
         }
         break;
 
@@ -2780,7 +2788,7 @@ int ValidarHorario(int hora, int min)
     {
         return -20;
     }
-    else if (min <= 0 || min >= 60)
+    else if (min < 1 || min > 60)
     {
         return -21;
     }
