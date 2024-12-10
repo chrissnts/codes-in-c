@@ -74,6 +74,7 @@ typedef struct
 // COISAS IMPORTANTES!!
 // NAO DEIXAR O USUARIO EXCLUIR UM AMIGO SE ELE ESTIVER EM UM ENCONTRO (OU PERGUNTAR SE O USUARIO REALMENTE QUER, SE ELE QUISER ENTAO DELETAR O ENCONTRO);
 // EXCLUIR AS INFORMACOES DO ENCONTRO SE AS INFORMACOES FOREM EXCLUIDAS NORMALMENTE;
+// QUANDO TEM UMA CATEGORIA, MAS NAO TEM UM ENCONTRO COM ELA, NAO ERA PRA MOSTRA (TEM QUE ARRUMAR ISSO!)!!!!!!!!!!!!;
 
 void MensagemErro(int erro); // imprime mensagens de erro;
 
@@ -449,29 +450,35 @@ void MenuRelatorioListarEncontros()
     printf("\n5. Voltar Menu Principal\n");
 }
 
-// ARRUMAR, VOU FICAR MALUCO!!!!!!!!!!!!!!!!!!!!!!!!!!!
 void MenuRelatorioListarEncontrosPorCategoria()
 {
     int i, j;
     LimparTela();
-    printf("\n--- Categorias ---\n");
 
-    for (i = 0; i < Encontros->numcategorias; i++)
+    for (i = 0; i < NumCategorias; i++)
     {
-        printf("\n- %s -\n", Encontros[i].categorias->nome);
+        printf("\nCategoria: %s\n", Encontros[i].categorias->nome);
+        printf("---------------------------\n");
+        int encontrou = 0;
 
         for (j = 0; j < NumEncontros; j++)
         {
             if (strcmp(Encontros[j].categorias->nome, Categorias[i].nome) == 0)
             {
-                printf("\nAmigo: %s\n", Encontros[j].amigos->nome);
-                printf("\nLocal: %s\n", Encontros[j].categorias->nome);
-                printf("\nData: [%02i/%02i/%i]\n", Encontros[j].data.dia, Encontros[j].data.mes, Encontros[j].data.ano);
-                printf("\nHorario: [%02ih:%02im]\n", Encontros[j].horario.hora, Encontros[j].horario.minuto);
-                printf("\nDescricao: %s \n", Encontros[j].descricao);
-                printf("\n");
-            }
+                encontrou = 1;
+                printf("Amigo: %s\n", Encontros[j].amigos->nome);
+                printf("Local: %s\n", Encontros[j].locais->nome_local);
+                printf("Data: [%02d/%02d/%04d]\n", Encontros[j].data.dia, Encontros[j].data.mes, Encontros[j].data.ano);
+                printf("Horario: [%02d:%02d]\n", Encontros[j].horario.hora, Encontros[j].horario.minuto);
+                printf("Descricao: %s\n", Encontros[j].descricao);
+                printf("---------------------------\n");
 
+            }
+        }
+
+        if (!encontrou)
+        {
+            printf("\nNenhum encontro encontrado para esta categoria.\n");
         }
     }
 }
@@ -1738,7 +1745,9 @@ int ListarAmigos()
     {
         printf("\n");
         printf("\n-- Amigo [%i] --\n", i + 1);
+        printf("---------------------------\n");
         ImprimirAmigos(Amigos[i]);
+        printf("---------------------------\n");
     }
 
     return 1;
@@ -1767,7 +1776,9 @@ int ListarAmigosPorApelido()
         {
             printf("\n");
             printf("\n-- Amigo [%i] --\n", i + 1);
+            printf("---------------------------\n");
             ImprimirAmigos(Amigos[i]);
+            printf("---------------------------\n");
             encontrado = 1;
         }
     }
@@ -1794,7 +1805,9 @@ int ListarLocais()
     {
         printf("\n");
         printf("\n-- Local  [%i] --\n", i + 1);
+        printf("---------------------------\n");
         ImprimirLocais(Locais[i]);
+        printf("---------------------------\n");
     }
 
     return 1;
@@ -1823,7 +1836,9 @@ int ListarLocaisPorEstado()
         {
             printf("\n");
             printf("\n-- Local  [%i] --\n", i + 1);
+            printf("---------------------------\n");
             ImprimirLocais(Locais[i]);
+            printf("---------------------------\n");
             encontrado = 1;
         }
     }
@@ -1858,7 +1873,9 @@ int ListarLocaisPorCidade()
         {
             printf("\n");
             printf("\n-- Local  [%i] --\n", i + 1);
+            printf("---------------------------\n");
             ImprimirLocais(Locais[i]);
+            printf("---------------------------\n");
             encontrado = 1;
         }
     }
@@ -1894,7 +1911,9 @@ int ListarLocaisPorBairro()
         {
             printf("\n");
             printf("\n-- Local  [%i] --\n", i + 1);
+            printf("---------------------------\n");
             ImprimirLocais(Locais[i]);
+            printf("---------------------------\n");
             encontrado = 1;
         }
     }
@@ -1921,7 +1940,9 @@ int ListarCategorias()
     {
         printf("\n");
         printf("\n-- Categoria  [%i] --\n", i + 1);
+        printf("---------------------------\n");
         ImprimirCategorias(Categorias[i]);
+        printf("---------------------------\n");
     }
 
     return 1;
@@ -1941,7 +1962,9 @@ int ListarEncontros()
     {
         printf("\n");
         printf("\n-- Encontro  [%i] --\n", i + 1);
+        printf("---------------------------\n");
         ImprimirEncontros(Encontros[i]);
+        printf("---------------------------\n");
     }
 
     return 1;
