@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <windows.h>
 
 #define TAM 3
 
@@ -14,13 +15,9 @@ int jogador = 2;
 int tabuleiro[TAM][TAM];
 
 int main(){
-    
-    
     int jogada;
-    int i, j;
     int erro = -1;
-
-
+    
     while (erro <= 0){ 
         ImprimirTabuleiro();
         scanf("%i", &jogada);

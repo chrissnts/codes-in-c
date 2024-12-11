@@ -77,8 +77,6 @@ typedef struct
 // USARA TOKEN QUANDO FOR MANIPULAR ARQUIVO (MAIS FACIL);
 // QUANDO TEM UMA CATEGORIA, MAS NAO TEM UM ENCONTRO COM ELA, NAO ERA PRA MOSTRA (TEM QUE ARRUMAR ISSO!)!!!!!!!!!!!!;
 
-
-
 void MensagemErro(int erro); // imprime mensagens de erro;
 
 void Menu();                // imprime menu principal;
@@ -90,11 +88,10 @@ void MenuRelatorio();       // imprime menu relatorio;
 void MenuModificarAmigo();  // imprime menu para qual o usuario deseja modificar;
 void MenuModificarLocais(); // imprime menu para qual o usuario deseja modificar;
 
-void MenuRelatorioListarAmigos();                // menu para perguntar se sera listados todos ou especifico por apelido;
-void MenuRelatorioListarLocais();                // menu para perguntar se sera listados todos ou especifico;
-void MenuRelatorioListarCategorias();            // menu para perguntar se sera listado;
-void MenuRelatorioListarEncontros();             // menu para perguntar se sera listado;
-void MenuRelatorioListarEncontrosPorCategoria(); // menu para perguntar por qual categoria quer que liste;
+void MenuRelatorioListarAmigos();     // menu para perguntar se sera listados todos ou especifico por apelido;
+void MenuRelatorioListarLocais();     // menu para perguntar se sera listados todos ou especifico;
+void MenuRelatorioListarCategorias(); // menu para perguntar se sera listado;
+void MenuRelatorioListarEncontros();  // menu para perguntar se sera listado;
 
 void OpcaoMenu(int op);          // recebe opcao do menu, faz a validacao e procede;
 void OpcaoMenuAmigo(int op);     // recebe opcao do menu de amigos, faz validacao e procede;
@@ -111,7 +108,7 @@ void OpcaoMenuRelatorioListarEncontros(int opr);  // recebe a opcao se vai ser t
 void ImprimirAmigos(Amigo amigos);             // imprime amigos;
 void ImprimirLocais(Local locais);             // imprime locais;
 void ImprimirCategorias(Categoria categorias); // imprime categorias;
-void ImprimirEncontros(Encontro encontros);    // imprime encontros; -
+void ImprimirEncontros(Encontro encontros);    // imprime encontros;
 
 void AlterarAmigos(int amigo, int op);        // modifica os dados do amigo na hora de Alterar;
 void AlterarLocais(int local, int op);        // modifica os dados do local na hora de Alterar;
@@ -128,7 +125,7 @@ void VoltarMenuRelatorio(); // volta/chama o menu de relatorio e ja le a opcao d
 void LimpaPonteiroAmigo(Amigo *amigo);             // limpa o ponteiro de amigos;
 void LimpaPonteiroLocal(Local *local);             // limpa o ponteiro de locais;
 void LimpaPonteiroCategoria(Categoria *categoria); // limpa ponteiro de categorias;
-void LimpaPonteiroEncontro(Encontro *encontro);    // limpa ponteiro de encontros; ---------
+void LimpaPonteiroEncontro(Encontro *encontro);    // limpa ponteiro de encontros;
 
 void Pausar(int pause); // verifica se o pause eh true ou false e pausa;
 void LimparBuffer();    // limpa o buffer do teclado;
@@ -137,24 +134,26 @@ void LimparTela();      // limpa a tela (criei por conta da miseria do linux);
 int IncluirAmigos();       // inclui na funcao o amigo criado na funcao "cria amigo";
 int IncluirLocais();       // inclui na funcao o local criado na funcao "cria local";
 int IncluirCategorias();   // inlcui na funcao o encontro criado na funcao "cria categoria"
-int IncluirEncontros();    // inlcui na funcao o encontro criado na funcao "cria encontro" ---------------
+int IncluirEncontros();    // inlcui na funcao o encontro criado na funcao "cria encontro"
 int ModificarAmigos();     // alterar amigo;
 int ModificarLocais();     // alterar local;
 int ModificarCategorias(); // alterar categorias;
-int ModificarEncontros();  // alterar encontros; --------------
+int ModificarEncontros();  // alterar encontros;
 int DeletarAmigos();       // deleta um amigo;
 int DeletarLocais();       // deleta um local;
 int DeletarCategorias();   // deleta uma categoria;
-int DeletarEncontros();    // deleta um encontro; --------
+int DeletarEncontros();    // deleta um encontro;
 
-int ListarAmigos();           // lista os amigos que ja estao cadastrados;
-int ListarAmigosPorApelido(); // faz a logica de listar amigo por apelido;
-int ListarLocais();           // lista os locais que ja estao cadastrados;
-int ListarLocaisPorEstado();  // faz a logica de listar locais por estado;
-int ListarLocaisPorCidade();  // faz a logica de listar locais por cidade;
-int ListarLocaisPorBairro();  // faz a logica de listar locais por bairro;
-int ListarCategorias();       // lista as categorias que ja estao cadastradas;
-int ListarEncontros();        // lista os encontros que ja estao cadastradao; ---------
+int ListarAmigos();                  // lista os amigos que ja estao cadastrados;
+int ListarAmigosPorApelido();        // faz a logica de listar amigo por apelido;
+int ListarLocais();                  // lista os locais que ja estao cadastrados;
+int ListarLocaisPorEstado();         // faz a logica de listar locais por estado;
+int ListarLocaisPorCidade();         // faz a logica de listar locais por cidade;
+int ListarLocaisPorBairro();         // faz a logica de listar locais por bairro;
+int ListarCategorias();              // lista as categorias que ja estao cadastradas;
+int ListarEncontros();               // lista os encontros que ja estao cadastradao;
+int ListarEncontrosPorAmigos();      // busca pelos encontros com esse amgio;
+void ListarEncontrosPorCategorias(); // mostrar em qual categoria esta cada encontro (imprimindo os mesmo);
 
 int ValidarData(int dia, int mes, int ano); // valida data que o usuario digitar;
 int Bissexto(int ano);                      // verifica se o ano eh bissexto para poder arrumar dias e mes
@@ -287,7 +286,7 @@ void MensagemErro(int erro)
 
     case -19:
         LimparTela();
-        printf("\nErro. Amigos, Locais ou Categorias vazias, inclua todos.\n");
+        printf("\nErro. Encontro invalido ou nao encontrado.\n");
         break;
 
     case -20:
@@ -333,15 +332,8 @@ void MensagemErro(int erro)
         LimparTela();
         printf("\nTodos os amigos ja adicionados. Indo para locais...");
         break;
-    case -29:
-        LimparTela();
-        printf("\nTodos os locais ja adicionados. Indo para categoria...");
-        break;
+
     case -30:
-        LimparTela();
-        printf("\nTodos os categorias ja adicionadas. Indo para data...");
-        break;
-    case -31:
         LimparTela();
         printf("\nErro. Amigo qual deseja excluir esta em um encontro. Impossivel exclui-lo.");
         break;
@@ -448,42 +440,8 @@ void MenuRelatorioListarEncontros()
     LimparTela();
     printf("\n1. Listar Todos\n");
     printf("\n2. Listar por Amigos\n");
-    printf("\n3. Listar por Locais\n");
-    printf("\n4. Voltar\n");
-    printf("\n5. Voltar Menu Principal\n");
-}
-
-void MenuRelatorioListarEncontrosPorCategoria()
-{
-    int i, j;
-    LimparTela();
-
-    for (i = 0; i < NumCategorias; i++)
-    {
-        printf("\nCategoria: %s\n", Encontros[i].categorias->nome);
-        printf("---------------------------\n");
-        int encontrou = 0;
-
-        for (j = 0; j < NumEncontros; j++)
-        {
-            if (strcmp(Encontros[j].categorias->nome, Categorias[i].nome) == 0)
-            {
-                encontrou = 1;
-                printf("Amigo: %s\n", Encontros[j].amigos->nome);
-                printf("Local: %s\n", Encontros[j].locais->nome_local);
-                printf("Data: [%02d/%02d/%04d]\n", Encontros[j].data.dia, Encontros[j].data.mes, Encontros[j].data.ano);
-                printf("Horario: [%02d:%02d]\n", Encontros[j].horario.hora, Encontros[j].horario.minuto);
-                printf("Descricao: %s\n", Encontros[j].descricao);
-                printf("---------------------------\n");
-
-            }
-        }
-
-        if (!encontrou)
-        {
-            printf("\nNenhum encontro encontrado para esta categoria.\n");
-        }
-    }
+    printf("\n3. Voltar\n");
+    printf("\n4. Voltar Menu Principal\n");
 }
 
 void MenuModificarAmigo()
@@ -572,8 +530,7 @@ Amigo CriaAmigo()
 
     LimparTela();
     printf("\nNome:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(strAux);
     amigo.nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(amigo.nome, strAux);
     LimparBuffer();
@@ -600,24 +557,21 @@ Amigo CriaAmigo()
 
     LimparTela();
     printf("\nApelido:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(strAux);
     amigo.apelido = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(amigo.apelido, strAux);
     LimparBuffer();
 
     LimparTela();
     printf("\nEmail:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(strAux);
     amigo.email = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(amigo.email, strAux);
     LimparBuffer();
 
     LimparTela();
     printf("\nTelefone:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(strAux);
     amigo.telefone = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(amigo.telefone, strAux);
     LimparBuffer();
@@ -648,8 +602,7 @@ Local CriaLocal()
 
     LimparTela();
     printf("\nNome do Local:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(strAux);
     local.nome_local = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(local.nome_local, strAux);
     LimparBuffer();
@@ -676,32 +629,28 @@ Local CriaLocal()
 
     LimparTela();
     printf("\nEstado:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(strAux);
     local.endereco.estado = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(local.endereco.estado, strAux);
     LimparBuffer();
 
     LimparTela();
     printf("\nCidade:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(strAux);
     local.endereco.cidade = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(local.endereco.cidade, strAux);
     LimparBuffer();
 
     LimparTela();
     printf("\nBairro:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(strAux);
     local.endereco.bairro = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(local.endereco.bairro, strAux);
     LimparBuffer();
 
     LimparTela();
     printf("\nLogradouro:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(strAux);
     local.endereco.logradouro = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(local.endereco.logradouro, strAux);
     LimparBuffer();
@@ -723,8 +672,7 @@ Categoria CriaCategoria()
 
     LimparTela();
     printf("\nCategoria:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(strAux);
     categoria.nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(categoria.nome, strAux);
     LimparBuffer();
@@ -789,6 +737,7 @@ Encontro CriaEncontro()
         }
         else
         {
+            // verifica se ja existe um amigo com o mesmo nome;
             int amigonoencontro = 0;
 
             for (i = 0; i < encontro.numamigos; i++)
@@ -821,16 +770,6 @@ Encontro CriaEncontro()
                 {
                     encontro.amigos[encontro.numamigos].nome = (char *)malloc((strlen(Amigos[amigo].nome) + 1) * sizeof(char));
                     strcpy(encontro.amigos[encontro.numamigos].nome, Amigos[amigo].nome);
-                    /*encontro.amigos[encontro.numamigos].apelido = (char *)malloc((strlen(Amigos[amigo].apelido) + 1) * sizeof(char));
-                    strcpy(encontro.amigos[encontro.numamigos].apelido, Amigos[amigo].apelido);
-                    encontro.amigos[encontro.numamigos].email = (char *)malloc((strlen(Amigos[amigo].email) + 1) * sizeof(char));
-                    strcpy(encontro.amigos[encontro.numamigos].email, Amigos[amigo].email);
-                    encontro.amigos[encontro.numamigos].telefone = (char *)malloc((strlen(Amigos[amigo].telefone) + 1) * sizeof(char));
-                    strcpy(encontro.amigos[encontro.numamigos].telefone, Amigos[amigo].telefone);
-                    encontro.amigos[encontro.numamigos].datanasc.dia = Amigos[amigo].datanasc.dia;
-                    encontro.amigos[encontro.numamigos].datanasc.mes = Amigos[amigo].datanasc.mes;
-                    encontro.amigos[encontro.numamigos].datanasc.ano = Amigos[amigo].datanasc.ano;
-                    */
                     LimparTela();
                     printf("\nAmigo incluido com sucesso.\n");
                     encontro.numamigos++;
@@ -842,15 +781,23 @@ Encontro CriaEncontro()
                     MensagemErro(-7);
                     exit(0);
                 }
-
+                
+                // NAO TA FUNCIONANDO!!!!!
+                if (NumAmigos == 1)
+                {
+                    incluir = 0;
+                }
+                // DE ALGUMA FORMA, FAZER ENTRAR 2 AMIGOS EM 1 ENCONTRO SO, SEM SOBREESCREVER, E DEPOIS AINDA IMPRIMIR ISSO (QUE TRABALHEIRAAAA)!!!!!!!!!!!!!!!!!!
                 op = 'x';
                 while (op != 's' && op != 'n')
                 {
+
                     LimparTela();
-                    printf("\nDeseja incluir mais algum amigo? (s) (n)\n");
+                    printf("\nDeseja incluir mais algum amigo no encontro? (s) (n)\n");
                     scanf("%c", &op);
                     LimparBuffer();
                     op = tolower(op);
+                    // verifica se pode adicionar mais um amigo ou nao (se o tanto de amigos nao ultrapassa o tanto do encontros);
                     if (op == 's')
                     {
                         if (NumAmigos <= encontro.numamigos)
@@ -878,203 +825,93 @@ Encontro CriaEncontro()
         }
     }
 
-    incluir = 1;
-    while (incluir)
+    LimparTela();
+    printf("\n--- Locais ---\n");
+    for (i = 0; i < NumLocais; i++)
     {
-        LimparTela();
-        printf("\n--- Locais ---\n");
-        for (i = 0; i < NumLocais; i++)
+        printf("\n%i. %s\n", i + 1, Locais[i].nome_local);
+    }
+
+    printf("\nDigite o local que deseja ir com o amigo:\n");
+    scanf("%i", &local);
+    LimparBuffer();
+    local--;
+    if (local < 0 || local >= NumLocais)
+    {
+        MensagemErro(-11);
+        Pausar(1);
+    }
+    else
+    {
+
+        if (encontro.locais == 0)
         {
-            printf("\n%i. %s\n", i + 1, Locais[i].nome_local);
+            encontro.locais = (Local *)malloc(1 * sizeof(Local));
+        }
+        else
+        {
+            encontro.locais = (Local *)realloc(encontro.locais, (encontro.numlocais + 1) * sizeof(Local));
         }
 
-        printf("\nDigite o local que deseja ir com o amigo:\n");
-        scanf("%i", &local);
-        LimparBuffer();
-        local--;
-        if (local < 0 || local >= NumLocais)
+        if (encontro.locais != NULL)
         {
-            MensagemErro(-11);
+            encontro.locais[encontro.numlocais].nome_local = (char *)malloc((strlen(Locais[local].nome_local) + 1) * sizeof(char));
+            strcpy(encontro.locais[encontro.numlocais].nome_local, Locais[local].nome_local);
+            LimparTela();
+            printf("\nLocal incluido com sucesso.\n");
+            encontro.numlocais++;
+            Encontros->numlocais++;
             Pausar(1);
         }
         else
         {
-            int localnoencontro = 0;
-
-            for (i = 0; i < encontro.numlocais; i++)
-            {
-                if (strcmp(Locais[local].nome_local, encontro.locais[i].nome_local) == 0)
-                {
-                    localnoencontro = 1;
-                    break;
-                }
-            }
-
-            if (localnoencontro)
-            {
-                MensagemErro(-23);
-                Pausar(1);
-            }
-            else
-            {
-
-                if (encontro.locais == 0)
-                {
-                    encontro.locais = (Local *)malloc(1 * sizeof(Local));
-                }
-                else
-                {
-                    encontro.locais = (Local *)realloc(encontro.locais, (encontro.numlocais + 1) * sizeof(Local));
-                }
-
-                if (encontro.locais != NULL)
-                {
-                    encontro.locais[encontro.numlocais].nome_local = (char *)malloc((strlen(Locais[local].nome_local) + 1) * sizeof(char));
-                    strcpy(encontro.locais[encontro.numlocais].nome_local, Locais[local].nome_local);
-                    LimparTela();
-                    printf("\nLocal incluido com sucesso.\n");
-                    encontro.numlocais++;
-                    Encontros->numlocais++;
-                    Pausar(1);
-                }
-                else
-                {
-                    MensagemErro(-7);
-                    exit(0);
-                }
-
-                op = 'x';
-                while (op != 's' && op != 'n')
-                {
-                    LimparTela();
-                    printf("\nDeseja incluir mais algum local? (s) (n)\n");
-                    scanf("%c", &op);
-                    LimparBuffer();
-                    op = tolower(op);
-                    if (op == 's')
-                    {
-                        if (NumLocais <= encontro.numlocais)
-                        {
-                            MensagemErro(-29);
-                            Sleep(1000);
-                            incluir = 0;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    else if (op == 'n')
-                    {
-                        incluir = 0;
-                    }
-                    else
-                    {
-                        MensagemErro(0);
-                        Pausar(1);
-                    }
-                }
-            }
+            MensagemErro(-7);
+            exit(0);
         }
     }
 
-    incluir = 1;
-    while (incluir)
+    LimparTela();
+    printf("\n--- Categorias ---\n");
+    for (i = 0; i < NumCategorias; i++)
     {
-        LimparTela();
-        printf("\n--- Categorias ---\n");
-        for (i = 0; i < NumCategorias; i++)
+        printf("\n%i. %s\n", i + 1, Categorias[i].nome);
+    }
+
+    printf("\nDigite a categoria que deseja incluir no encontro:\n");
+    scanf("%i", &categoria);
+    LimparBuffer();
+    categoria--;
+    if (categoria < 0 || categoria >= NumCategorias)
+    {
+        MensagemErro(-15);
+        Pausar(1);
+    }
+    else
+    {
+
+        if (encontro.categorias == 0)
         {
-            printf("\n%i. %s\n", i + 1, Categorias[i].nome);
+            encontro.categorias = (Categoria *)malloc(1 * sizeof(Categoria));
+        }
+        else
+        {
+            encontro.categorias = (Categoria *)realloc(encontro.categorias, (encontro.numcategorias + 1) * sizeof(Categoria));
         }
 
-        printf("\nDigite a categoria que deseja incluir no encontro:\n");
-        scanf("%i", &categoria);
-        LimparBuffer();
-        categoria--;
-        if (categoria < 0 || categoria >= NumCategorias)
+        if (encontro.categorias != NULL)
         {
-            MensagemErro(-15);
+            encontro.categorias[encontro.numcategorias].nome = (char *)malloc((strlen(Categorias[categoria].nome) + 1) * sizeof(char));
+            strcpy(encontro.categorias[encontro.numcategorias].nome, Categorias[categoria].nome);
+            LimparTela();
+            printf("\nCategoria incluida com sucesso.\n");
+            encontro.numcategorias++;
+            Encontros->numcategorias++;
             Pausar(1);
         }
         else
         {
-            int categorianoencontro = 0;
-
-            for (i = 0; i < encontro.numcategorias; i++)
-            {
-                if (strcmp(Categorias[categoria].nome, encontro.categorias[i].nome) == 0)
-                {
-                    categorianoencontro = 1;
-                    break;
-                }
-            }
-
-            if (categorianoencontro)
-            {
-                MensagemErro(-24);
-                Pausar(1);
-            }
-            else
-            {
-
-                if (encontro.categorias == 0)
-                {
-                    encontro.categorias = (Categoria *)malloc(1 * sizeof(Categoria));
-                }
-                else
-                {
-                    encontro.categorias = (Categoria *)realloc(encontro.categorias, (encontro.numcategorias + 1) * sizeof(Categoria));
-                }
-
-                if (encontro.categorias != NULL)
-                {
-                    encontro.categorias[encontro.numcategorias].nome = (char *)malloc((strlen(Categorias[categoria].nome) + 1) * sizeof(char));
-                    strcpy(encontro.categorias[encontro.numcategorias].nome, Categorias[categoria].nome);
-                    LimparTela();
-                    printf("\nCategoria incluida com sucesso.\n");
-                    encontro.numcategorias++;
-                    Encontros->numcategorias++;
-                    Pausar(1);
-                }
-                else
-                {
-                    MensagemErro(-7);
-                    exit(0);
-                }
-
-                op = 'x';
-                while (op != 's' && op != 'n')
-                {
-                    LimparTela();
-                    printf("\nDeseja incluir mais alguma categoria? (s) (n)\n");
-                    scanf("%c", &op);
-                    LimparBuffer();
-                    op = tolower(op);
-                    if (op == 's')
-                    {
-                        if (NumCategorias <= encontro.numcategorias)
-                        {
-                            MensagemErro(-30);
-                            Sleep(1000);
-                            incluir = 0;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    else if (op == 'n')
-                    {
-                        incluir = 0;
-                    }
-                    else
-                    {
-                        MensagemErro(0);
-                        Pausar(1);
-                    }
-                }
-            }
+            MensagemErro(-7);
+            exit(0);
         }
     }
 
@@ -1110,8 +947,7 @@ Encontro CriaEncontro()
     }
 
     printf("\nDescricao do encontro:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(strAux);
     encontro.descricao = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(encontro.descricao, strAux);
     LimparBuffer();
@@ -1216,9 +1052,17 @@ int IncluirEncontros()
         return -18;
     }
 
-    if (NumAmigos <= 0 || NumLocais <= 0 || NumCategorias <= 0)
+    if (NumAmigos <= 0)
     {
-        return -19;
+        return -2;
+    }
+    else if (NumLocais <= 0)
+    {
+        return -5;
+    }
+    else if (NumCategorias <= 0)
+    {
+        return -14;
     }
 
     if (NumEncontros == 0)
@@ -1270,7 +1114,32 @@ void ImprimirCategorias(Categoria categorias)
 
 void ImprimirEncontros(Encontro encontros)
 {
-    printf("\nAmigo: %s\n", encontros.amigos->nome);
+    int i;
+
+    // PENSAAAAAAAAAAAAAAAAAAR!!!!!!!!!!!!!!!!!
+    if (Encontros->numamigos == 1)
+    {
+        printf("\nAmigo: %s\n", encontros.amigos->nome);
+    }
+    else
+    {
+        printf("\nentrou no else\n");
+        // PENSAR EM UM JEITO DE LISTAR MAIS DE UM AMIGO SE PRESCISAR.
+        for (i = 0; i < Encontros->numamigos; i++)
+        {
+            if (encontros.amigos->nome != NULL)
+            {
+                printf("\nAmigo %i: %s\n", i + 1, encontros.amigos[i].nome);
+    
+            }
+            else
+            {
+                printf("\nErro ao acessar nome do amigo.\n");
+                break;
+            }
+        }
+    }
+
     printf("\nCategoria: %s\n", encontros.categorias->nome);
     printf("\nLocal: %s\n", encontros.categorias->nome);
     printf("\nData: [%02i/%02i/%i]\n", encontros.data.dia, encontros.data.mes, encontros.data.ano);
@@ -1532,8 +1401,7 @@ void OpcaoMenuRelatorio(int op)
         }
         else
         {
-            MenuRelatorioListarEncontrosPorCategoria();
-            // testar;
+            ListarEncontrosPorCategorias();
         }
         break;
 
@@ -1689,7 +1557,7 @@ void OpcaoMenuRelatorioListarEncontros(int opr)
     int erro = 1;
     int aux;
 
-    while (opr < 1 || opr > 5)
+    while (opr < 1 || opr > 4)
     {
         MensagemErro(0);
         Pausar(1);
@@ -1704,20 +1572,14 @@ void OpcaoMenuRelatorioListarEncontros(int opr)
     }
     else if (opr == 2)
     {
-        // Fazer essa funcao ainda;
-        // erro = ListarEncontrosAmigos();
+        erro = ListarEncontrosPorAmigos();
     }
     else if (opr == 3)
     {
-        // Fazer essa funcao ainda;
-        // erro = ListarEncontrosLocais();
+        VoltarMenuRelatorio();
     }
 
     else if (opr == 4)
-    {
-        VoltarMenuRelatorio();
-    }
-    else if (opr == 5)
     {
         VoltarMenuPrincipal();
     }
@@ -1768,8 +1630,7 @@ int ListarAmigosPorApelido()
 
     LimparTela();
     printf("\nDigite o apelido do amigo: \n");
-    fgets(apelido, sizeof(apelido), stdin); // Usando fgets em vez de gets()
-    apelido[strcspn(apelido, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(apelido);
     LimparBuffer();
 
     LimparTela();
@@ -1828,8 +1689,7 @@ int ListarLocaisPorEstado()
 
     LimparTela();
     printf("\nDigite o estado: \n");
-    fgets(estado, sizeof(estado), stdin); // Usando fgets em vez de gets()
-    estado[strcspn(estado, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(estado);
     LimparBuffer();
 
     LimparTela();
@@ -1865,8 +1725,7 @@ int ListarLocaisPorCidade()
 
     LimparTela();
     printf("\nDigite o cidade: \n");
-    fgets(cidade, sizeof(cidade), stdin); // Usando fgets em vez de gets()
-    cidade[strcspn(cidade, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(cidade);
     LimparBuffer();
 
     LimparTela();
@@ -1903,8 +1762,7 @@ int ListarLocaisPorBairro()
 
     LimparTela();
     printf("\nDigite o bairro: \n");
-    fgets(bairro, sizeof(bairro), stdin); // Usando fgets em vez de gets()
-    bairro[strcspn(bairro, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(bairro);
     LimparBuffer();
 
     LimparTela();
@@ -1971,6 +1829,68 @@ int ListarEncontros()
     }
 
     return 1;
+}
+
+int ListarEncontrosPorAmigos()
+{
+    char apelido[50];
+    int i, encontrado = 0;
+
+    if (NumEncontros <= 0)
+    {
+        return -16;
+    }
+
+    LimparTela();
+    printf("\nDigite o apelido do amigo: \n");
+    gets(apelido);
+    LimparBuffer();
+
+    LimparTela();
+    for (i = 0; i < NumEncontros; i++)
+    {
+        if (strcmp(Encontros[i].amigos->apelido, apelido) == 0)
+        {
+            printf("\n");
+            printf("\n-- Encontro [%i] --\n", i + 1);
+            printf("---------------------------\n");
+            ImprimirEncontros(Encontros[i]);
+            printf("---------------------------\n");
+            encontrado = 1;
+        }
+    }
+
+    if (!encontrado)
+    {
+        return -19;
+    }
+
+    return 1;
+}
+void ListarEncontrosPorCategorias()
+{
+    int i, j;
+    LimparTela();
+
+    for (i = 0; i < Encontros->numcategorias; i++)
+    {
+
+        printf("\nCategoria: %s\n", Encontros[i].categorias->nome);
+        printf("---------------------------\n");
+
+        for (j = 0; j < NumEncontros; j++)
+        {
+            if (strcmp(Encontros[j].categorias->nome, Categorias[i].nome) == 0)
+            {
+                printf("\nAmigo: %s\n", Encontros[j].amigos->nome);
+                printf("\nLocal: %s\n", Encontros[j].locais->nome_local);
+                printf("\nData: [%02i/%02i/%04i]\n", Encontros[j].data.dia, Encontros[j].data.mes, Encontros[j].data.ano);
+                printf("\nHorario: [%02i:%02i]\n", Encontros[j].horario.hora, Encontros[j].horario.minuto);
+                printf("\nDescricao: %s\n", Encontros[j].descricao);
+                printf("---------------------------\n");
+            }
+        }
+    }
 }
 
 void AlterarAmigos(int amigo, int op)
@@ -2208,8 +2128,7 @@ void AlterarCategorias(int categoria)
 
     LimparTela();
     printf("\nTipo da categoria:\n");
-    fgets(strAux, sizeof(strAux), stdin); // Usando fgets em vez de gets()
-    strAux[strcspn(strAux, "\n")] = '\0'; // Remover a nova linha caso presente
+    gets(strAux);
     if (Categorias[categoria].nome != NULL)
     {
         free(Categorias[categoria].nome);
@@ -2497,7 +2416,7 @@ int DeletarAmigos()
             {
                 if (strcmp(Amigos[0].nome, Encontros[i].amigos[i].nome) == 0)
                 {
-                    return -31;
+                    return -30;
                     break;
                 }
                 ExcluirAmigos(0);
