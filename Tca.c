@@ -94,17 +94,17 @@ void MenuRelatorioListarLocais();     // menu para perguntar se sera listados to
 void MenuRelatorioListarCategorias(); // menu para perguntar se sera listado;
 void MenuRelatorioListarEncontros();  // menu para perguntar se sera listado;
 
-void OpcaoMenu(int op);          // recebe opcao do menu, faz a validacao e procede;
-void OpcaoMenuAmigo();           // recebe opcao do menu de amigos, faz validacao e procede;
-void OpcaoMenuLocal(int op);     // recebe opcao do menu de local, faz validacao e procede;
-void OpcaoMenuCategoria(int op); // recebe opcao do menu de categoria, faz validacao e procede;
-void OpcaoMenuEncontro(int op);  // recebe opcao do menu de encontro, faz validacao e procede;
-void OpcaoMenuRelatorio(int op); // recebe opcao do menu de relatorios, faz validacao e procede;
+void OpcaoMenu(int op);    //  faz a validacao e procede;
+void OpcaoMenuAmigo();     //   faz validacao e procede;
+void OpcaoMenuLocal();     //  faz validacao e procede;
+void OpcaoMenuCategoria(); //  faz validacao e procede;
+void OpcaoMenuEncontro();  //   faz validacao e procede;
+void OpcaoMenuRelatorio(); //   faz validacao e procede;
 
-void OpcaoMenuRelatorioListarAmigos(int opr);     // recebe a opcao se vai ser todos ou especifico com apelido e procede;
-void OpcaoMenuRelatorioListarLocais(int opr);     // recebe a opcao se vai ser todos ou especifico com apelido e procede;
-void OpcaoMenuRelatorioListarCategorias(int opr); // recebe a opcao se vai ser todos ou deseja voltar e procede;
-void OpcaoMenuRelatorioListarEncontros(int opr);  // recebe a opcao se vai ser todos ou especifico e procede;
+void OpcaoMenuRelatorioListarAmigos();     // recebe a opcao se vai ser todos ou especifico com apelido e procede;
+void OpcaoMenuRelatorioListarLocais();     // recebe a opcao se vai ser todos ou especifico com apelido e procede;
+void OpcaoMenuRelatorioListarCategorias(); // recebe a opcao se vai ser todos ou deseja voltar e procede;
+void OpcaoMenuRelatorioListarEncontros();  // recebe a opcao se vai ser todos ou especifico e procede;
 
 void ImprimirAmigos(Amigo amigos);             // imprime amigos;
 void ImprimirLocais(Local locais);             // imprime locais;
@@ -469,8 +469,6 @@ void MenuModificarLocais()
 
 void OpcaoMenu(int op)
 {
-    int opm;
-
     while (op < 1 || op > 6)
     {
         MensagemErro(0);
@@ -484,24 +482,15 @@ void OpcaoMenu(int op)
     }
     else if (op == 2)
     {
-        MenuLocal();
-        scanf("%i", &opm);
-        LimparBuffer();
-        OpcaoMenuLocal(opm);
+        OpcaoMenuLocal();
     }
     else if (op == 3)
     {
-        MenuCategoria();
-        scanf("%i", &opm);
-        LimparBuffer();
-        OpcaoMenuCategoria(opm);
+        OpcaoMenuCategoria();
     }
     else if (op == 4)
     {
-        MenuEncontro();
-        scanf("%i", &opm);
-        LimparBuffer();
-        OpcaoMenuEncontro(opm);
+        OpcaoMenuEncontro();
     }
     else if (op == 5)
     {
@@ -523,7 +512,6 @@ Amigo CriaAmigo()
     int erro = -1;
     int i;
     char strAux[100];
-    int op;
 
     LimparTela();
     printf("\nNome:\n");
@@ -546,10 +534,7 @@ Amigo CriaAmigo()
     {
         MensagemErro(-25);
         Pausar(1);
-        MenuAmigo();
-        scanf("%i", &op);
-        LimparBuffer();
-        OpcaoMenuAmigo(op);
+        OpcaoMenuAmigo();
     }
 
     LimparTela();
@@ -595,7 +580,6 @@ Local CriaLocal()
     Local local;
     int i;
     char strAux[100];
-    int op;
 
     LimparTela();
     printf("\nNome do Local:\n");
@@ -618,10 +602,7 @@ Local CriaLocal()
     {
         MensagemErro(-26);
         Pausar(1);
-        MenuLocal();
-        scanf("%i", &op);
-        LimparBuffer();
-        OpcaoMenuLocal(op);
+        OpcaoMenuLocal();
     }
 
     LimparTela();
@@ -665,7 +646,6 @@ Categoria CriaCategoria()
     Categoria categoria;
     int i;
     char strAux[100];
-    int op;
 
     LimparTela();
     printf("\nCategoria:\n");
@@ -688,10 +668,7 @@ Categoria CriaCategoria()
     {
         MensagemErro(-27);
         Pausar(1);
-        MenuCategoria();
-        scanf("%i", &op);
-        LimparBuffer();
-        OpcaoMenuCategoria(op);
+        OpcaoMenuCategoria();
     }
 
     return categoria;
@@ -783,6 +760,7 @@ Encontro CriaEncontro()
                 if (NumAmigos == 1)
                 {
                     incluir = 0;
+                    break;
                 }
                 // DE ALGUMA FORMA, FAZER ENTRAR 2 AMIGOS EM 1 ENCONTRO SO, SEM SOBREESCREVER, E DEPOIS AINDA IMPRIMIR ISSO (QUE TRABALHEIRAAAA)!!!!!!!!!!!!!!!!!!
                 op = 'x';
@@ -1154,13 +1132,12 @@ void ImprimirEncontros(Encontro encontros)
     printf("\nDescricao: %s \n", encontros.descricao);
 }
 
-// ARRUMAR, ESSA E TODAS AS FUNCOES RECURSIVAS!!!!!!!!!!!!!!!!!!
 void OpcaoMenuAmigo()
 {
     int erro = 0;
     int op = 0;
 
-    while (1) 
+    do 
     {
     
         MenuAmigo();
@@ -1198,417 +1175,448 @@ void OpcaoMenuAmigo()
         {
             MensagemErro(erro);
             Pausar(1);
-            break;
         }
 
-        break;
-    }
+    } while (op != 4);
 
 }
 
-void OpcaoMenuLocal(int op)
+
+void OpcaoMenuLocal()
 {
     int erro = 1;
-    int opm;
+    int op = 0;
 
-    while (op < 1 || op > 4)
+    do
     {
-        MensagemErro(0);
-        Pausar(1);
         MenuLocal();
         scanf("%i", &op);
         LimparBuffer();
-    }
 
-    if (op == 1)
-    {
-        erro = IncluirLocais();
-    }
-    else if (op == 2)
-    {
-        erro = ModificarLocais();
-    }
-    else if (op == 3)
-    {
-        erro = DeletarLocais();
-    }
-    else if (op == 4)
-    {
-        VoltarMenuPrincipal();
-    }
+        while (op < 1 || op > 4)
+        {
+            MensagemErro(0);
+            Pausar(1);
+            MenuLocal();
+            scanf("%i", &op);
+            LimparBuffer();
+        }
 
-    if (erro <= 0)
-    {
-        MensagemErro(erro);
-    }
+        switch (op)
+        {
+        case 1:
+            erro = IncluirLocais();
+            break;
+        case 2:
+            erro = ModificarLocais();
+            break;
+        case 3:
+            erro = DeletarLocais();
+            break;
+        case 4:
+            VoltarMenuPrincipal();
+            break;
+        default:
+            printf("\nErro\n.");
+            break;
+        }
 
-    Pausar(1);
-    MenuLocal();
-    scanf("%i", &opm);
-    LimparBuffer();
-    OpcaoMenuLocal(opm);
+        if (erro <= 0)
+        {
+            MensagemErro(erro);
+            Pausar(1);
+        }
+
+    } while (op != 4);
 }
 
-void OpcaoMenuCategoria(int op)
+void OpcaoMenuCategoria()
 {
     int erro = 1;
-    int opm;
+    int op = 0;
 
-    while (op < 1 || op > 4)
+    do
     {
-        MensagemErro(0);
-        Pausar(1);
         MenuCategoria();
         scanf("%i", &op);
         LimparBuffer();
-    }
 
-    if (op == 1)
-    {
-        erro = IncluirCategorias();
-    }
-    else if (op == 2)
-    {
-        erro = ModificarCategorias();
-    }
-    else if (op == 3)
-    {
-        erro = DeletarCategorias();
-    }
-    else if (op == 4)
-    {
-        VoltarMenuPrincipal();
-    }
+        while (op < 1 || op > 4)
+        {
+            MensagemErro(0);
+            Pausar(1);
+            MenuCategoria();
+            scanf("%i", &op);
+            LimparBuffer();
+        }
 
-    if (erro <= 0)
-    {
-        MensagemErro(erro);
-    }
+        switch (op)
+        {
+        case 1:
+            erro = IncluirCategorias();
+            break;
+        case 2:
+            erro = ModificarCategorias();
+            break;
+        case 3:
+            erro = DeletarCategorias();
+            break;
+        case 4:
+            VoltarMenuPrincipal();
+            break;
+        default:
+            printf("\nErro\n.");
+            break;
+        }
 
-    Pausar(1);
-    MenuCategoria();
-    scanf("%i", &opm);
-    LimparBuffer();
-    OpcaoMenuCategoria(opm);
+        if (erro <= 0)
+        {
+            MensagemErro(erro);
+            Pausar(1);
+        }
+
+    } while (op != 4);
 }
 
-void OpcaoMenuEncontro(int op)
+void OpcaoMenuEncontro()
 {
     int erro = 1;
-    int opm;
+    int op = 0;
 
-    while (op < 1 || op > 4)
+    do
     {
-        MensagemErro(0);
-        Pausar(1);
         MenuEncontro();
         scanf("%i", &op);
         LimparBuffer();
-    }
 
-    if (op == 1)
-    {
-        erro = IncluirEncontros(); //------------ FAZER ESSA PARTE E DAR CONTINUIDADE;
-    }
-    else if (op == 2)
-    {
-        // erro = ModificarEncontros();  ------------ FAZER ESSA PARTE E DAR CONTINUIDADE;
-    }
-    else if (op == 3)
-    {
-        // erro = DeletarEncontros();  ------------ FAZER ESSA PARTE E DAR CONTINUIDADE;
-    }
-    else if (op == 4)
-    {
-        VoltarMenuPrincipal();
-    }
+        while (op < 1 || op > 4)
+        {
+            MensagemErro(0);
+            Pausar(1);
+            MenuEncontro();
+            scanf("%i", &op);
+            LimparBuffer();
+        }
 
-    if (erro <= 0)
-    {
-        MensagemErro(erro);
-    }
+        switch (op)
+        {
+        case 1:
+            erro = IncluirEncontros();
+            break;
+        case 2:
+            erro = ModificarEncontros();
+            break;
+        case 3:
+            erro = DeletarEncontros();
+            break;
+        case 4:
+            VoltarMenuPrincipal();
+            break;
+        default:
+            printf("\nErro\n.");
+            break;
+        }
 
-    Pausar(1);
-    MenuEncontro();
-    scanf("%i", &opm);
-    LimparBuffer();
-    OpcaoMenuEncontro(opm);
+        if (erro <= 0)
+        {
+            MensagemErro(erro);
+            Pausar(1);
+        }
+
+    } while (op != 4);
 }
 
-void OpcaoMenuRelatorio(int op)
+void OpcaoMenuRelatorio()
 {
-    int opr;
     int erro = 1;
+    int op = 0;
 
-    while (op < 1 || op > 6)
+    do
     {
-        MensagemErro(0);
-        Pausar(1);
         VoltarMenuRelatorio();
-    }
+        scanf("%i", &op);
+        LimparBuffer();
 
-    switch (op)
-    {
-    case 1:
-        if (NumAmigos <= 0)
+        while (op < 1 || op > 6)
         {
-            erro = -2;
-        }
-        else
-        {
-            MenuRelatorioListarAmigos();
-            scanf("%i", &opr);
+            MensagemErro(0);
+            Pausar(1);
+            VoltarMenuRelatorio();
+            scanf("%i", &op);
             LimparBuffer();
-            OpcaoMenuRelatorioListarAmigos(opr);
-            return;
         }
-        break;
 
-    case 2:
-        if (NumLocais <= 0)
+        switch (op)
         {
-            erro = -5;
-        }
-        else
-        {
-            MenuRelatorioListarLocais();
-            scanf("%i", &opr);
-            LimparBuffer();
-            OpcaoMenuRelatorioListarLocais(opr);
-            return;
-        }
-        break;
+        case 1:
+            if (NumAmigos <= 0)
+            {
+                erro = -2;
+            }
+            else
+            {
+                OpcaoMenuRelatorioListarAmigos();
+                return;
+            }
+            break;
 
-    case 3:
-        if (NumCategorias <= 0)
-        {
-            erro = -14;
-        }
-        else
-        {
-            MenuRelatorioListarCategorias();
-            scanf("%i", &opr);
-            LimparBuffer();
-            OpcaoMenuRelatorioListarCategorias(opr);
-            return;
-        }
-        break;
+        case 2:
+            if (NumLocais <= 0)
+            {
+                erro = -5;
+            }
+            else
+            {
+                OpcaoMenuRelatorioListarLocais();
+                return;
+            }
+            break;
 
-    case 4:
-        if (NumEncontros <= 0)
-        {
-            erro = -16;
-        }
-        else
-        {
-            MenuRelatorioListarEncontros();
-            scanf("%i", &opr);
-            LimparBuffer();
-            OpcaoMenuRelatorioListarEncontros(opr);
-            return;
-        }
-        break;
+        case 3:
+            if (NumCategorias <= 0)
+            {
+                erro = -14;
+            }
+            else
+            {
+                OpcaoMenuRelatorioListarCategorias();
+                return;
+            }
+            break;
 
-    case 5:
-        if (NumEncontros <= 0)
-        {
-            erro = -16;
+        case 4:
+            if (NumEncontros <= 0)
+            {
+                erro = -16;
+            }
+            else
+            {
+                OpcaoMenuRelatorioListarEncontros();
+                return;
+            }
+            break;
+
+        case 5:
+            if (NumEncontros <= 0)
+            {
+                erro = -16;
+            }
+            else
+            {
+                ListarEncontrosPorCategorias();
+            }
+            break;
+
+        case 6:
+            VoltarMenuPrincipal();
+            break;
+
+        default:
+            printf("\nErro\n.");
+            break;
         }
-        else
+
+        if (erro <= 0)
         {
-            ListarEncontrosPorCategorias();
+            MensagemErro(erro);
+            Pausar(1);
         }
-        break;
 
-    case 6:
-    {
-        VoltarMenuPrincipal();
-    }
-    }
-
-    if (erro <= 0)
-    {
-        MensagemErro(erro);
-    }
-
-    Pausar(1);
-    VoltarMenuRelatorio();
+    } while (op != 6);
 }
 
-void OpcaoMenuRelatorioListarAmigos(int opr)
+void OpcaoMenuRelatorioListarAmigos()
 {
     int erro = 1;
-    int aux;
+    int opr = 0;
 
-    while (opr < 1 || opr > 4)
+    do
     {
-        MensagemErro(0);
         MenuRelatorioListarAmigos();
         scanf("%i", &opr);
         LimparBuffer();
-    }
 
-    if (opr == 1)
-    {
-        erro = ListarAmigos();
-    }
-    else if (opr == 2)
-    {
-        erro = ListarAmigosPorApelido();
-    }
-    else if (opr == 3)
-    {
-        VoltarMenuRelatorio();
-    }
-    else if (opr == 4)
-    {
-        VoltarMenuPrincipal();
-    }
+        while (opr < 1 || opr > 4)
+        {
+            MensagemErro(0);
+            MenuRelatorioListarAmigos();
+            scanf("%i", &opr);
+            LimparBuffer();
+        }
 
-    if (erro <= 0)
-    {
-        MensagemErro(erro);
-    }
+        switch (opr)
+        {
+        case 1:
+            erro = ListarAmigos();
+            break;
+        case 2:
+            erro = ListarAmigosPorApelido();
+            break;
+        case 3:
+            VoltarMenuRelatorio();
+            break;
+        case 4:
+            VoltarMenuPrincipal();
+            break;
+        default:
+            printf("\nErro\n.");
+            break;
+        }
 
-    Pausar(1);
-    MenuRelatorioListarAmigos();
-    scanf("%i", &aux);
-    LimparBuffer();
-    OpcaoMenuRelatorioListarAmigos(aux);
+        if (erro <= 0)
+        {
+            MensagemErro(erro);
+            Pausar(1);
+        }
+
+    } while (opr != 3 || opr != 4);
 }
 
-void OpcaoMenuRelatorioListarLocais(int opr)
+void OpcaoMenuRelatorioListarLocais()
 {
     int erro = 1;
-    int aux;
+    int opr = 0;
 
-    while (opr < 1 || opr > 6)
+    do
     {
-        MensagemErro(0);
-        Pausar(1);
         MenuRelatorioListarLocais();
         scanf("%i", &opr);
         LimparBuffer();
-    }
 
-    if (opr == 1)
-    {
-        erro = ListarLocais();
-    }
-    else if (opr == 2)
-    {
-        erro = ListarLocaisPorEstado();
-    }
-    else if (opr == 3)
-    {
-        erro = ListarLocaisPorCidade();
-    }
-    else if (opr == 4)
-    {
-        erro = ListarLocaisPorBairro();
-    }
-    else if (opr == 5)
-    {
-        VoltarMenuRelatorio();
-    }
-    else if (opr == 6)
-    {
-        VoltarMenuPrincipal();
-    }
+        while (opr < 1 || opr > 6)
+        {
+            MensagemErro(0);
+            Pausar(1);
+            MenuRelatorioListarLocais();
+            scanf("%i", &opr);
+            LimparBuffer();
+        }
 
-    if (erro <= 0)
-    {
-        MensagemErro(erro);
-    }
+        switch (opr)
+        {
+        case 1:
+            erro = ListarLocais();
+            break;
+        case 2:
+            erro = ListarLocaisPorEstado();
+            break;
+        case 3:
+            erro = ListarLocaisPorCidade();
+            break;
+        case 4:
+            erro = ListarLocaisPorBairro();
+            break;
+        case 5:
+            VoltarMenuRelatorio();
+            break;
+        case 6:
+            VoltarMenuPrincipal();
+            break;
+        default:
+            printf("\nErro\n.");
+            break;
+        }
 
-    Pausar(1);
-    MenuRelatorioListarLocais();
-    scanf("%i", &aux);
-    LimparBuffer();
-    OpcaoMenuRelatorioListarLocais(aux);
+        if (erro <= 0)
+        {
+            MensagemErro(erro);
+            Pausar(1);
+        }
+
+    } while (opr != 5 || opr != 6);
 }
 
-void OpcaoMenuRelatorioListarCategorias(int opr)
+void OpcaoMenuRelatorioListarCategorias()
 {
     int erro = 1;
-    int aux;
+    int opr = 0;
 
-    while (opr < 1 || opr > 3)
+    do
     {
-        MensagemErro(0);
-        Pausar(1);
         MenuRelatorioListarCategorias();
         scanf("%i", &opr);
         LimparBuffer();
-    }
 
-    if (opr == 1)
-    {
-        erro = ListarCategorias();
-    }
-    else if (opr == 2)
-    {
-        VoltarMenuRelatorio();
-    }
-    else if (opr == 3)
-    {
-        VoltarMenuPrincipal();
-    }
+        while (opr < 1 || opr > 3)
+        {
+            MensagemErro(0);
+            Pausar(1);
+            MenuRelatorioListarCategorias();
+            scanf("%i", &opr);
+            LimparBuffer();
+        }
 
-    if (erro <= 0)
-    {
-        MensagemErro(erro);
-    }
+        switch (opr)
+        {
+        case 1:
+            erro = ListarCategorias();
+            break;
+        case 2:
+            VoltarMenuRelatorio();
+            break;
+        case 3:
+            VoltarMenuPrincipal();
+            break;
+        default:
+            printf("\nErro\n.");
+            break;
+        }
 
-    Pausar(1);
-    MenuRelatorioListarCategorias();
-    scanf("%i", &aux);
-    LimparBuffer();
-    OpcaoMenuRelatorioListarCategorias(aux);
+        if (erro <= 0)
+        {
+            MensagemErro(erro);
+            Pausar(1);
+        }
+
+    } while (opr != 2 || opr != 3);
 }
 
-void OpcaoMenuRelatorioListarEncontros(int opr)
+void OpcaoMenuRelatorioListarEncontros()
 {
     int erro = 1;
-    int aux;
+    int opr = 0;
 
-    while (opr < 1 || opr > 4)
+    do
     {
-        MensagemErro(0);
-        Pausar(1);
         MenuRelatorioListarEncontros();
         scanf("%i", &opr);
         LimparBuffer();
-    }
 
-    if (opr == 1)
-    {
-        erro = ListarEncontros();
-    }
-    else if (opr == 2)
-    {
-        erro = ListarEncontrosPorAmigos();
-    }
-    else if (opr == 3)
-    {
-        VoltarMenuRelatorio();
-    }
+        while (opr < 1 || opr > 4)
+        {
+            MensagemErro(0);
+            Pausar(1);
+            MenuRelatorioListarEncontros();
+            scanf("%i", &opr);
+            LimparBuffer();
+        }
 
-    else if (opr == 4)
-    {
-        VoltarMenuPrincipal();
-    }
+        switch (opr)
+        {
+        case 1:
+            erro = ListarEncontros();
+            break;
+        case 2:
+            erro = ListarEncontrosPorAmigos();
+            break;
+        case 3:
+            VoltarMenuRelatorio();
+            break;
+        case 4:
+            VoltarMenuPrincipal();
+            break;
+        default:
+            printf("\nErro\n.");
+            break;
+        }
 
-    if (erro <= 0)
-    {
-        MensagemErro(erro);
-    }
+        if (erro <= 0)
+        {
+            MensagemErro(erro);
+            Pausar(1);
+        }
 
-    Pausar(1);
-    MenuRelatorioListarEncontros();
-    scanf("%i", &aux);
-    LimparBuffer();
-    OpcaoMenuRelatorioListarEncontros(aux);
+    } while (opr != 3 || opr != 4);
 }
 
 int ListarAmigos()
@@ -2665,11 +2673,7 @@ void VoltarMenuPrincipal()
 
 void VoltarMenuRelatorio()
 {
-    int op;
-    MenuRelatorio();
-    scanf("%i", &op);
-    LimparBuffer();
-    OpcaoMenuRelatorio(op);
+    OpcaoMenuRelatorio();
 }
 
 void LimpaPonteiroAmigo(Amigo *amigo)
@@ -2768,9 +2772,7 @@ void LimparBuffer()
 #ifdef _WIN32
     fflush(stdin);
 #elif __linux__
-    __fpurge(stdin);
-#else
-#error "Sistema operacional não suportado."
+    fflush(stdin);
 #endif
 }
 
@@ -2779,8 +2781,6 @@ void LimparTela()
 #ifdef _WIN32
     system("cls");
 #elif __linux__
-    system("clear")
-#else
-#error "Sistema operacional não suportado."
+    system("cls");
 #endif
 }
