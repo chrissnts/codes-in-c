@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <windows.h>
 
 #define MAXLOCAL 100
 #define MAXAMIGO 100
@@ -72,9 +71,8 @@ typedef struct
 } Encontro;
 
 // COISAS IMPORTANTES!!
-// PERGUNTAR SE O USUARIO REALMENTE QUER DELETAR O ENCONTRO QUANDO TIVER UM AMIGO NO ENCONTRO QUE ELE DESEJA DELETAR);
-// EXCLUIR AS INFORMACOES DO ENCONTRO SE AS INFORMACOES FOREM EXCLUIDAS NORMALMENTE;
-// USARA TOKEN QUANDO FOR MANIPULAR ARQUIVO (MAIS FACIL);
+// PERGUNTAR SE O USUARIO REALMENTE QUER DELETAR O ENCONTRO QUANDO TIVER UM AMIGO NO ENCONTRO QUE ELE DESEJA DELETAR;
+// USAR TOKEN QUANDO FOR MANIPULAR ARQUIVO (MAIS FACIL);
 // QUANDO TEM UMA CATEGORIA, MAS NAO TEM UM ENCONTRO COM ELA, NAO ERA PRA MOSTRA (TEM QUE ARRUMAR ISSO!)!!!!!!!!!!!!;
 
 void MensagemErro(int erro); // imprime mensagens de erro;
@@ -523,7 +521,7 @@ Amigo CriaAmigo()
 
     LimparTela();
     printf("\nNome:\n");
-    gets(strAux);
+    fgets(strAux, sizeof(strAux), stdin); 
     amigo.nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(amigo.nome, strAux);
     LimparBuffer();
@@ -547,21 +545,21 @@ Amigo CriaAmigo()
 
     LimparTela();
     printf("\nApelido:\n");
-    gets(strAux);
+    fgets(strAux, sizeof(strAux), stdin); 
     amigo.apelido = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(amigo.apelido, strAux);
     LimparBuffer();
 
     LimparTela();
     printf("\nEmail:\n");
-    gets(strAux);
+    fgets(strAux, sizeof(strAux), stdin); 
     amigo.email = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(amigo.email, strAux);
     LimparBuffer();
 
     LimparTela();
     printf("\nTelefone:\n");
-    gets(strAux);
+    fgets(strAux, sizeof(strAux), stdin); 
     amigo.telefone = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(amigo.telefone, strAux);
     LimparBuffer();
@@ -591,7 +589,7 @@ Local CriaLocal()
 
     LimparTela();
     printf("\nNome do Local:\n");
-    gets(strAux);
+    fgets(strAux, sizeof(strAux), stdin); 
     local.nome_local = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(local.nome_local, strAux);
     LimparBuffer();
@@ -615,28 +613,28 @@ Local CriaLocal()
 
     LimparTela();
     printf("\nEstado:\n");
-    gets(strAux);
+    fgets(strAux, sizeof(strAux), stdin); 
     local.endereco.estado = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(local.endereco.estado, strAux);
     LimparBuffer();
 
     LimparTela();
     printf("\nCidade:\n");
-    gets(strAux);
+    fgets(strAux, sizeof(strAux), stdin); 
     local.endereco.cidade = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(local.endereco.cidade, strAux);
     LimparBuffer();
 
     LimparTela();
     printf("\nBairro:\n");
-    gets(strAux);
+    fgets(strAux, sizeof(strAux), stdin); 
     local.endereco.bairro = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(local.endereco.bairro, strAux);
     LimparBuffer();
 
     LimparTela();
     printf("\nLogradouro:\n");
-    gets(strAux);
+    fgets(strAux, sizeof(strAux), stdin); 
     local.endereco.logradouro = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(local.endereco.logradouro, strAux);
     LimparBuffer();
@@ -657,7 +655,7 @@ Categoria CriaCategoria()
 
     LimparTela();
     printf("\nCategoria:\n");
-    gets(strAux);
+    fgets(strAux, sizeof(strAux), stdin); 
     categoria.nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(categoria.nome, strAux);
     LimparBuffer();
@@ -944,7 +942,7 @@ Encontro CriaEncontro()
     }
 
     printf("\nDescricao do encontro:\n");
-    gets(strAux);
+    fgets(strAux, sizeof(strAux), stdin); 
     encontro.descricao = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(encontro.descricao, strAux);
     LimparBuffer();
@@ -1310,11 +1308,18 @@ void OpcaoMenuEncontro()
             erro = IncluirEncontros();
             break;
         case 2:
-            erro = ModificarEncontros();
+            // Implementar essa funcao!!
+
+            /*erro = ModificarEncontros();
             break;
+            */
+
         case 3:
-            erro = DeletarEncontros();
+            // Implementar essa funcao
+
+            /*erro = DeletarEncontros();
             break;
+            */
         case 4:
             VoltarMenuPrincipal();
             break;
@@ -1659,7 +1664,7 @@ int ListarAmigosPorApelido()
 
     LimparTela();
     printf("\nDigite o apelido do amigo: \n");
-    gets(apelido);
+    fgets(apelido, sizeof(apelido), stdin); 
     LimparBuffer();
 
     LimparTela();
@@ -1718,7 +1723,7 @@ int ListarLocaisPorEstado()
 
     LimparTela();
     printf("\nDigite o estado: \n");
-    gets(estado);
+    fgets(estado, sizeof(estado), stdin); 
     LimparBuffer();
 
     LimparTela();
@@ -1754,7 +1759,7 @@ int ListarLocaisPorCidade()
 
     LimparTela();
     printf("\nDigite o cidade: \n");
-    gets(cidade);
+    fgets(cidade, sizeof(cidade), stdin); 
     LimparBuffer();
 
     LimparTela();
@@ -1791,7 +1796,7 @@ int ListarLocaisPorBairro()
 
     LimparTela();
     printf("\nDigite o bairro: \n");
-    gets(bairro);
+    fgets(bairro, sizeof(bairro), stdin); 
     LimparBuffer();
 
     LimparTela();
@@ -1873,7 +1878,7 @@ int ListarEncontrosPorAmigos()
 
     LimparTela();
     printf("\nDigite o nome ou apelido do amigo: \n");
-    gets(apelido);
+    fgets(apelido, sizeof(apelido), stdin); 
     LimparBuffer();
 
     LimparTela();
@@ -1935,7 +1940,7 @@ void AlterarAmigos(int amigo, int op)
 
         LimparTela();
         printf("\nNome:\n");
-        gets(strAux);
+        fgets(strAux, sizeof(strAux), stdin); 
 
         if (Amigos[amigo].nome != NULL)
         {
@@ -1956,7 +1961,7 @@ void AlterarAmigos(int amigo, int op)
     {
         LimparTela();
         printf("\nApelido:\n");
-        gets(strAux);
+        fgets(strAux, sizeof(strAux), stdin); 
 
         if (Amigos[amigo].apelido != NULL)
         {
@@ -1977,7 +1982,7 @@ void AlterarAmigos(int amigo, int op)
     {
         LimparTela();
         printf("\nEmail:\n");
-        gets(strAux);
+        fgets(strAux, sizeof(strAux), stdin); 
 
         if (Amigos[amigo].email != NULL)
         {
@@ -1998,7 +2003,7 @@ void AlterarAmigos(int amigo, int op)
     {
         LimparTela();
         printf("\nTelefone:\n");
-        gets(strAux);
+        fgets(strAux, sizeof(strAux), stdin); 
 
         if (Amigos[amigo].telefone != NULL)
         {
@@ -2042,7 +2047,7 @@ void AlterarLocais(int local, int op)
     {
         LimparTela();
         printf("\nNome do Local:\n");
-        gets(strAux);
+        fgets(strAux, sizeof(strAux), stdin); 
         if (Locais[local].nome_local != NULL)
         {
             free(Locais[local].nome_local);
@@ -2061,7 +2066,7 @@ void AlterarLocais(int local, int op)
     {
         LimparTela();
         printf("\nEstado:\n");
-        gets(strAux);
+        fgets(strAux, sizeof(strAux), stdin); 
         if (Locais[local].endereco.estado != NULL)
         {
             free(Locais[local].endereco.estado);
@@ -2080,7 +2085,7 @@ void AlterarLocais(int local, int op)
     {
         LimparTela();
         printf("\nCidade:\n");
-        gets(strAux);
+        fgets(strAux, sizeof(strAux), stdin); 
         if (Locais[local].endereco.cidade != NULL)
         {
             free(Locais[local].endereco.cidade);
@@ -2100,7 +2105,7 @@ void AlterarLocais(int local, int op)
     {
         LimparTela();
         printf("\nBairro:\n");
-        gets(strAux);
+        fgets(strAux, sizeof(strAux), stdin); 
         if (Locais[local].endereco.bairro != NULL)
         {
             free(Locais[local].endereco.bairro);
@@ -2120,7 +2125,7 @@ void AlterarLocais(int local, int op)
     {
         LimparTela();
         printf("\nLogradouro:\n");
-        gets(strAux);
+        fgets(strAux, sizeof(strAux), stdin); 
         if (Locais[local].endereco.logradouro != NULL)
         {
             free(Locais[local].endereco.logradouro);
@@ -2151,7 +2156,7 @@ void AlterarCategorias(int categoria)
 
     LimparTela();
     printf("\nTipo da categoria:\n");
-    gets(strAux);
+    fgets(strAux, sizeof(strAux), stdin); 
     if (Categorias[categoria].nome != NULL)
     {
         free(Categorias[categoria].nome);
@@ -2663,10 +2668,22 @@ void ExcluirCategorias(int categoria)
     NumCategorias--;
 }
 
-void ExcluirEncontros(int encontro)
+/*void ExcluirEncontros(int encontro)
 {
-    // Fazer Funcao para excluir encontros!!!!!!!!!!!!
+    if (NumEncontros <= 0 || encontro < 0 || encontro >= NumEncontros)
+    {
+        return;
+    }
+
+    // libera memoria do encontro que quer ser removida
+    LimpaPonteiroEncontro(&Encontros[encontro]);
+
+    // sobrescreve o elemento a ser removido com o último elemento (basicamente reorganiza);
+    Encontros[encontro] = Encontros[NumEncontros - 1];
+
+    NumEncontros--;
 }
+*/
 
 void VoltarMenuPrincipal()
 {
