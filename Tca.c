@@ -72,8 +72,7 @@ typedef struct
 } Encontro;
 
 // COISAS IMPORTANTES!!
-// TIRAR TODAAAS AS FUNCOES RECURSIVAS DO CODIGO!!!!!!!!!!!!!
-//  PERGUNTAR SE O USUARIO REALMENTE QUER DELETAR O ENCONTRO QUANDO TIVER UM AMIGO NO ENCONTRO QUE ELE DESEJA DELETAR);
+// PERGUNTAR SE O USUARIO REALMENTE QUER DELETAR O ENCONTRO QUANDO TIVER UM AMIGO NO ENCONTRO QUE ELE DESEJA DELETAR);
 // EXCLUIR AS INFORMACOES DO ENCONTRO SE AS INFORMACOES FOREM EXCLUIDAS NORMALMENTE;
 // USARA TOKEN QUANDO FOR MANIPULAR ARQUIVO (MAIS FACIL);
 // QUANDO TEM UMA CATEGORIA, MAS NAO TEM UM ENCONTRO COM ELA, NAO ERA PRA MOSTRA (TEM QUE ARRUMAR ISSO!)!!!!!!!!!!!!;
@@ -94,7 +93,7 @@ void MenuRelatorioListarLocais();     // menu para perguntar se sera listados to
 void MenuRelatorioListarCategorias(); // menu para perguntar se sera listado;
 void MenuRelatorioListarEncontros();  // menu para perguntar se sera listado;
 
-void OpcaoMenu(int op);    //  faz a validacao e procede;
+void OpcaoMenu();          //  faz a validacao e procede;
 void OpcaoMenuAmigo();     //   faz validacao e procede;
 void OpcaoMenuLocal();     //  faz validacao e procede;
 void OpcaoMenuCategoria(); //  faz validacao e procede;
@@ -467,41 +466,50 @@ void MenuModificarLocais()
     printf("\n6. Numero\n");
 }
 
-void OpcaoMenu(int op)
+void OpcaoMenu()
 {
-    while (op < 1 || op > 6)
-    {
-        MensagemErro(0);
-        Pausar(1);
-        VoltarMenuPrincipal();
-    }
+    int op = 0;
 
-    if (op == 1)
+    do
     {
-        OpcaoMenuAmigo();
-    }
-    else if (op == 2)
-    {
-        OpcaoMenuLocal();
-    }
-    else if (op == 3)
-    {
-        OpcaoMenuCategoria();
-    }
-    else if (op == 4)
-    {
-        OpcaoMenuEncontro();
-    }
-    else if (op == 5)
-    {
-        VoltarMenuRelatorio();
-    }
-    else if (op == 6)
-    {
-        LimparTela();
-        printf("\nBye Bye..\n");
-        exit(0);
-    }
+        VoltarMenuPrincipal();
+
+        while (op < 1 || op > 6)
+        {
+            MensagemErro(0);
+            Pausar(1);
+            VoltarMenuPrincipal();
+        }
+
+        if (op == 1)
+        {
+            OpcaoMenuAmigo();
+        }
+        else if (op == 2)
+        {
+            OpcaoMenuLocal();
+        }
+        else if (op == 3)
+        {
+            OpcaoMenuCategoria();
+        }
+        else if (op == 4)
+        {
+            OpcaoMenuEncontro();
+        }
+        else if (op == 5)
+        {
+            VoltarMenuRelatorio();
+        }
+        else if (op == 6)
+        {
+            LimparTela();
+            printf("\nBye Bye..\n");
+            Sleep(500);
+            exit(0);
+        }
+
+    } while (op != 6);
 }
 
 Amigo CriaAmigo()
@@ -1137,9 +1145,9 @@ void OpcaoMenuAmigo()
     int erro = 0;
     int op = 0;
 
-    do 
+    do
     {
-    
+
         MenuAmigo();
         scanf("%i", &op);
         LimparBuffer();
@@ -1167,7 +1175,7 @@ void OpcaoMenuAmigo()
             VoltarMenuPrincipal();
             break;
         default:
-            printf("\nErro\n."); 
+            printf("\nErro\n.");
             break;
         }
 
@@ -1178,9 +1186,7 @@ void OpcaoMenuAmigo()
         }
 
     } while (op != 4);
-
 }
-
 
 void OpcaoMenuLocal()
 {
@@ -2664,11 +2670,7 @@ void ExcluirEncontros(int encontro)
 
 void VoltarMenuPrincipal()
 {
-    int op;
-    Menu();
-    scanf("%i", &op);
-    LimparBuffer();
-    OpcaoMenu(op);
+    OpcaoMenu();
 }
 
 void VoltarMenuRelatorio()
