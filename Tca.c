@@ -767,7 +767,6 @@ Encontro CriaEncontro()
                     exit(0);
                 }
 
-                // NAO TA FUNCIONANDO!!!!!
                 if (NumAmigos == 1)
                 {
                     incluir = 0;
@@ -981,7 +980,7 @@ int IncluirAmigos()
     LimparTela();
     ImprimirAmigos(Amigos[NumAmigos]);
     NumAmigos++;
-    
+
     return 1;
 }
 
@@ -1165,22 +1164,34 @@ void OpcaoMenuAmigo()
         {
         case 1:
             erro = IncluirAmigos();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
         case 2:
             erro = ModificarAmigos();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
         case 3:
             erro = DeletarAmigos();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
         case 4:
             VoltarMenuPrincipal();
             break;
         default:
             printf("\nErro\n.");
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
         }
 
@@ -1217,22 +1228,30 @@ void OpcaoMenuLocal()
         {
         case 1:
             erro = IncluirLocais();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
         case 2:
             erro = ModificarLocais();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
         case 3:
             erro = DeletarLocais();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
         case 4:
             VoltarMenuPrincipal();
             break;
         default:
             printf("\nErro\n.");
-            Pausar(1);
             break;
         }
 
@@ -1269,22 +1288,30 @@ void OpcaoMenuCategoria()
         {
         case 1:
             erro = IncluirCategorias();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
         case 2:
             erro = ModificarCategorias();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
         case 3:
             erro = DeletarCategorias();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
         case 4:
             VoltarMenuPrincipal();
             break;
         default:
             printf("\nErro\n.");
-            Pausar(1);
             break;
         }
 
@@ -1321,13 +1348,19 @@ void OpcaoMenuEncontro()
         {
         case 1:
             erro = IncluirEncontros();
-            //Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
         case 2:
             // Implementar essa funcao!!
 
             /*erro = ModificarEncontros();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
             */
 
@@ -1335,7 +1368,10 @@ void OpcaoMenuEncontro()
             // Implementar essa funcao
 
             /*erro = DeletarEncontros();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
             */
         case 4:
