@@ -2,7 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <windows.h>
+#ifdef _WIN32
+    #include <windows.h>
+#elif __linux__
+    #include <unistd.h>
+#endif
 
 #define MAXLOCAL 100
 #define MAXAMIGO 100
@@ -157,6 +161,7 @@ void ListarEncontrosPorCategorias(); // mostrar em qual categoria esta cada enco
 int ValidarData(int dia, int mes, int ano); // valida data que o usuario digitar;
 int Bissexto(int ano);                      // verifica se o ano eh bissexto para poder arrumar dias e mes
 int ValidarHorario(int hora, int min);
+void Sleeps();
 
 Amigo CriaAmigo();         // funcao para criar um amigo;
 Local CriaLocal();         // funcao para criar um local;
@@ -508,7 +513,7 @@ void OpcaoMenu()
         {
             LimparTela();
             printf("\nBye Bye..\n");
-            Sleep(500);
+            Sleeps();
             exit(0);
         }
 
@@ -788,7 +793,7 @@ Encontro CriaEncontro()
                         if (NumAmigos <= encontro.numamigos)
                         {
                             MensagemErro(-28);
-                            Sleep(1000);
+                            Sleeps();
                             incluir = 0;
                         }
                         else
@@ -1125,7 +1130,8 @@ void ImprimirEncontros(Encontro encontros)
         for (i = 0; i <= NumEncontros; i++)
         {
             for (j = 0; j < Encontros->numamigos; j++)
-            {
+            {   
+                // LOGICA ERRADA!!!!
                 if (strcmp(Encontros[i].amigos[j].nome, Amigos[j].nome) == 0)
                 {
                     printf("\nAmigo: %s\n", encontros.amigos[j].nome);
@@ -1399,7 +1405,7 @@ void OpcaoMenuRelatorio()
 
     do
     {
-        VoltarMenuRelatorio();
+        MenuRelatorio();
         scanf("%i", &op);
         LimparBuffer();
 
@@ -1407,7 +1413,7 @@ void OpcaoMenuRelatorio()
         {
             MensagemErro(0);
             Pausar(1);
-            VoltarMenuRelatorio();
+            MenuRelatorio();
             scanf("%i", &op);
             LimparBuffer();
         }
@@ -2868,5 +2874,14 @@ void LimparTela()
     system("cls");
 #elif __linux__
     system("clear");
+#endif
+}
+
+void Sleeps()
+{
+    #ifdef _WIN32
+    Sleep(1000);
+#elif __linux__
+    sleep(1000);
 #endif
 }
