@@ -86,8 +86,8 @@ Partida *carregarPartidas(char *nomeArquivo, int nTimes, Time *times)
     Partida *partidas;    // ponteiro para o vetor de partidas;
     int contPartidas = 0; // contador de partidas carregadas;
 
-    // formula para calcular o numero total de partidas em um campeonato de todos contra todos;
-    int nPartidas = (nTimes * (nTimes - 1)) / 2;
+    // formula para calcular o número total de partidas em um campeonato de todos contra todos;
+    int nPartidas = (nTimes / 2) * (nTimes / 2);
     char *token; // variavel auxiliar para dividir a linha;
 
     // abre o arquivo de partidas em modo de leitura;
@@ -105,7 +105,7 @@ Partida *carregarPartidas(char *nomeArquivo, int nTimes, Time *times)
         // ignora linhas que começam com '#';
         if (linha[0] != '#')
         {
-            // divide a linha em tokens para extrair informacoes sobre os times e os gols;
+            // divide a linha em tokens para extrair informações sobre os times e os gols;
             token = strtok(linha, " ");
             strcpy(sTime1, token); // nome do primeiro time;
             token = strtok(NULL, " ");
@@ -137,38 +137,35 @@ Partida *carregarPartidas(char *nomeArquivo, int nTimes, Time *times)
     return partidas; // retorna o vetor de partidas carregado;
 }
 
-// gera a classificacao final do campeonato;
+// gera a classificação final do campeonato;
 void atualizarPontuacao(Partida *partidas, int nPartidas)
 {
     for (int i = 0; i < nPartidas; i++)
     {
-        int golsTime1 = partidas[i].golsTime1;
-        int golsTime2 = partidas[i].golsTime2;
 
-        // atualiza saldo de gols;
-        partidas[i].time1->saldoGols += (golsTime1 - golsTime2);
-        partidas[i].time2->saldoGols += (golsTime2 - golsTime1);
+        // verifica o resultado da partida e atualiza a pontuação;
 
-        // verifica o resultado da partida e atualiza a pontuacao;
-        if (golsTime1 > golsTime2) // vitoria do time1;
+        if (partidas[i].golsTime1 > partidas[i].golsTime2) // vitoria do time1;
         {
             partidas[i].time1->pontuacao += 3;
             partidas[i].time1->partidasGanha += 1;
             partidas[i].time2->partidasDerrota += 1;
         }
-        else if (golsTime1 < golsTime2) // vitoria do time2;
+        else if (partidas[i].golsTime1 < partidas[i].golsTime2) // vitoria do time2;
         {
             partidas[i].time2->pontuacao += 3;
             partidas[i].time2->partidasGanha += 1;
+
             partidas[i].time1->partidasDerrota += 1;
         }
         else // empate;
         {
-            partidas[i].time1->pontuacao += 1;
-            partidas[i].time2->pontuacao += 1;
             partidas[i].time1->partidasEmpate += 1;
             partidas[i].time2->partidasEmpate += 1;
         }
+
+        partidas[i].time2->saldoGols += partidas[i].golsTime2 - partidas[i].golsTime1;
+        partidas[i].time1->saldoGols += partidas[i].golsTime1 - partidas[i].golsTime2;
     }
 }
 
@@ -190,41 +187,72 @@ void gerarClassificacao(Time *times, int nTimes)
         }
     }
 
-    // tenta abrir o arquivo de classificacao para escrita;
+    // tenta abrir o arquivo de classificação para escrita;
     FILE *arqClassificacao = fopen("classificacao.txt", "wt");
-    
     if (arqClassificacao == NULL)
     {
-        printf("Erro ao abrir o arquivo para salvar a classificacao.\n");
+        printf("Erro ao abrir o arquivo para salvar a classificação.\n");
         exit(1); // encerra o programa se não for possível abrir o arquivo;
     }
 
-    // salva a classificacao final em um arquivo;
+    // salva a classificação final em um arquivo;
     for (int i = 0; i < nTimes; i++)
     {
-        fprintf(arqClassificacao, "%i - %s: %i pontos, Saldo de Gols: %i\n",  i + 1, times[i].nome, times[i].pontuacao, times[i].saldoGols);
+        fprintf(arqClassificacao, "%s: %d pontos, %i vitorias, %i derrotas, %i empates, Saldo de Gols: %d\n", times[i].nome, times[i].pontuacao, times[i].partidasGanha, times[i].partidasDerrota, times[i].partidasEmpate, times[i].saldoGols);
     }
 
-    fclose(arqClassificacao); 
+    fclose(arqClassificacao);
 }
 int main()
 {
     int nTimes = 10;                             // numero de times no campeonato;
-    int nPartidas = (nTimes * (nTimes - 1)) / 2; // numero de partidas;
+    int nPartidas = (nTimes / 2) * (nTimes / 2); // numero de partidas;
     Time *times;                                 // ponteiro para o vetor de times;
     Partida *partidas;                           // ponteiro para o vetor de partidas;
 
     // carrega os times do arquivo "times.txt";
     times = carregarTimes("times.txt", nTimes);
 
+    if (times == NULL)
+    {
+        printf("Erro ao carregar os times.\n");
+        exit(1);
+    }
+
     // carrega as partidas do arquivo "partidas.txt";
     partidas = carregarPartidas("partidas.txt", nTimes, times);
+
+    if (partidas == NULL)
+    {
+        printf("Erro ao carregar as partidas.\n");
+        free(times); // libera a memoria de times caso partidas falhe;
+        exit(1);
+    }
 
     // atualiza a pontuacao e o saldo de gols após cada partida;
     atualizarPontuacao(partidas, nPartidas);
 
     // gera a calssificacao final e salva em um arquivo "classificacao.txt";
     gerarClassificacao(times, nTimes);
+    printf("#Times\n");
+    for (int i = 0; i < nTimes; i++)
+    {
+
+        printf("%s\n", times[i].nome);
+    }
+    printf("#Partidas\n");
+    for (int i = 0; i < nPartidas; i++)
+    {
+        printf("%s %d x %d %s\n", partidas[i].time1->nome, partidas[i].golsTime1, partidas[i].golsTime2, partidas[i].time2->nome);
+    }
+
+    printf("#Classificacao\n");
+    for(int i = 0; i < nTimes; i++)
+    {
+        printf("\n%s\t%i\t%i\t%i\t%i\t%i", times[i].nome, times[i].pontuacao, times[i].partidasGanha, times[i].partidasDerrota, times[i].partidasEmpate, times[i].saldoGols);
+    }
+    free(times);
+    free(partidas);
 
     return 0;
 }
