@@ -170,7 +170,7 @@ void atualizarPontuacao(Partida *partidas, int nPartidas)
 }
 
 // gera a classificacao final do campeonato;
-void gerarClassificacao(Time *times, int nTimes)
+/*void ordenaTimes(Time *times, int nTimes)
 {
     // ordena os times pela pontuacao e, em caso de empate, pelo saldo de gols;
     for (int i = 0; i < nTimes - 1; i++)
@@ -187,8 +187,16 @@ void gerarClassificacao(Time *times, int nTimes)
         }
     }
 
+
+
+}
+*/
+void geraClassificacao(Time *times, int nTimes)
+{
+
     // tenta abrir o arquivo de classificação para escrita;
     FILE *arqClassificacao = fopen("classificacao.txt", "wt");
+
     if (arqClassificacao == NULL)
     {
         printf("Erro ao abrir o arquivo para salvar a classificação.\n");
@@ -198,11 +206,12 @@ void gerarClassificacao(Time *times, int nTimes)
     // salva a classificação final em um arquivo;
     for (int i = 0; i < nTimes; i++)
     {
-        fprintf(arqClassificacao, "%s: %d pontos, %i vitorias, %i derrotas, %i empates, Saldo de Gols: %d\n", times[i].nome, times[i].pontuacao, times[i].partidasGanha, times[i].partidasDerrota, times[i].partidasEmpate, times[i].saldoGols);
+        fprintf(arqClassificacao, "%s: %d pontos, %i vitorias, %i derrotas, %i empates, saldo de gols: %d\n", times[i].nome, times[i].pontuacao, times[i].partidasGanha, times[i].partidasDerrota, times[i].partidasEmpate, times[i].saldoGols);
     }
 
     fclose(arqClassificacao);
 }
+
 int main()
 {
     int nTimes = 10;                             // numero de times no campeonato;
@@ -232,25 +241,31 @@ int main()
     // atualiza a pontuacao e o saldo de gols após cada partida;
     atualizarPontuacao(partidas, nPartidas);
 
+    // ordenas os times;
+    // ordenarTimes (times, nTimes);
+
     // gera a calssificacao final e salva em um arquivo "classificacao.txt";
-    gerarClassificacao(times, nTimes);
-    printf("#Times\n");
+    geraClassificacao(times, nTimes);
+
+    printf("\n#Times\n");
     for (int i = 0; i < nTimes; i++)
     {
 
         printf("%s\n", times[i].nome);
     }
-    printf("#Partidas\n");
+
+    printf("\n#Partidas\n");
     for (int i = 0; i < nPartidas; i++)
     {
         printf("%s %d x %d %s\n", partidas[i].time1->nome, partidas[i].golsTime1, partidas[i].golsTime2, partidas[i].time2->nome);
     }
 
-    printf("#Classificacao\n");
-    for(int i = 0; i < nTimes; i++)
+    printf("\n#Classificacao\n");
+    for (int i = 0; i < nTimes; i++)
     {
-        printf("\n%s\t%i\t%i\t%i\t%i\t%i", times[i].nome, times[i].pontuacao, times[i].partidasGanha, times[i].partidasDerrota, times[i].partidasEmpate, times[i].saldoGols);
+        printf("\nTime: %s\t Pontuacao: %i\t Vitorias: %i\t Derrotas: %i\t Empates: %i\t Saldo de Gols: %i", times[i].nome, times[i].pontuacao, times[i].partidasGanha, times[i].partidasDerrota, times[i].partidasEmpate, times[i].saldoGols);
     }
+
     free(times);
     free(partidas);
 

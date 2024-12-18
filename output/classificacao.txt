@@ -1,0 +1,10 @@
+TrovõesFC: 9 pontos, 3 vitorias, 1 derrotas, 1 empates, saldo de gols: 2
+EstrelasFC: 0 pontos, 0 vitorias, 4 derrotas, 1 empates, saldo de gols: -6
+LobosFC: 6 pontos, 2 vitorias, 1 derrotas, 2 empates, saldo de gols: 2
+FênixFC: 9 pontos, 3 vitorias, 1 derrotas, 1 empates, saldo de gols: 3
+PiratasFC: 9 pontos, 3 vitorias, 0 derrotas, 2 empates, saldo de gols: 6
+GladiadoresFC: 3 pontos, 1 vitorias, 1 derrotas, 3 empates, saldo de gols: -2
+MarujosFC: 3 pontos, 1 vitorias, 1 derrotas, 3 empates, saldo de gols: -1
+TigresFC: 0 pontos, 0 vitorias, 3 derrotas, 2 empates, saldo de gols: -3
+CometasFC: 6 pontos, 2 vitorias, 2 derrotas, 1 empates, saldo de gols: 0
+ÁguiasFC: 3 pontos, 1 vitorias, 2 derrotas, 2 empates, saldo de gols: -1
