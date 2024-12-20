@@ -1180,6 +1180,7 @@ void ImprimirCategorias(Categoria categorias)
     printf("\nTipo de Categoria: %s\n", categorias.nome);
 }
 
+// ARRUMAAR!!!!!!!!!
 void ImprimirEncontros(Encontro encontros)
 {
     printf("\nAmigos: \n");
