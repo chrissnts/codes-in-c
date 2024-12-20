@@ -77,7 +77,9 @@ typedef struct
 
 // COISAS IMPORTANTES!!
 // USAR TOKEN QUANDO FOR MANIPULAR ARQUIVO (MAIS FACIL);
-// QUANDO TEM UMA CATEGORIA, MAS NAO TEM UM ENCONTRO COM ELA, NAO ERA PRA MOSTRA (TEM QUE ARRUMAR ISSO!)!!!!!!!!!!!!;
+// ARRUMAR AS COISAS MARCADAS!;
+// FAZER O MODIFICAR E EXCLUIR ENCONTROS;
+// DEIXAR AS IMPRESSOES DOS DADOS MAIS BONITAS;
 
 void MensagemErro(int erro); // imprime mensagens de erro;
 
@@ -876,6 +878,7 @@ Encontro CriaEncontro()
         }
     }
 
+    incluir = 1;
     while (incluir)
     {
         LimparTela();
@@ -1158,20 +1161,20 @@ int IncluirEncontros()
 
 void ImprimirAmigos(Amigo amigos)
 {
-    printf("\nNome: %s\n", amigos.nome);
-    printf("\nApelido: %s\n", amigos.apelido);
-    printf("\nEmail: %s\n", amigos.email);
-    printf("\nTelefone: %s\n", amigos.telefone);
+    printf("\nNome: %s", amigos.nome);
+    printf("\nApelido: %s", amigos.apelido);
+    printf("\nEmail: %s", amigos.email);
+    printf("\nTelefone: %s", amigos.telefone);
     printf("\nData Nascimento: [%02i/%02i/%i]\n", amigos.datanasc.dia, amigos.datanasc.mes, amigos.datanasc.ano);
 }
 
 void ImprimirLocais(Local locais)
 {
-    printf("\nNome do Local: %s\n", locais.nome);
-    printf("\nEstado: %s \n", locais.endereco.estado);
-    printf("\nCidade: %s\n", locais.endereco.cidade);
-    printf("\nBairro: %s\n", locais.endereco.bairro);
-    printf("\nLogradouro: %s\n", locais.endereco.logradouro);
+    printf("\nNome do Local: %s", locais.nome);
+    printf("\nEstado: %s", locais.endereco.estado);
+    printf("\nCidade: %s", locais.endereco.cidade);
+    printf("\nBairro: %s", locais.endereco.bairro);
+    printf("\nLogradouro: %s", locais.endereco.logradouro);
     printf("\nNumero: %i\n", locais.endereco.numero);
 }
 
@@ -1183,34 +1186,47 @@ void ImprimirCategorias(Categoria categorias)
 // ARRUMAAR!!!!!!!!!
 void ImprimirEncontros(Encontro encontros)
 {
-    printf("\nAmigos: \n");
-    for (int i = 0; i < encontros.numamigos; i++)
+    if (NumAmigos == 1)
     {
-        if (i < encontros.numamigos - 1)
+        printf("\nAmigo: %s", encontros.amigos->nome);
+    }
+    else
+    {
+        printf("\nAmigos: ");
+        for (int i = 0; i < encontros.numamigos; i++)
         {
-            printf("%s, ", encontros.amigos[i].nome);
-        }
-        else
-        {
-            printf("%s, \n", encontros.amigos[i].nome);
+            if (i < encontros.numamigos - 1)
+            {
+                printf("%s, ", encontros.amigos[i].nome);
+            }
+            else
+            {
+                printf("%s", encontros.amigos[i].nome);
+            }
         }
     }
-    
-    printf("\nLocal: %s\n", encontros.categorias->nome);
-    printf("\nCategorias: \n");
-    for (int j = 0; j < encontros.numcategorias; j++)
+    printf("Local: %s", encontros.locais->nome);
+    if (NumCategorias == 1)
     {
-        if (j < encontros.numcategorias - 1)
+        printf("Categoria: %s", encontros.categorias->nome);
+    }
+    else
+    {
+        printf("\nCategorias: ");
+        for (int j = 0; j < encontros.numcategorias; j++)
         {
-            printf("%s, ", encontros.categorias[j].nome);
-        }
-        else
-        {
-            printf("%s, \n", encontros.categorias[j].nome);
+            if (j < encontros.numcategorias - 1)
+            {
+                printf("%s, ", encontros.categorias[j].nome);
+            }
+            else
+            {
+                printf("%s", encontros.categorias[j].nome);
+            }
         }
     }
-    printf("\nData: [%02i/%02i/%i]\n", encontros.data.dia, encontros.data.mes, encontros.data.ano);
-    printf("\nHorario: [%02ih:%02im]\n", encontros.horario.hora, encontros.horario.minuto);
+    printf("Data: [%02i/%02i/%i]", encontros.data.dia, encontros.data.mes, encontros.data.ano);
+    printf("\nHorario: [%02ih:%02im]", encontros.horario.hora, encontros.horario.minuto);
     printf("\nDescricao: %s\n", encontros.descricao);
 }
 
@@ -1544,6 +1560,8 @@ void OpcaoMenuRelatorio()
             else
             {
                 ListarEncontrosPorCategorias();
+                Pausar(1);
+                return;
             }
             break;
 
@@ -2046,6 +2064,7 @@ int ListarEncontrosPorAmigos()
 
     return 1;
 }
+// TESTAR!!!!!!!!!!!!
 void ListarEncontrosPorCategorias()
 {
     int i, j;
@@ -2060,7 +2079,26 @@ void ListarEncontrosPorCategorias()
 
             if (strcmp(Encontros[i].categorias[j].nome, Categorias[j].nome) == 0)
             {
-                printf("\nAmigo: %s\n", Encontros[i].amigos->nome);
+                if (NumAmigos == 1)
+                {
+                    printf("\nAmigo: %s", Encontros[i].amigos[j].nome);
+                }
+                else
+                {
+                    printf("\nAmigos: ");
+                    for (int k = 0; k < Encontros->numamigos; k++)
+                    {
+                        if (k < Encontros->numamigos - 1)
+                        {
+                            printf("%s, ", Encontros->amigos[k].nome);
+                        }
+                        else
+                        {
+                            printf("%s", Encontros->amigos[k].nome);
+                        }
+                    }
+                }
+
                 printf("\nLocal: %s\n", Encontros[i].locais->nome);
                 printf("\nData: [%02i/%02i/%04i]\n", Encontros[i].data.dia, Encontros[i].data.mes, Encontros[i].data.ano);
                 printf("\nHorario: [%02i:%02i]\n", Encontros[i].horario.hora, Encontros[i].horario.minuto);
