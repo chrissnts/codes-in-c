@@ -78,7 +78,6 @@ typedef struct
 // COISAS IMPORTANTES!!!!!!!!!!!!!!!!!!!! **************************************************
 // USAR TOKEN QUANDO FOR MANIPULAR ARQUIVO (MAIS FACIL);
 // FAZER O MODIFICAR ENCONTROS;
-// QUANDO MODIFICA ALGO, NAO MODIFICA NO ENCONTRO, ARRUMAR;
 // ARRUMAR LISTAR POR CATEGORIAS;
 
 void MensagemErro(int erro); // imprime mensagens de erro;
@@ -2119,65 +2118,41 @@ void AlterarAmigos(int amigo, int op)
         printf("\nNome:\n");
         fgets(strAux, sizeof(strAux), stdin);
 
-        if (Amigos[amigo].nome != NULL)
-        {
-            free(Amigos[amigo].nome);
-        }
-
-        Amigos[amigo].nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
-
-        if (Amigos[amigo].nome == NULL)
-        {
-            MensagemErro(-7);
-            exit(0);
-        }
-
-        strcpy(Amigos[amigo].nome, strAux);
-        LimparBuffer();
-        printf("\nfoi modificado\n");
-
-        // ARRUMAAAR!!!!!!!!!!!!!!!
-
         // verificando se tem o amigo desejado dentro de algum encontro, para pode modificar tambem;
         for (i = 0; i < NumEncontros; i++)
-        {   
+        {
             for (j = 0; j < Encontros[i].numamigos; j++)
-            {   
-                printf("teste: nome do amigo no encontro: %s", Encontros[i].amigos[j].nome);
-                printf("teste: nome do amigo na posicao do amigo que o usuario quer: %s\n", Amigos[amigo].nome);
+            {
                 if (strcmp(Encontros[i].amigos[j].nome, Amigos[amigo].nome) == 0)
                 {
-                    printf("\nteste: amigo esta sim no encontro. nome antes de limpar: %s.\n", Encontros[i].amigos[j].nome);
-
-                    // limpando o que ja tem dentro;
                     if (Encontros[i].amigos[j].nome != NULL)
                     {
                         free(Encontros[i].amigos[j].nome);
-                        printf("\nteste: nome depois de limpar: %s\n", Encontros[i].amigos[j].nome);
                     }
-
-                    // alocando espaco suficiente pro novo nome;
-                    printf("\nteste: limpou o nome, agora ira colocar o nome: %s, no encontro", strAux);
-
                     Encontros[i].amigos[j].nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
                     if (Encontros[i].amigos[j].nome == NULL)
                     {
                         MensagemErro(-7);
                         exit(0);
                     }
-
                     strcpy(Encontros[i].amigos[j].nome, strAux);
-                    printf("\nteste: nome dentro do encontro modificado: %s", Encontros[i].amigos[j].nome);
-                    LimparBuffer(); 
-                }
-                else
-                {
-                    printf("\teste: nao entrou na comparacao.\n");
+                    LimparBuffer();
                 }
             }
         }
 
-       
+        if (Amigos[amigo].nome != NULL)
+        {
+            free(Amigos[amigo].nome);
+        }
+        Amigos[amigo].nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+        if (Amigos[amigo].nome == NULL)
+        {
+            MensagemErro(-7);
+            exit(0);
+        }
+        strcpy(Amigos[amigo].nome, strAux);
+        LimparBuffer();
     }
     else if (op == 2)
     {
@@ -2264,25 +2239,48 @@ void AlterarAmigos(int amigo, int op)
 void AlterarLocais(int local, int op)
 {
     char strAux[100];
+    int i, j;
 
     if (op == 1)
     {
         LimparTela();
         printf("\nNome do Local:\n");
         fgets(strAux, sizeof(strAux), stdin);
+        // verificando se tem o local desejado dentro de algum encontro, para pode modificar tambem;
+        for (i = 0; i < NumEncontros; i++)
+        {
+            for (j = 0; j < Encontros[i].numlocais; j++)
+            {
+                if (strcmp(Encontros[i].amigos[j].nome, Locais[local].nome) == 0)
+                {
+                    if (Encontros[i].locais[j].nome != NULL)
+                    {
+                        free(Encontros[i].locais[j].nome);
+                    }
+                    Encontros[i].locais[j].nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+                    if (Encontros[i].locais[j].nome == NULL)
+                    {
+                        MensagemErro(-7);
+                        exit(0);
+                    }
+                    strcpy(Encontros[i].locais[j].nome, strAux);
+                    LimparBuffer();
+                }
+            }
+        }
+
         if (Locais[local].nome != NULL)
         {
             free(Locais[local].nome);
         }
-
         Locais[local].nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
-
         if (Locais[local].nome == NULL)
         {
             MensagemErro(-7);
             exit(0);
         }
         strcpy(Locais[local].nome, strAux);
+        LimparBuffer();
     }
     else if (op == 2)
     {
@@ -2375,17 +2373,40 @@ void AlterarLocais(int local, int op)
 void AlterarCategorias(int categoria)
 {
     char strAux[100];
+    int i, j;
 
     LimparTela();
     printf("\nTipo da categoria:\n");
     fgets(strAux, sizeof(strAux), stdin);
+    // verificando se tem a categoria desejada dentro de algum encontro, para pode modificar tambem;
+
+    for (i = 0; i < NumEncontros; i++)
+    {
+        for (j = 0; j < Encontros[i].numcategorias; j++)
+        {
+            if (strcmp(Encontros[i].categorias[j].nome, Categorias[categoria].nome) == 0)
+            {
+                if (Encontros[i].categorias[j].nome != NULL)
+                {
+                    free(Encontros[i].locais[j].nome);
+                }
+                Encontros[i].categorias[j].nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+                if (Encontros[i].categorias[j].nome == NULL)
+                {
+                    MensagemErro(-7);
+                    exit(0);
+                }
+                strcpy(Encontros[i].categorias[j].nome, strAux);
+                LimparBuffer();
+            }
+        }
+    }
+
     if (Categorias[categoria].nome != NULL)
     {
         free(Categorias[categoria].nome);
     }
-
     Categorias[categoria].nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
-
     if (Categorias[categoria].nome == NULL)
     {
         MensagemErro(-7);
@@ -2488,7 +2509,7 @@ int ModificarAmigos()
             continue;
         }
 
-        //LimparTela();
+        LimparTela();
         printf("\nModificado com sucesso.\n");
         break;
     }
