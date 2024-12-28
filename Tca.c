@@ -395,6 +395,16 @@ void MensagemErro(int erro)
         printf("\nErro. Categoria invalida.");
         break;
 
+    case -38:
+        LimparTela();
+        printf("\nErro. Apenas um amigo no encontro. Impossivel excluir. Exclua o encontro.\n");
+        break;
+
+    case -39:
+        LimparTela();
+        printf("\nErro. Apenas uma categoria no encontro. Impossivel excluir. Exclua o encontro.\n");
+        break;
+
     default:
         LimparTela();
         printf("\nErro.\n");
@@ -1247,7 +1257,7 @@ void ImprimirLocais(Local locais)
 
 void ImprimirCategorias(Categoria categorias)
 {
-    printf("\nnome de Categoria: %s\n", categorias.nome);
+    printf("\nCategoria: %s\n", categorias.nome);
 }
 
 void ImprimirEncontros(Encontro encontros)
@@ -2875,7 +2885,6 @@ void ModificarAmigoEncontro(int encontro)
                     }
                     else
                     {
-
                         if (Encontros[encontro].amigos[amigoaux].nome != NULL)
                         {
                             free(Encontros[encontro].amigos[amigoaux].nome);
@@ -3162,10 +3171,180 @@ void ModificarDescricaoEncontro(int encontro)
 
 void DeletarAmigoEncontro(int encontro)
 {
+    char sn;
+    int amigo;
+    char op;
+
+    while (1)
+    {
+
+        LimparTela();
+        printf("\nRealmente deseja prosseguir? (s) (n)\n");
+        scanf(" %c", &op);
+        LimparBuffer();
+        op = tolower(op);
+
+        if (op == 's')
+        {
+            // caso tenha apenas 1 amigo no encontro, nao deixar excluir;
+            if (Encontros[encontro].numamigos <= 1)
+            {
+                MensagemErro(-38);
+                Pausar(1);
+
+                while (1)
+                {
+                    LimparTela();
+                    printf("\nDeseja excluir o encontro? (s) - Menu encontros | (n) - Menu principal\n");
+                    scanf(" %c", &sn);
+                    LimparBuffer();
+                    sn = tolower(sn);
+                    if (sn == 's')
+                    {
+                        OpcaoMenuEncontro();
+                    }
+                    else if (sn == 'n')
+                    {
+                        OpcaoMenu();
+                    }
+                    else
+                    {
+                        MensagemErro(0);
+                        Pausar(1);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                AlterarEncontroListarAmigos(Encontros[encontro]);
+                printf("\nDigite o amigo que deseja deletar do encontro:\n");
+                scanf("%i", &amigo);
+                LimparBuffer();
+                amigo--;
+                if (amigo < 0 || amigo > Encontros[encontro].numamigos)
+                {
+                    MensagemErro(-3);
+                    Pausar(1);
+                    continue;
+                }
+                else
+                {   
+
+                    // ARRUMAR!!!!!!!!!!!
+                    if (Encontros[encontro].amigos[amigo].nome != NULL)
+                    {
+                        free(Encontros[encontro].amigos[amigo].nome);
+                        Encontros[encontro].amigos[amigo].nome = NULL;
+                    }
+
+                    Encontros[encontro] = Encontros[Encontros[encontro].numamigos - 1];
+                    Encontros[encontro].numamigos--;
+                    LimparTela();
+                    printf("\nDeletado com sucesso.\n");
+                    break;
+                }
+            }
+        }
+        else if (op == 'n')
+        {
+            OpcaoMenuEncontro();
+        }
+        else
+        {
+            MensagemErro(0);
+            Pausar(1);
+            continue;
+        }
+    }
 }
 
 void DeletarCategoriaEncontro(int encontro)
 {
+    char sn;
+    int categoria;
+    char op;
+
+    while (1)
+    {
+        LimparTela();
+        printf("\nRealmente deseja prosseguir? (s) (n)\n");
+        scanf(" %c", &op);
+        LimparBuffer();
+        op = tolower(op);
+
+        if (op == 's')
+        {
+            // caso tenha apenas 1 categoria no encontro, nao deixar excluir;
+            if (Encontros[encontro].numcategorias <= 1)
+            {
+                MensagemErro(-39);
+                Pausar(1);
+
+                while (1)
+                {
+                    LimparTela();
+                    printf("\nDeseja excluir o encontro? (s) - Menu encontros | (n) - Menu principal\n");
+                    scanf(" %c", &sn);
+                    LimparBuffer();
+                    sn = tolower(sn);
+                    if (sn == 's')
+                    {
+                        OpcaoMenuEncontro();
+                    }
+                    else if (sn == 'n')
+                    {
+                        OpcaoMenu();
+                    }
+                    else
+                    {
+                        MensagemErro(0);
+                        Pausar(1);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                AlterarEncontroListarCategorias(Encontros[encontro]);
+                printf("\nDigite a categoria que deseja deletar do encontro:\n");
+                scanf("%i", &categoria);
+                LimparBuffer();
+                categoria--;
+                if (categoria < 0 || categoria > Encontros[encontro].numcategorias)
+                {
+                    MensagemErro(-3);
+                    Pausar(1);
+                    continue;
+                }
+                else
+                {   
+                    // ARRUMAR!!!!!!!!!!!
+                    if (Encontros[encontro].categorias[categoria].nome != NULL)
+                    {
+                        free(Encontros[encontro].categorias[categoria].nome);
+                        Encontros[encontro].categorias[categoria].nome = NULL;
+                    }
+
+                    Encontros[encontro] = Encontros[Encontros[encontro].numcategorias - 1];
+                    Encontros[encontro].numcategorias--;
+                    LimparTela();
+                    printf("\nDeletado com sucesso.\n");
+                    break;
+                }
+            }
+        }
+        else if (op == 'n')
+        {
+            OpcaoMenuEncontro();
+        }
+        else
+        {
+            MensagemErro(0);
+            Pausar(1);
+            continue;
+        }
+    }
 }
 
 int ModificarAmigos()
