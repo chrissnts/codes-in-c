@@ -77,7 +77,7 @@ typedef struct
 
 // COISAS IMPORTANTES!!!!!!!!!!!!!!!!!!!! **************************************************
 // USAR TOKEN QUANDO FOR MANIPULAR ARQUIVO (MAIS FACIL);
-// DAR A OPCAO DE MODIFICAR UM AMIGO JA CADASTRADO NO ENCONTRO, OU ADICIONAR MAIS ALGUM;
+// DAR A OPCAO DE MODIFICAR UM AMIGO/ CATEGORIA JA CADASTRADO NO ENCONTRO, OU ADICIONAR MAIS ALGUM;
 // ARRUMAR LISTAR POR CATEGORIAS;
 // DE ALGUMA FORMA ARRUMAR PARA MODIFICAR OS 2 AMIGOS DO ENCONTRO, E DENTRO DA PARTE DE MODIFICAR UM ENCONTRO, DAR UMA OPCAO DE DELETAR UM AMIGO OU UMA CATEGORIA, E MODIFICAR AMBOS TAMBEM;
 
@@ -115,16 +115,16 @@ void ImprimirLocais(Local locais);             // imprime locais;
 void ImprimirCategorias(Categoria categorias); // imprime categorias;
 void ImprimirEncontros(Encontro encontros);    // imprime encontros;
 
-void AlterarAmigos(int amigo, int op);          // modifica os dados do amigo na hora de Alterar;
-void AlterarLocais(int local, int op);          // modifica os dados do local na hora de Alterar;
-void AlterarCategorias(int categorias);         // modifica os dados da categoria na hora de Alterar;
-void AlterarEncontros(int encontros, int op);   // modifica os dados do encontro na hora de Alterar;
-void AlterarEncontroListarAmigos(Encontro encontros); // lista os amigos que estao no encontro que o usuario deseja;
+void AlterarAmigos(int amigo, int op);                    // modifica os dados do amigo na hora de Alterar;
+void AlterarLocais(int local, int op);                    // modifica os dados do local na hora de Alterar;
+void AlterarCategorias(int categorias);                   // modifica os dados da categoria na hora de Alterar;
+void AlterarEncontros(int encontros, int op);             // modifica os dados do encontro na hora de Alterar;
+void AlterarEncontroListarAmigos(Encontro encontros);     // lista os amigos que estao no encontro que o usuario deseja;
 void AlterarEncontroListarCategorias(Encontro encontros); // lista as categorias que estao no encontro que o usuario deseja;
-void ExcluirAmigos(int amigo);                  // dispara qual amigo o usuario deseja excluir;
-void ExcluirLocais(int local);                  // dispara qual local o usuario deseja excluir;
-void ExcluirCategorias(int categoria);          // dispara qual categoria o usuario deseja excluir;
-void ExcluirEncontros(int encontro);            // dispara qual categoria o usuario deseja excluir;
+void ExcluirAmigos(int amigo);                            // dispara qual amigo o usuario deseja excluir;
+void ExcluirLocais(int local);                            // dispara qual local o usuario deseja excluir;
+void ExcluirCategorias(int categoria);                    // dispara qual categoria o usuario deseja excluir;
+void ExcluirEncontros(int encontro);                      // dispara qual categoria o usuario deseja excluir;
 
 void VoltarMenuPrincipal(); // volta/chama o menu principal e ja le a opcao direto;
 void VoltarMenuRelatorio(); // volta/chama o menu de relatorio e ja le a opcao direto;
@@ -165,7 +165,6 @@ void ListarEncontrosPorCategorias(); // mostrar em qual categoria esta cada enco
 int ValidarData(int dia, int mes, int ano); // valida data que o usuario digitar;
 int Bissexto(int ano);                      // verifica se o ano eh bissexto para poder arrumar dias e mes
 int ValidarHorario(int hora, int min);
-void Sleeps();
 
 Amigo CriaAmigo();         // funcao para criar um amigo;
 Local CriaLocal();         // funcao para criar um local;
@@ -374,7 +373,7 @@ void MensagemErro(int erro)
         LimparTela();
         printf("\nErro. Categorias insuficientes.");
         break;
-    
+
     case -37:
         LimparTela();
         printf("\nErro. Categoria invalida.");
@@ -564,7 +563,6 @@ void OpcaoMenu()
         {
             LimparTela();
             printf("\nBye Bye..\n");
-            Sleeps();
             exit(0);
         }
 
@@ -628,7 +626,7 @@ Amigo CriaAmigo()
     while (erro < 0)
     {
         LimparTela(); // força o usuario digitar data de nascimento seguindo os parametros de data
-        printf("\nData Nascimento [dd/mm/yy]:\n");
+        printf("\nData de nascimento [dd/mm/yy]:\n");
         scanf("%i%i%i", &amigo.datanasc.dia, &amigo.datanasc.mes, &amigo.datanasc.ano);
         LimparBuffer();
         erro = ValidarData(amigo.datanasc.dia, amigo.datanasc.mes, amigo.datanasc.ano);
@@ -2160,7 +2158,7 @@ void AlterarAmigos(int amigo, int op)
     {
 
         LimparTela();
-        printf("\nNome:\n");
+        printf("\nNovo nome:\n");
         fgets(strAux, sizeof(strAux), stdin);
 
         // verificando se tem o amigo desejado dentro de algum encontro, para pode modificar tambem;
@@ -2202,7 +2200,7 @@ void AlterarAmigos(int amigo, int op)
     else if (op == 2)
     {
         LimparTela();
-        printf("\nApelido:\n");
+        printf("\nNovo apelido:\n");
         fgets(strAux, sizeof(strAux), stdin);
 
         if (Amigos[amigo].apelido != NULL)
@@ -2223,7 +2221,7 @@ void AlterarAmigos(int amigo, int op)
     else if (op == 3)
     {
         LimparTela();
-        printf("\nEmail:\n");
+        printf("\nNovo email:\n");
         fgets(strAux, sizeof(strAux), stdin);
 
         if (Amigos[amigo].email != NULL)
@@ -2244,7 +2242,7 @@ void AlterarAmigos(int amigo, int op)
     else if (op == 4)
     {
         LimparTela();
-        printf("\nTelefone:\n");
+        printf("\nNovo telefone:\n");
         fgets(strAux, sizeof(strAux), stdin);
 
         if (Amigos[amigo].telefone != NULL)
@@ -2267,7 +2265,7 @@ void AlterarAmigos(int amigo, int op)
         while (erro < 0)
         {
             LimparTela();
-            printf("\nData Nascimento [dd/mm/yy]:\n");
+            printf("\nNova data de nascimento [dd/mm/yy]:\n");
             scanf("%i%i%i", &Amigos[amigo].datanasc.dia, &Amigos[amigo].datanasc.mes, &Amigos[amigo].datanasc.ano);
             LimparBuffer();
             erro = ValidarData(Amigos[amigo].datanasc.dia, Amigos[amigo].datanasc.mes, Amigos[amigo].datanasc.ano);
@@ -2289,7 +2287,7 @@ void AlterarLocais(int local, int op)
     if (op == 1)
     {
         LimparTela();
-        printf("\nNome do Local:\n");
+        printf("\nNovo nome do Local:\n");
         fgets(strAux, sizeof(strAux), stdin);
         // verificando se tem o local desejado dentro de algum encontro, para pode modificar tambem;
         for (i = 0; i < NumEncontros; i++)
@@ -2330,7 +2328,7 @@ void AlterarLocais(int local, int op)
     else if (op == 2)
     {
         LimparTela();
-        printf("\nEstado:\n");
+        printf("\nNovo estado:\n");
         fgets(strAux, sizeof(strAux), stdin);
         if (Locais[local].endereco.estado != NULL)
         {
@@ -2349,7 +2347,7 @@ void AlterarLocais(int local, int op)
     else if (op == 3)
     {
         LimparTela();
-        printf("\nCidade:\n");
+        printf("\nNova cidade:\n");
         fgets(strAux, sizeof(strAux), stdin);
         if (Locais[local].endereco.cidade != NULL)
         {
@@ -2369,7 +2367,7 @@ void AlterarLocais(int local, int op)
     else if (op == 4)
     {
         LimparTela();
-        printf("\nBairro:\n");
+        printf("\nNovo bairro:\n");
         fgets(strAux, sizeof(strAux), stdin);
         if (Locais[local].endereco.bairro != NULL)
         {
@@ -2389,7 +2387,7 @@ void AlterarLocais(int local, int op)
     else if (op == 5)
     {
         LimparTela();
-        printf("\nLogradouro:\n");
+        printf("\nNovo logradouro:\n");
         fgets(strAux, sizeof(strAux), stdin);
         if (Locais[local].endereco.logradouro != NULL)
         {
@@ -2409,7 +2407,7 @@ void AlterarLocais(int local, int op)
     else if (op == 6)
     {
         LimparTela();
-        printf("\nNumero:\n");
+        printf("\nNovo numero:\n");
         scanf("%i", &Locais[local].endereco.numero);
         LimparBuffer();
     }
@@ -2421,7 +2419,7 @@ void AlterarCategorias(int categoria)
     int i, j;
 
     LimparTela();
-    printf("\nTipo da categoria:\n");
+    printf("\nNovo tipo da categoria:\n");
     fgets(strAux, sizeof(strAux), stdin);
     // verificando se tem a categoria desejada dentro de algum encontro, para pode modificar tambem;
 
@@ -2463,16 +2461,15 @@ void AlterarCategorias(int categoria)
 
 void AlterarEncontros(int encontro, int op)
 {
-    int i;
-    int incluir = 1;
+    int i, incluir = 1, erro;
     int amigo, local, categoria;
     int amigoaux, cateaux;
-    char sn;
+    char sn, strAux[100];;
 
     if (op == 1)
     {
         // caso nao tenha informacoes suficientes para modificar;
-        if (NumAmigos <= 1)
+        if (NumAmigos <= 1 || NumAmigos <= Encontros[encontro].numamigos)
         {
             MensagemErro(-28);
             Pausar(1);
@@ -2502,7 +2499,7 @@ void AlterarEncontros(int encontro, int op)
         }
         while (incluir)
         {
-            AlterarEncontroListar(Encontros[encontro]);
+            AlterarEncontroListarAmigos(Encontros[encontro]);
             printf("\nDigite o amigo que deseja substituir no encontro:\n");
             scanf("%i", &amigoaux);
             LimparBuffer();
@@ -2566,16 +2563,18 @@ void AlterarEncontros(int encontro, int op)
                                 MensagemErro(-7);
                                 exit(0);
                             }
+                            break;
                         }
                     }
                 }
             }
+            break;
         }
     }
     else if (op == 2)
-    {   
+    {
         // caso nao tenha informacoes suficientes para modificar;
-        if (NumLocais <= 1)
+        if (NumLocais <= 1 || NumLocais <= Encontros[encontro].numlocais)
         {
             MensagemErro(-35);
             Pausar(1);
@@ -2654,13 +2653,15 @@ void AlterarEncontros(int encontro, int op)
                         MensagemErro(-7);
                         exit(0);
                     }
+                    break;
                 }
             }
+            break;
         }
     }
     else if (op == 3)
     {
-        if (NumCategorias <= 1)
+        if (NumCategorias <= 1 || NumCategorias <= Encontros[encontro].numcategorias)
         {
             MensagemErro(-36);
             Pausar(1);
@@ -2754,22 +2755,58 @@ void AlterarEncontros(int encontro, int op)
                                 MensagemErro(-7);
                                 exit(0);
                             }
-                           
+                            break;
                         }
                     }
                 }
             }
-            
+            break;
         }
     }
     else if (op == 4)
     {
+        erro = -1;
+        while (erro < 0)
+        {
+            LimparTela();
+            printf("\nNova data do encontro [dd/mm/yy]:\n");
+            scanf("%i%i%i", &Encontros[encontro].data.dia, &Encontros[encontro].data.mes, &Encontros[encontro].data.ano);
+            LimparBuffer();
+            erro = ValidarData(Encontros[encontro].data.dia, Encontros[encontro].data.mes, Encontros[encontro].data.ano);
+
+            if (erro < 0)
+            {
+                MensagemErro(erro);
+                Pausar(1);
+                continue;
+            }
+        }
     }
     else if (op == 5)
     {
+        erro = -1;
+        while (erro < 0)
+        {
+            LimparTela();
+            printf("\nNovo horario do encontro [hora : min]:\n");
+            scanf("%i%i", &Encontros[encontro].horario.hora, &Encontros[encontro].horario.minuto);
+            LimparBuffer();
+            erro = ValidarHorario(Encontros[encontro].horario.hora, Encontros[encontro].horario.minuto);
+            if (erro < 0)
+            {
+                MensagemErro(erro);
+                Pausar(1);
+                continue;
+            }
+        }
     }
     else if (op == 6)
     {
+        printf("\nNova escricao do encontro:\n");
+        fgets(strAux, sizeof(strAux), stdin);
+        Encontros[encontro].descricao = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+        strcpy(Encontros[encontro].descricao, strAux);
+        LimparBuffer();
     }
 }
 
@@ -3068,6 +3105,8 @@ int ModificarEncontros()
         {
             if (NumEncontros == 1)
             {
+                ListarEncontros();
+                Pausar(1);
                 while (1)
                 {
                     LimparTela();
@@ -3701,6 +3740,7 @@ void Pausar(int pause)
 {
     if (pause)
     {
+        printf("\nPressione ENTER para continuar...\n");
         getchar();
     }
 }
@@ -3719,14 +3759,5 @@ void LimparTela()
     system("cls");
 #elif __linux__
     system("clear");
-#endif
-}
-
-void Sleeps()
-{
-#ifdef _WIN32
-    Sleep(1000);
-#elif __linux__
-    sleep(1000);
 #endif
 }
