@@ -93,6 +93,9 @@ void MenuModificarAmigo();     // imprime menu para qual o usuario deseja modifi
 void MenuModificarLocais();    // imprime menu para qual o usuario deseja modificar;
 void MenuModificarEncontros(); // imprime menu para qual o usuario deseja modificar;
 
+void MenuEncontroAmigo();     // faz a validacao e procede;
+void MenuEncontroCategoria(); // faz a validacao e procede;
+
 void MenuRelatorioListarAmigos();     // menu para perguntar se sera listados todos ou especifico por apelido;
 void MenuRelatorioListarLocais();     // menu para perguntar se sera listados todos ou especifico;
 void MenuRelatorioListarCategorias(); // menu para perguntar se sera listado;
@@ -109,6 +112,7 @@ void OpcaoMenuRelatorioListarAmigos();     // recebe a opcao se vai ser todos ou
 void OpcaoMenuRelatorioListarLocais();     // recebe a opcao se vai ser todos ou especifico com apelido e procede;
 void OpcaoMenuRelatorioListarCategorias(); // recebe a opcao se vai ser todos ou deseja voltar e procede;
 void OpcaoMenuRelatorioListarEncontros();  // recebe a opcao se vai ser todos ou especifico e procede;
+void ListarEncontrosPorCategorias();       // mostrar em qual categoria esta cada encontro (imprimindo os mesmo);
 
 void ImprimirAmigos(Amigo amigos);             // imprime amigos;
 void ImprimirLocais(Local locais);             // imprime locais;
@@ -125,6 +129,19 @@ void ExcluirAmigos(int amigo);                            // dispara qual amigo 
 void ExcluirLocais(int local);                            // dispara qual local o usuario deseja excluir;
 void ExcluirCategorias(int categoria);                    // dispara qual categoria o usuario deseja excluir;
 void ExcluirEncontros(int encontro);                      // dispara qual categoria o usuario deseja excluir;
+
+void AdicionarAmigoEncontro(int encontro);     // adiciona um amigo no encontro que o usario quer;
+void AdicionarCategoriaEncontro(int encontro); // adiciona uma categoria no encontro que o usuario quer;
+
+void ModificarAmigoEncontro(int encontro);     // modifica um amigo que o usario quer no encontro desejado;
+void ModificarCategoriaEncontro(int encontro); // modifica uma categoria que o usuario quer no encontro desejado;
+void ModificarLocalEncontro(int encontro);     // modifica o local que o usuario quer no encontro desejado;
+void ModificarDataEncontro(int encontro);      // modifica a data que o usuario quer no encontro desejado;
+void ModificarHorarioEncontro(int encontro);   // modifica o horario que o usuario quer no encontro desejado;
+void ModificarDescricaoEncontro(int encontro); // modifica a descricao que o usuario quer no encontro desejado;
+
+void DeletarAmigoEncontro(int encontro);     // deleta um amigo do encontro desejado;
+void DeletarCategoriaEncontro(int encontro); // deleta uma categoria do encontro desejado;
 
 void VoltarMenuPrincipal(); // volta/chama o menu principal e ja le a opcao direto;
 void VoltarMenuRelatorio(); // volta/chama o menu de relatorio e ja le a opcao direto;
@@ -151,16 +168,15 @@ int DeletarLocais();       // deleta um local;
 int DeletarCategorias();   // deleta uma categoria;
 int DeletarEncontros();    // deleta um encontro;
 
-int ListarAmigos();                  // lista os amigos que ja estao cadastrados;
-int ListarAmigosPorApelido();        // faz a logica de listar amigo por apelido;
-int ListarLocais();                  // lista os locais que ja estao cadastrados;
-int ListarLocaisPorEstado();         // faz a logica de listar locais por estado;
-int ListarLocaisPorCidade();         // faz a logica de listar locais por cidade;
-int ListarLocaisPorBairro();         // faz a logica de listar locais por bairro;
-int ListarCategorias();              // lista as categorias que ja estao cadastradas;
-int ListarEncontros();               // lista os encontros que ja estao cadastradao;
-int ListarEncontrosPorAmigos();      // busca pelos encontros com esse amgio;
-void ListarEncontrosPorCategorias(); // mostrar em qual categoria esta cada encontro (imprimindo os mesmo);
+int ListarAmigos();             // lista os amigos que ja estao cadastrados;
+int ListarAmigosPorApelido();   // faz a logica de listar amigo por apelido;
+int ListarLocais();             // lista os locais que ja estao cadastrados;
+int ListarLocaisPorEstado();    // faz a logica de listar locais por estado;
+int ListarLocaisPorCidade();    // faz a logica de listar locais por cidade;
+int ListarLocaisPorBairro();    // faz a logica de listar locais por bairro;
+int ListarCategorias();         // lista as categorias que ja estao cadastradas;
+int ListarEncontros();          // lista os encontros que ja estao cadastradao;
+int ListarEncontrosPorAmigos(); // busca pelos encontros com esse amgio;
 
 int ValidarData(int dia, int mes, int ano); // valida data que o usuario digitar;
 int Bissexto(int ano);                      // verifica se o ano eh bissexto para poder arrumar dias e mes
@@ -520,6 +536,22 @@ void MenuModificarEncontros()
     printf("\n6. Descricao\n");
 }
 
+void MenuEncontroAmigo()
+{
+    LimparTela();
+    printf("\n1 - Adicionar amigo\n");
+    printf("\n2 - Modificar amigo\n");
+    printf("\n3 - Excluir amigo\n");
+}
+
+void MenuEncontroCategoria()
+{
+    LimparTela();
+    printf("\n1 - Adicionar categoria\n");
+    printf("\n2 - Modificar categoria\n");
+    printf("\n3 - Excluir categoria\n");
+}
+
 void OpcaoMenu()
 {
     int op = 0;
@@ -792,7 +824,7 @@ Encontro CriaEncontro()
 
             if (amigonoencontro)
             {
-                MensagemErro(-22);
+                MensagemErro(-24);
                 Pausar(1);
                 continue;
             }
@@ -1215,7 +1247,7 @@ void ImprimirLocais(Local locais)
 
 void ImprimirCategorias(Categoria categorias)
 {
-    printf("\nTipo de Categoria: %s\n", categorias.nome);
+    printf("\nnome de Categoria: %s\n", categorias.nome);
 }
 
 void ImprimirEncontros(Encontro encontros)
@@ -2419,10 +2451,10 @@ void AlterarCategorias(int categoria)
     int i, j;
 
     LimparTela();
-    printf("\nNovo tipo da categoria:\n");
+    printf("\nNova categoria:\n");
     fgets(strAux, sizeof(strAux), stdin);
-    // verificando se tem a categoria desejada dentro de algum encontro, para pode modificar tambem;
 
+    // verificando se tem a categoria desejada dentro de algum encontro, para pode modificar tambem;
     for (i = 0; i < NumEncontros; i++)
     {
         for (j = 0; j < Encontros[i].numcategorias; j++)
@@ -2461,50 +2493,148 @@ void AlterarCategorias(int categoria)
 
 void AlterarEncontros(int encontro, int op)
 {
-    int i, incluir = 1, erro;
-    int amigo, local, categoria;
-    int amigoaux, cateaux;
-    char sn, strAux[100];;
+    int opaux;
 
     if (op == 1)
     {
-        // caso nao tenha informacoes suficientes para modificar;
-        if (NumAmigos <= 1 || NumAmigos <= Encontros[encontro].numamigos)
+        while (1)
         {
-            MensagemErro(-28);
-            Pausar(1);
-
-            while (1)
+            MenuEncontroAmigo();
+            scanf("%i", &opaux);
+            LimparBuffer();
+            if (opaux < 1 || opaux > 3)
             {
-                LimparTela();
-                printf("\nDeseja incluir mais amigos? (s) - Menu amigos | (n) - Menu principal\n");
-                scanf(" %c", &sn);
-                LimparBuffer();
-                sn = tolower(sn);
-                if (sn == 's')
-                {
-                    OpcaoMenuAmigo();
-                }
-                else if (sn == 'n')
-                {
-                    OpcaoMenu();
-                }
-                else
-                {
-                    MensagemErro(0);
-                    Pausar(1);
-                    continue;
-                }
+                MensagemErro(0);
+                Pausar(1);
+                continue;
+            }
+            else
+            {
+                break;
             }
         }
+
+        switch (opaux)
+        {
+
+        case 1:
+            AdicionarAmigoEncontro(encontro);
+            break;
+
+        case 2:
+            ModificarAmigoEncontro(encontro);
+            break;
+
+        case 3:
+            DeletarAmigoEncontro(encontro);
+            break;
+        }
+    }
+    else if (op == 2)
+    {
+        ModificarLocalEncontro(encontro);
+    }
+    else if (op == 3)
+    {
+        while (1)
+        {
+            MenuEncontroCategoria();
+            scanf("%i", &opaux);
+            LimparBuffer();
+            if (opaux < 1 || opaux > 3)
+            {
+                MensagemErro(0);
+                Pausar(1);
+                continue;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        switch (opaux)
+        {
+
+        case 1:
+            AdicionarCategoriaEncontro(encontro);
+            break;
+
+        case 2:
+            ModificarCategoriaEncontro(encontro);
+            break;
+
+        case 3:
+            DeletarCategoriaEncontro(encontro);
+            break;
+        }
+    }
+    else if (op == 4)
+    {
+        ModificarDataEncontro(encontro);
+    }
+    else if (op == 5)
+    {
+        ModificarHorarioEncontro(encontro);
+    }
+    else if (op == 6)
+    {
+        ModificarDescricaoEncontro(encontro);
+    }
+}
+
+void AdicionarAmigoEncontro(int encontro)
+{
+    char sn;
+    int i;
+    int incluir = 1;
+    int amigo;
+
+    // caso nao tenha amigos suficientes para adicionar;
+    if (NumAmigos <= Encontros[encontro].numamigos)
+    {
+        MensagemErro(-28);
+        Pausar(1);
+
+        while (1)
+        {
+            LimparTela();
+            printf("\nDeseja incluir mais amigos? (s) - Menu amigos | (n) - Menu principal\n");
+            scanf(" %c", &sn);
+            LimparBuffer();
+            sn = tolower(sn);
+            if (sn == 's')
+            {
+                OpcaoMenuAmigo();
+            }
+            else if (sn == 'n')
+            {
+                OpcaoMenu();
+            }
+            else
+            {
+                MensagemErro(0);
+                Pausar(1);
+                continue;
+            }
+        }
+    }
+    else
+    {
         while (incluir)
         {
-            AlterarEncontroListarAmigos(Encontros[encontro]);
-            printf("\nDigite o amigo que deseja substituir no encontro:\n");
-            scanf("%i", &amigoaux);
+            LimparTela();
+            printf("\n--- Amigos ---\n");
+            for (i = 0; i < NumAmigos; i++)
+            {
+                printf("\n%i. %s\n", i + 1, Amigos[i].nome);
+            }
+
+            printf("\nDigite o amigo que deseja incluir no encontro:\n");
+            scanf("%i", &amigo);
             LimparBuffer();
-            amigoaux--;
-            if (amigoaux < 0 || amigoaux >= NumAmigos)
+            amigo--;
+            if (amigo < 0 || amigo >= NumAmigos)
             {
                 MensagemErro(-3);
                 Pausar(1);
@@ -2512,302 +2642,530 @@ void AlterarEncontros(int encontro, int op)
             }
             else
             {
-                while (1)
-                {
-                    LimparTela();
-                    printf("\n--- Amigos ---\n");
-                    for (i = 0; i < NumAmigos; i++)
-                    {
-                        printf("\n%i. %s\n", i + 1, Amigos[i].nome);
-                    }
-                    printf("\nDigite o novo amigo que deseja substituir no encontro:\n");
-                    scanf("%i", &amigo);
-                    LimparBuffer();
-                    amigo--;
-                    if (amigo < 0 || amigo >= NumAmigos)
-                    {
-                        MensagemErro(-3);
-                        Pausar(1);
-                        continue;
-                    }
-                    else
-                    {
-                        // verifica se ja existe um amigo com o mesmo nome;
-                        int amigonoencontro = 0;
-                        for (i = 0; i < Encontros[encontro].numamigos; i++)
-                        {
-                            if (strcmp(Amigos[amigo].nome, Encontros[encontro].amigos[i].nome) == 0)
-                            {
-                                amigonoencontro = 1;
-                                break;
-                            }
-                        }
+                // verifica se ja existe um amigo com o mesmo nome;
+                int amigonoencontro = 0;
 
-                        if (amigonoencontro)
-                        {
-                            MensagemErro(-22);
-                            Pausar(1);
-                            continue;
-                        }
-                        else
-                        {
-
-                            if (Encontros[encontro].amigos[amigoaux].nome != NULL)
-                            {
-                                free(Encontros[encontro].amigos[amigoaux].nome);
-                            }
-                            Encontros[encontro].amigos[amigoaux].nome = (char *)malloc((strlen(Amigos[amigo].nome) + 1) * sizeof(char));
-                            strcpy(Encontros[encontro].amigos[amigoaux].nome, Amigos[amigo].nome);
-                            if (Encontros[encontro].amigos[amigoaux].nome == NULL)
-                            {
-                                MensagemErro(-7);
-                                exit(0);
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-            break;
-        }
-    }
-    else if (op == 2)
-    {
-        // caso nao tenha informacoes suficientes para modificar;
-        if (NumLocais <= 1 || NumLocais <= Encontros[encontro].numlocais)
-        {
-            MensagemErro(-35);
-            Pausar(1);
-
-            while (1)
-            {
-                LimparTela();
-                printf("\nDeseja incluir mais locais? (s) - Menu locais | (n) - Menu principal\n");
-                scanf(" %c", &sn);
-                LimparBuffer();
-                sn = tolower(sn);
-                if (sn == 's')
+                for (i = 0; i < Encontros[encontro].numamigos; i++)
                 {
-                    OpcaoMenuLocal();
-                }
-                else if (sn == 'n')
-                {
-                    OpcaoMenu();
-                }
-                else
-                {
-                    MensagemErro(0);
-                    Pausar(1);
-                    continue;
-                }
-            }
-        }
-        while (1)
-        {
-            LimparTela();
-            printf("\n--- Locais ---\n");
-            for (i = 0; i < NumLocais; i++)
-            {
-                printf("\n%i. %s\n", i + 1, Locais[i].nome);
-            }
-            printf("\nDigite o novo local que deseja substituir no encontro:\n");
-            scanf("%i", &local);
-            LimparBuffer();
-            local--;
-            if (local < 0 || local >= NumLocais)
-            {
-                MensagemErro(-6);
-                Pausar(1);
-                continue;
-            }
-            else
-            {
-                // verifica se ja existe um local com o mesmo nome;
-                int localnoencontro = 0;
-                for (i = 0; i < Encontros[encontro].numlocais; i++)
-                {
-                    if (strcmp(Locais[local].nome, Encontros[encontro].locais[i].nome) == 0)
+                    if (strcmp(Amigos[amigo].nome, Encontros[encontro].amigos[i].nome) == 0)
                     {
-                        localnoencontro = 1;
+                        amigonoencontro = 1;
                         break;
                     }
                 }
 
-                if (localnoencontro)
+                if (amigonoencontro)
                 {
-                    MensagemErro(-34);
+                    MensagemErro(-22);
                     Pausar(1);
                     continue;
                 }
                 else
                 {
+                    Encontros[encontro].amigos = (Amigo *)realloc(Encontros[encontro].amigos, (Encontros[encontro].numamigos + 1) * sizeof(Amigo));
 
-                    if (Encontros[encontro].locais->nome != NULL)
+                    if (Encontros[encontro].amigos != NULL)
                     {
-                        free(Encontros[encontro].locais->nome);
+                        Encontros[encontro].amigos[Encontros[encontro].numamigos].nome = (char *)malloc((strlen(Amigos[amigo].nome) + 1) * sizeof(char));
+                        strcpy(Encontros[encontro].amigos[Encontros[encontro].numamigos].nome, Amigos[amigo].nome);
+                        LimparTela();
+                        printf("\nAmigo incluido com sucesso.\n");
+                        Encontros[encontro].numamigos++;
+                        break;
                     }
-                    Encontros[encontro].locais->nome = (char *)malloc((strlen(Locais[local].nome) + 1) * sizeof(char));
-                    strcpy(Encontros[encontro].locais->nome, Locais[local].nome);
-                    if (Encontros[encontro].locais->nome == NULL)
+                    else
                     {
                         MensagemErro(-7);
                         exit(0);
                     }
-                    break;
                 }
             }
-            break;
         }
     }
-    else if (op == 3)
-    {
-        if (NumCategorias <= 1 || NumCategorias <= Encontros[encontro].numcategorias)
-        {
-            MensagemErro(-36);
-            Pausar(1);
+}
 
-            while (1)
+void AdicionarCategoriaEncontro(int encontro)
+{
+    char sn;
+    int i;
+    int incluir = 1;
+    int categoria;
+
+    // caso nao tenha categorias suficientes para adicionar;
+    if (NumCategorias <= Encontros[encontro].numcategorias)
+    {
+        MensagemErro(-28);
+        Pausar(1);
+
+        while (1)
+        {
+            LimparTela();
+            printf("\nDeseja incluir mais categorias? (s) - Menu categorias | (n) - Menu principal\n");
+            scanf(" %c", &sn);
+            LimparBuffer();
+            sn = tolower(sn);
+            if (sn == 's')
             {
-                LimparTela();
-                printf("\nDeseja incluir mais categorias? (s) - Menu categorias | (n) - Menu principal\n");
-                scanf(" %c", &sn);
-                LimparBuffer();
-                sn = tolower(sn);
-                if (sn == 's')
-                {
-                    OpcaoMenuCategoria();
-                }
-                else if (sn == 'n')
-                {
-                    OpcaoMenu();
-                }
-                else
-                {
-                    MensagemErro(0);
-                    Pausar(1);
-                    continue;
-                }
+                OpcaoMenuCategoria();
+            }
+            else if (sn == 'n')
+            {
+                OpcaoMenu();
+            }
+            else
+            {
+                MensagemErro(0);
+                Pausar(1);
+                continue;
             }
         }
+    }
+    else
+    {
         while (incluir)
         {
-            AlterarEncontroListarCategorias(Encontros[encontro]);
-            printf("\nDigite a categoria que deseja substituir no encontro:\n");
-            scanf("%i", &cateaux);
-            LimparBuffer();
-            cateaux--;
-            if (cateaux < 0 || cateaux >= NumAmigos)
+            LimparTela();
+            printf("\n--- Categorias ---\n");
+            for (i = 0; i < NumCategorias; i++)
             {
-                MensagemErro(-37);
+                printf("\n%i. %s\n", i + 1, Categorias[i].nome);
+            }
+
+            printf("\nDigite a categoria que deseja incluir no encontro:\n");
+            scanf("%i", &categoria);
+            LimparBuffer();
+            categoria--;
+            if (categoria < 0 || categoria >= NumCategorias)
+            {
+                MensagemErro(-33);
                 Pausar(1);
                 continue;
             }
             else
             {
-                while (1)
+                // verifica se ja existe uma categoria;
+                int categorianoencontro = 0;
+
+                for (i = 0; i < Encontros[encontro].numcategorias; i++)
                 {
-                    LimparTela();
-                    printf("\n--- Categorias ---\n");
-                    for (i = 0; i < NumCategorias; i++)
+                    if (strcmp(Categorias[categoria].nome, Encontros[encontro].categorias[i].nome) == 0)
                     {
-                        printf("\n%i. %s\n", i + 1, Categorias[i].nome);
+                        categorianoencontro = 1;
+                        break;
                     }
-                    printf("\nDigite a nova categoria que deseja substituir no encontro:\n");
-                    scanf("%i", &categoria);
-                    LimparBuffer();
-                    categoria--;
-                    if (categoria < 0 || categoria >= NumCategorias)
+                }
+
+                if (categorianoencontro)
+                {
+                    MensagemErro(-22);
+                    Pausar(1);
+                    continue;
+                }
+                else
+                {
+                    Encontros[encontro].categorias = (Categoria *)realloc(Encontros[encontro].categorias, (Encontros[encontro].numcategorias + 1) * sizeof(Categoria));
+
+                    if (Encontros[encontro].categorias != NULL)
                     {
-                        MensagemErro(-37);
+                        Encontros[encontro].categorias[Encontros[encontro].numcategorias].nome = (char *)malloc((strlen(Categorias[categoria].nome) + 1) * sizeof(char));
+                        strcpy(Encontros[encontro].categorias[Encontros[encontro].numcategorias].nome, Categorias[categoria].nome);
+                        LimparTela();
+                        printf("\nCategoria incluida com sucesso.\n");
+                        Encontros[encontro].numcategorias++;
+                        break;
+                    }
+                    else
+                    {
+                        MensagemErro(-7);
+                        exit(0);
+                    }
+                }
+            }
+        }
+    }
+}
+
+void ModificarAmigoEncontro(int encontro)
+{
+    char sn;
+    int i;
+    int incluir = 1;
+    int amigo, amigoaux;
+
+    if (NumAmigos <= Encontros[encontro].numamigos)
+    {
+        MensagemErro(-36);
+        Pausar(1);
+
+        while (1)
+        {
+            LimparTela();
+            printf("\nDeseja incluir mais amigos? (s) - Menu amigos | (n) - Menu principal\n");
+            scanf(" %c", &sn);
+            LimparBuffer();
+            sn = tolower(sn);
+            if (sn == 's')
+            {
+                OpcaoMenuAmigo();
+            }
+            else if (sn == 'n')
+            {
+                OpcaoMenu();
+            }
+            else
+            {
+                MensagemErro(0);
+                Pausar(1);
+                continue;
+            }
+        }
+    }
+
+    while (incluir)
+    {
+        AlterarEncontroListarAmigos(Encontros[encontro]);
+        printf("\nDigite o amigo que deseja substituir no encontro:\n");
+        scanf("%i", &amigoaux);
+        LimparBuffer();
+        amigoaux--;
+        if (amigoaux < 0 || amigoaux >= NumAmigos)
+        {
+            MensagemErro(-3);
+            Pausar(1);
+            continue;
+        }
+        else
+        {
+            while (1)
+            {
+                LimparTela();
+                printf("\n--- Amigos ---\n");
+                for (i = 0; i < NumAmigos; i++)
+                {
+                    printf("\n%i. %s\n", i + 1, Amigos[i].nome);
+                }
+                printf("\nDigite o novo amigo que deseja substituir no encontro:\n");
+                scanf("%i", &amigo);
+                LimparBuffer();
+                amigo--;
+                if (amigo < 0 || amigo >= NumAmigos)
+                {
+                    MensagemErro(-3);
+                    Pausar(1);
+                    continue;
+                }
+                else
+                {
+                    // verifica se ja existe um amigo com o mesmo nome;
+                    int amigonoencontro = 0;
+                    for (i = 0; i < Encontros[encontro].numamigos; i++)
+                    {
+                        if (strcmp(Amigos[amigo].nome, Encontros[encontro].amigos[i].nome) == 0)
+                        {
+                            amigonoencontro = 1;
+                            break;
+                        }
+                    }
+
+                    if (amigonoencontro)
+                    {
+                        MensagemErro(-22);
                         Pausar(1);
                         continue;
                     }
                     else
                     {
-                        // verifica se ja existe uma categoria com o mesmo nome;
-                        int categorianoencontro = 0;
-                        for (i = 0; i < Encontros[encontro].numcategorias; i++)
-                        {
-                            if (strcmp(Categorias[categoria].nome, Encontros[encontro].categorias[i].nome) == 0)
-                            {
-                                categorianoencontro = 1;
-                                break;
-                            }
-                        }
 
-                        if (categorianoencontro)
+                        if (Encontros[encontro].amigos[amigoaux].nome != NULL)
                         {
-                            MensagemErro(-24);
-                            Pausar(1);
-                            continue;
+                            free(Encontros[encontro].amigos[amigoaux].nome);
                         }
-                        else
+                        Encontros[encontro].amigos[amigoaux].nome = (char *)malloc((strlen(Amigos[amigo].nome) + 1) * sizeof(char));
+                        strcpy(Encontros[encontro].amigos[amigoaux].nome, Amigos[amigo].nome);
+                        if (Encontros[encontro].amigos[amigoaux].nome == NULL)
                         {
-
-                            if (Encontros[encontro].categorias[cateaux].nome != NULL)
-                            {
-                                free(Encontros[encontro].categorias[cateaux].nome);
-                            }
-                            Encontros[encontro].categorias[cateaux].nome = (char *)malloc((strlen(Categorias[categoria].nome) + 1) * sizeof(char));
-                            strcpy(Encontros[encontro].categorias[cateaux].nome, Categorias[categoria].nome);
-                            if (Encontros[encontro].categorias[cateaux].nome == NULL)
-                            {
-                                MensagemErro(-7);
-                                exit(0);
-                            }
-                            break;
+                            MensagemErro(-7);
+                            exit(0);
                         }
+                        LimparTela();
+                        printf("\nModificado com sucesso.\n");
+                        break;
                     }
                 }
             }
-            break;
         }
+        break;
     }
-    else if (op == 4)
-    {
-        erro = -1;
-        while (erro < 0)
-        {
-            LimparTela();
-            printf("\nNova data do encontro [dd/mm/yy]:\n");
-            scanf("%i%i%i", &Encontros[encontro].data.dia, &Encontros[encontro].data.mes, &Encontros[encontro].data.ano);
-            LimparBuffer();
-            erro = ValidarData(Encontros[encontro].data.dia, Encontros[encontro].data.mes, Encontros[encontro].data.ano);
+}
 
-            if (erro < 0)
-            {
-                MensagemErro(erro);
-                Pausar(1);
-                continue;
-            }
-        }
-    }
-    else if (op == 5)
+void ModificarCategoriaEncontro(int encontro)
+{
+    char sn;
+    int i;
+    int incluir = 1;
+    int categoria, cateaux;
+
+    if (NumCategorias <= Encontros[encontro].numcategorias)
     {
-        erro = -1;
-        while (erro < 0)
+        MensagemErro(-36);
+        Pausar(1);
+
+        while (1)
         {
             LimparTela();
-            printf("\nNovo horario do encontro [hora : min]:\n");
-            scanf("%i%i", &Encontros[encontro].horario.hora, &Encontros[encontro].horario.minuto);
+            printf("\nDeseja incluir mais categorias? (s) - Menu categorias | (n) - Menu principal\n");
+            scanf(" %c", &sn);
             LimparBuffer();
-            erro = ValidarHorario(Encontros[encontro].horario.hora, Encontros[encontro].horario.minuto);
-            if (erro < 0)
+            sn = tolower(sn);
+            if (sn == 's')
             {
-                MensagemErro(erro);
+                OpcaoMenuCategoria();
+            }
+            else if (sn == 'n')
+            {
+                OpcaoMenu();
+            }
+            else
+            {
+                MensagemErro(0);
                 Pausar(1);
                 continue;
             }
         }
     }
-    else if (op == 6)
+    while (incluir)
     {
-        printf("\nNova escricao do encontro:\n");
-        fgets(strAux, sizeof(strAux), stdin);
-        Encontros[encontro].descricao = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
-        strcpy(Encontros[encontro].descricao, strAux);
+        AlterarEncontroListarCategorias(Encontros[encontro]);
+        printf("\nDigite a categoria que deseja substituir no encontro:\n");
+        scanf("%i", &cateaux);
         LimparBuffer();
+        cateaux--;
+        if (cateaux < 0 || cateaux >= NumAmigos)
+        {
+            MensagemErro(-37);
+            Pausar(1);
+            continue;
+        }
+        else
+        {
+            while (1)
+            {
+                LimparTela();
+                printf("\n--- Categorias ---\n");
+                for (i = 0; i < NumCategorias; i++)
+                {
+                    printf("\n%i. %s\n", i + 1, Categorias[i].nome);
+                }
+                printf("\nDigite a nova categoria que deseja substituir no encontro:\n");
+                scanf("%i", &categoria);
+                LimparBuffer();
+                categoria--;
+                if (categoria < 0 || categoria >= NumCategorias)
+                {
+                    MensagemErro(-37);
+                    Pausar(1);
+                    continue;
+                }
+                else
+                {
+                    // verifica se ja existe uma categoria com o mesmo nome;
+                    int categorianoencontro = 0;
+                    for (i = 0; i < Encontros[encontro].numcategorias; i++)
+                    {
+                        if (strcmp(Categorias[categoria].nome, Encontros[encontro].categorias[i].nome) == 0)
+                        {
+                            categorianoencontro = 1;
+                            break;
+                        }
+                    }
+
+                    if (categorianoencontro)
+                    {
+                        MensagemErro(-24);
+                        Pausar(1);
+                        continue;
+                    }
+                    else
+                    {
+
+                        if (Encontros[encontro].categorias[cateaux].nome != NULL)
+                        {
+                            free(Encontros[encontro].categorias[cateaux].nome);
+                        }
+                        Encontros[encontro].categorias[cateaux].nome = (char *)malloc((strlen(Categorias[categoria].nome) + 1) * sizeof(char));
+                        strcpy(Encontros[encontro].categorias[cateaux].nome, Categorias[categoria].nome);
+                        if (Encontros[encontro].categorias[cateaux].nome == NULL)
+                        {
+                            MensagemErro(-7);
+                            exit(0);
+                        }
+                        LimparTela();
+                        printf("\nModificado com sucesso.\n");
+                        break;
+                    }
+                }
+            }
+        }
+        break;
     }
+}
+
+void ModificarLocalEncontro(int encontro)
+{
+    int i, local;
+    char sn;
+
+    // caso nao tenha informacoes suficientes para modificar;
+    if (NumLocais <= Encontros[encontro].numlocais)
+    {
+        MensagemErro(-35);
+        Pausar(1);
+
+        while (1)
+        {
+            LimparTela();
+            printf("\nDeseja incluir mais locais? (s) - Menu locais | (n) - Menu principal\n");
+            scanf(" %c", &sn);
+            LimparBuffer();
+            sn = tolower(sn);
+            if (sn == 's')
+            {
+                OpcaoMenuLocal();
+            }
+            else if (sn == 'n')
+            {
+                OpcaoMenu();
+            }
+            else
+            {
+                MensagemErro(0);
+                Pausar(1);
+                continue;
+            }
+        }
+    }
+    while (1)
+    {
+        LimparTela();
+        printf("\n--- Locais ---\n");
+        for (i = 0; i < NumLocais; i++)
+        {
+            printf("\n%i. %s\n", i + 1, Locais[i].nome);
+        }
+        printf("\nDigite o novo local que deseja substituir no encontro:\n");
+        scanf("%i", &local);
+        LimparBuffer();
+        local--;
+        if (local < 0 || local >= NumLocais)
+        {
+            MensagemErro(-6);
+            Pausar(1);
+            continue;
+        }
+        else
+        {
+            // verifica se ja existe um local com o mesmo nome;
+            int localnoencontro = 0;
+            for (i = 0; i < Encontros[encontro].numlocais; i++)
+            {
+                if (strcmp(Locais[local].nome, Encontros[encontro].locais[i].nome) == 0)
+                {
+                    localnoencontro = 1;
+                    break;
+                }
+            }
+
+            if (localnoencontro)
+            {
+                MensagemErro(-34);
+                Pausar(1);
+                continue;
+            }
+            else
+            {
+
+                if (Encontros[encontro].locais->nome != NULL)
+                {
+                    free(Encontros[encontro].locais->nome);
+                }
+                Encontros[encontro].locais->nome = (char *)malloc((strlen(Locais[local].nome) + 1) * sizeof(char));
+                strcpy(Encontros[encontro].locais->nome, Locais[local].nome);
+                if (Encontros[encontro].locais->nome == NULL)
+                {
+                    MensagemErro(-7);
+                    exit(0);
+                }
+                LimparTela();
+                printf("\nModificado com sucesso.\n");
+                break;
+            }
+        }
+        break;
+    }
+}
+
+void ModificarDataEncontro(int encontro)
+{
+    int erro = -1;
+    while (erro < 0)
+    {
+        LimparTela();
+        printf("\nNova data do encontro [dd/mm/yy]:\n");
+        scanf("%i%i%i", &Encontros[encontro].data.dia, &Encontros[encontro].data.mes, &Encontros[encontro].data.ano);
+        LimparBuffer();
+        erro = ValidarData(Encontros[encontro].data.dia, Encontros[encontro].data.mes, Encontros[encontro].data.ano);
+
+        if (erro < 0)
+        {
+            MensagemErro(erro);
+            Pausar(1);
+            continue;
+        }
+    }
+    LimparTela();
+    printf("\nModificado com sucesso.\n");
+}
+
+void ModificarHorarioEncontro(int encontro)
+{
+    int erro = -1;
+    while (erro < 0)
+    {
+        LimparTela();
+        printf("\nNovo horario do encontro [hora : min]:\n");
+        scanf("%i%i", &Encontros[encontro].horario.hora, &Encontros[encontro].horario.minuto);
+        LimparBuffer();
+        erro = ValidarHorario(Encontros[encontro].horario.hora, Encontros[encontro].horario.minuto);
+        if (erro < 0)
+        {
+            MensagemErro(erro);
+            Pausar(1);
+            continue;
+        }
+    }
+    LimparTela();
+    printf("\nModificado com sucesso.\n");
+}
+
+void ModificarDescricaoEncontro(int encontro)
+{
+    char strAux[100];
+    printf("\nNova escricao do encontro:\n");
+    fgets(strAux, sizeof(strAux), stdin);
+    Encontros[encontro].descricao = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
+    strcpy(Encontros[encontro].descricao, strAux);
+    LimparBuffer();
+
+    LimparTela();
+    printf("\nModificado com sucesso.\n");
+}
+
+void DeletarAmigoEncontro(int encontro)
+{
+}
+
+void DeletarCategoriaEncontro(int encontro)
+{
 }
 
 int ModificarAmigos()
@@ -3176,9 +3534,6 @@ int ModificarEncontros()
             Pausar(1);
             continue;
         }
-
-        LimparTela();
-        printf("\nModificado com sucesso.\n");
         break;
     }
     return 1;
@@ -3740,7 +4095,6 @@ void Pausar(int pause)
 {
     if (pause)
     {
-        printf("\nPressione ENTER para continuar...\n");
         getchar();
     }
 }
