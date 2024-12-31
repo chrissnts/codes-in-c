@@ -78,6 +78,7 @@ typedef struct
 // COISAS IMPORTANTES!!!!!!!!!!!!!!!!!!!! **************************************************
 // USAR TOKEN QUANDO FOR MANIPULAR ARQUIVO (MAIS FACIL);
 // ARRUMAR LISTAR POR CATEGORIAS;
+// CRIAR OPCAO DE EXCLUIR TODOS DE UMA VEZ; (TALVEZ FAÇA, SO TALVEZ)
 
 void MensagemErro(int erro); // imprime mensagens de erro;
 
@@ -150,6 +151,8 @@ void LimpaPonteiroLocal(Local *local);             // limpa o ponteiro de locais
 void LimpaPonteiroCategoria(Categoria *categoria); // limpa ponteiro de categorias;
 void LimpaPonteiroEncontro(Encontro *encontro);    // limpa ponteiro de encontros;
 
+void OrdenarCategorias();
+
 void Pausar(int pause); // verifica se o pause eh true ou false e pausa;
 void LimparBuffer();    // limpa o buffer do teclado;
 void LimparTela();      // limpa a tela (criei por conta da miseria do linux);
@@ -167,15 +170,16 @@ int DeletarLocais();       // deleta um local;
 int DeletarCategorias();   // deleta uma categoria;
 int DeletarEncontros();    // deleta um encontro;
 
-int ListarAmigos();             // lista os amigos que ja estao cadastrados;
-int ListarAmigosPorApelido();   // faz a logica de listar amigo por apelido;
-int ListarLocais();             // lista os locais que ja estao cadastrados;
-int ListarLocaisPorEstado();    // faz a logica de listar locais por estado;
-int ListarLocaisPorCidade();    // faz a logica de listar locais por cidade;
-int ListarLocaisPorBairro();    // faz a logica de listar locais por bairro;
-int ListarCategorias();         // lista as categorias que ja estao cadastradas;
-int ListarEncontros();          // lista os encontros que ja estao cadastradao;
-int ListarEncontrosPorAmigos(); // busca pelos encontros com esse amgio;
+int ListarAmigos();                    // lista os amigos que ja estao cadastrados;
+int ListarAmigosPorApelido();          // faz a logica de listar amigo por apelido;
+int ListarLocais();                    // lista os locais que ja estao cadastrados;
+int ListarLocaisPorEstado();           // faz a logica de listar locais por estado;
+int ListarLocaisPorCidade();           // faz a logica de listar locais por cidade;
+int ListarLocaisPorBairro();           // faz a logica de listar locais por bairro;
+int ListarCategorias();                // lista as categorias que ja estao cadastradas;
+int ListarCategoriasOrdemAlfabetica(); // lista as categorias cadastradas em ordem alfabetica;
+int ListarEncontros();                 // lista os encontros que ja estao cadastradao;
+int ListarEncontrosPorAmigos();        // busca pelos encontros com esse amigo;
 
 int ValidarData(int dia, int mes, int ano); // valida data que o usuario digitar;
 int Bissexto(int ano);                      // verifica se o ano eh bissexto para poder arrumar dias e mes
@@ -498,8 +502,9 @@ void MenuRelatorioListarCategorias()
 {
     LimparTela();
     printf("\n1. Listar Todas\n");
-    printf("\n2. Voltar\n");
-    printf("\n3. Voltar Menu Principal\n");
+    printf("\n2. Listar em Ordem Alfabetica\n");
+    printf("\n3. Voltar\n");
+    printf("\n4. Voltar Menu Principal\n");
 }
 
 void MenuRelatorioListarEncontros()
@@ -1633,7 +1638,6 @@ void OpcaoMenuRelatorio()
             {
                 ListarEncontrosPorCategorias();
                 Pausar(1);
-                return;
             }
             break;
 
@@ -1763,7 +1767,7 @@ void OpcaoMenuRelatorioListarCategorias()
         scanf("%i", &opr);
         LimparBuffer();
 
-        while (opr < 1 || opr > 3)
+        while (opr < 1 || opr > 4)
         {
             MensagemErro(0);
             Pausar(1);
@@ -1778,10 +1782,17 @@ void OpcaoMenuRelatorioListarCategorias()
             erro = ListarCategorias();
             Pausar(1);
             break;
+
         case 2:
+            erro = ListarCategoriasOrdemAlfabetica();
+            Pausar(1);
+            break;
+
+        case 3:
             VoltarMenuRelatorio();
             break;
-        case 3:
+
+        case 4:
             VoltarMenuPrincipal();
             break;
         }
@@ -1792,7 +1803,7 @@ void OpcaoMenuRelatorioListarCategorias()
             Pausar(1);
         }
 
-    } while (opr != 2 || opr != 3);
+    } while (opr != 3 || opr != 4);
 }
 
 void OpcaoMenuRelatorioListarEncontros()
@@ -1850,15 +1861,13 @@ void OpcaoMenuRelatorioListarEncontros()
 
 int ListarAmigos()
 {
-    int i;
-
     if (NumAmigos <= 0)
     {
         return -2;
     }
 
     LimparTela();
-    for (i = 0; i < NumAmigos; i++)
+    for (int i = 0; i < NumAmigos; i++)
     {
         printf("\n");
         printf("\n-- Amigo [%i] --\n", i + 1);
@@ -1872,7 +1881,7 @@ int ListarAmigos()
 int ListarAmigosPorApelido()
 {
     char apelido[50];
-    int i, encontrado = 0;
+    int encontrado = 0;
 
     if (NumAmigos <= 0)
     {
@@ -1885,7 +1894,7 @@ int ListarAmigosPorApelido()
     LimparBuffer();
 
     LimparTela();
-    for (i = 0; i < NumAmigos; i++)
+    for (int i = 0; i < NumAmigos; i++)
     {
         if (strcmp(Amigos[i].apelido, apelido) == 0)
         {
@@ -1906,15 +1915,13 @@ int ListarAmigosPorApelido()
 
 int ListarLocais()
 {
-    int i;
-
     if (NumLocais <= 0)
     {
         return -5;
     }
 
     LimparTela();
-    for (i = 0; i < NumLocais; i++)
+    for (int i = 0; i < NumLocais; i++)
     {
         printf("\n");
         printf("\n-- Local  [%i] --\n", i + 1);
@@ -1927,7 +1934,7 @@ int ListarLocais()
 int ListarLocaisPorEstado()
 {
     char estado[50];
-    int i, encontrado = 0;
+    int encontrado = 0;
 
     if (NumLocais <= 0)
     {
@@ -1940,7 +1947,7 @@ int ListarLocaisPorEstado()
     LimparBuffer();
 
     LimparTela();
-    for (i = 0; i < NumLocais; i++)
+    for (int i = 0; i < NumLocais; i++)
     {
         if (strcmp(Locais[i].endereco.estado, estado) == 0)
         {
@@ -1961,7 +1968,7 @@ int ListarLocaisPorEstado()
 int ListarLocaisPorCidade()
 {
     char cidade[50];
-    int i, encontrado = 0;
+    int encontrado = 0;
 
     if (NumLocais <= 0)
     {
@@ -1974,7 +1981,7 @@ int ListarLocaisPorCidade()
     LimparBuffer();
 
     LimparTela();
-    for (i = 0; i < NumLocais; i++)
+    for (int i = 0; i < NumLocais; i++)
     {
         if (strcmp(Locais[i].endereco.cidade, cidade) == 0)
         {
@@ -1996,7 +2003,7 @@ int ListarLocaisPorCidade()
 int ListarLocaisPorBairro()
 {
     char bairro[50];
-    int i, encontrado = 0;
+    int encontrado = 0;
 
     if (NumLocais <= 0)
     {
@@ -2009,7 +2016,7 @@ int ListarLocaisPorBairro()
     LimparBuffer();
 
     LimparTela();
-    for (i = 0; i < NumLocais; i++)
+    for (int i = 0; i < NumLocais; i++)
     {
         if (strcmp(Locais[i].endereco.bairro, bairro) == 0)
         {
@@ -2030,15 +2037,34 @@ int ListarLocaisPorBairro()
 
 int ListarCategorias()
 {
-    int i;
-
     if (NumCategorias <= 0)
     {
         return -14;
     }
 
     LimparTela();
-    for (i = 0; i < NumCategorias; i++)
+    for (int i = 0; i < NumCategorias; i++)
+    {
+        printf("\n");
+        printf("\n-- Categoria  [%i] --\n", i + 1);
+        ImprimirCategorias(Categorias[i]);
+    }
+
+    return 1;
+}
+
+int ListarCategoriasOrdemAlfabetica()
+{
+    if (NumCategorias <= 0)
+    {
+        return -14;
+    }
+
+    // ordenas as categorias em ordem alfabetica (usando bubble sort);
+    OrdenarCategorias();
+
+    LimparTela();
+    for (int i = 0; i < NumCategorias; i++)
     {
         printf("\n");
         printf("\n-- Categoria  [%i] --\n", i + 1);
@@ -2050,15 +2076,13 @@ int ListarCategorias()
 
 int ListarEncontros()
 {
-    int i;
-
     if (NumEncontros <= 0)
     {
         return -16;
     }
 
     LimparTela();
-    for (i = 0; i < NumEncontros; i++)
+    for (int i = 0; i < NumEncontros; i++)
     {
         printf("\n");
         printf("\n-- Encontro  [%i] --\n", i + 1);
@@ -2072,7 +2096,6 @@ int ListarEncontrosPorAmigos()
 {
     char nome[100];
     int encontrado = 0;
-    int i, j;
 
     if (NumEncontros <= 0)
     {
@@ -2085,9 +2108,9 @@ int ListarEncontrosPorAmigos()
     LimparBuffer();
 
     LimparTela();
-    for (i = 0; i < NumEncontros; i++)
+    for (int i = 0; i < NumEncontros; i++)
     {
-        for (j = 0; j < Encontros[i].numamigos; j++)
+        for (int j = 0; j < Encontros[i].numamigos; j++)
         {
             if (strcmp(Encontros[i].amigos[j].nome, nome) == 0)
             {
@@ -2122,40 +2145,43 @@ void QuantidadeRegistros()
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!
 void ListarEncontrosPorCategorias()
 {
-    int i, j;
 
     LimparTela();
-    for (i = 0; i < NumEncontros; i++)
+    for (int i = 0; i < NumEncontros; i++)
     {
-        for (j = 0; j < Encontros[i].numcategorias; j++)
+        for (int j = 0; j < Encontros[i].numcategorias; j++)
         {
-            printf("\nCategoria: %s\n", Encontros[i].categorias[j].nome);
+            printf("\n-- Categoria: %s --\n", Encontros[i].categorias[j].nome);
 
-            if (strcmp(Encontros[i].categorias[j].nome, Categorias[j].nome) == 0)
+            for (int k = 0; k < NumCategorias; k++)
             {
-                if (Encontros[i].numamigos == 1)
+
+                if (strcmp(Encontros[i].categorias[j].nome, Categorias[k].nome) == 0)
                 {
-                    printf("\nAmigo: %s", Encontros[i].amigos[j].nome);
-                }
-                else
-                {
-                    printf("\nAmigos: ");
-                    for (int i = 0; i < Encontros[i].numamigos; i++)
+                    if (Encontros[i].numamigos == 1)
                     {
-                        if (i < Encontros[i].numamigos - 1)
+                        printf("\nAmigo: %s", Encontros[i].amigos->nome);
+                    }
+                    else
+                    {
+                        printf("\nAmigos: ");
+                        for (int l = 0; l < Encontros[i].numamigos; l++)
                         {
-                            printf("%s ", Encontros[i].amigos[j].nome);
-                        }
-                        else
-                        {
-                            printf("%s ", Encontros[i].amigos[j].nome);
+                            if (l < Encontros[i].numamigos - 1)
+                            {
+                                printf("%s ", Encontros[i].amigos[l].nome);
+                            }
+                            else
+                            {
+                                printf("%s ", Encontros[i].amigos[l].nome);
+                            }
                         }
                     }
+                    printf("\nLocal: %s", Encontros[i].locais->nome);
+                    printf("\nData: [%02i/%02i/%i]\n", Encontros[i].data.dia, Encontros[i].data.mes, Encontros[i].data.ano);
+                    printf("\nHorario: [%02ih:%02im]\n", Encontros[i].horario.hora, Encontros[i].horario.minuto);
+                    printf("\nDescricao: %s\n", Encontros[i].descricao);
                 }
-                printf("\nLocal: %s", Encontros[i].locais->nome);
-                printf("\nData: [%02i/%02i/%04i]", Encontros[i].data.dia, Encontros[i].data.mes, Encontros[i].data.ano);
-                printf("\nHorario: [%02i:%02i]", Encontros[i].horario.hora, Encontros[i].horario.minuto);
-                printf("\nDescricao: %s", Encontros[i].descricao);
             }
         }
     }
@@ -2165,7 +2191,6 @@ void AlterarAmigos(int amigo, int op)
 {
     int erro = -1;
     char strAux[100];
-    int i, j;
 
     if (op == 1)
     {
@@ -2175,9 +2200,9 @@ void AlterarAmigos(int amigo, int op)
         fgets(strAux, sizeof(strAux), stdin);
 
         // verificando se tem o amigo desejado dentro de algum encontro, para pode modificar tambem;
-        for (i = 0; i < NumEncontros; i++)
+        for (int i = 0; i < NumEncontros; i++)
         {
-            for (j = 0; j < Encontros[i].numamigos; j++)
+            for (int j = 0; j < Encontros[i].numamigos; j++)
             {
                 if (strcmp(Encontros[i].amigos[j].nome, Amigos[amigo].nome) == 0)
                 {
@@ -2295,17 +2320,17 @@ void AlterarAmigos(int amigo, int op)
 void AlterarLocais(int local, int op)
 {
     char strAux[100];
-    int i, j;
 
     if (op == 1)
     {
         LimparTela();
         printf("\nNovo nome do Local:\n");
         fgets(strAux, sizeof(strAux), stdin);
+
         // verificando se tem o local desejado dentro de algum encontro, para pode modificar tambem;
-        for (i = 0; i < NumEncontros; i++)
+        for (int i = 0; i < NumEncontros; i++)
         {
-            for (j = 0; j < Encontros[i].numlocais; j++)
+            for (int j = 0; j < Encontros[i].numlocais; j++)
             {
                 if (strcmp(Encontros[i].amigos[j].nome, Locais[local].nome) == 0)
                 {
@@ -2429,16 +2454,15 @@ void AlterarLocais(int local, int op)
 void AlterarCategorias(int categoria)
 {
     char strAux[100];
-    int i, j;
 
     LimparTela();
     printf("\nNova categoria:\n");
     fgets(strAux, sizeof(strAux), stdin);
 
     // verificando se tem a categoria desejada dentro de algum encontro, para pode modificar tambem;
-    for (i = 0; i < NumEncontros; i++)
+    for (int i = 0; i < NumEncontros; i++)
     {
-        for (j = 0; j < Encontros[i].numcategorias; j++)
+        for (int j = 0; j < Encontros[i].numcategorias; j++)
         {
             if (strcmp(Encontros[i].categorias[j].nome, Categorias[categoria].nome) == 0)
             {
@@ -3017,7 +3041,7 @@ void DeletarAmigoEncontro(int encontro)
 {
     int amigo;
     char op;
-    
+
     // caso tenha apenas 1 amigo no encontro, nao deixar excluir;
     if (Encontros[encontro].numamigos <= 1)
     {
@@ -3034,7 +3058,6 @@ void DeletarAmigoEncontro(int encontro)
 
         if (op == 's')
         {
-            
 
             AlterarEncontroListarAmigos(Encontros[encontro]);
             printf("\nDigite o amigo que deseja deletar do encontro:\n");
@@ -4071,6 +4094,23 @@ int ValidarHorario(int hora, int min)
     }
 
     return 1;
+}
+
+void OrdenarCategorias()
+{
+    for (int i = 0; i < NumCategorias - 1; i++)
+    {
+        for (int j = 0; j < NumCategorias - i - 1; j++)
+        {
+            // compara os nomes das categorias
+            if (strcmp(Categorias[j].nome, Categorias[j + 1].nome) > 0)
+            {
+                Categoria aux = Categorias[j];
+                Categorias[j] = Categorias[j + 1];
+                Categorias[j + 1] = aux;
+            }
+        }
+    }
 }
 
 void Pausar(int pause)
