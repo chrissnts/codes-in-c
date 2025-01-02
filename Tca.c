@@ -166,6 +166,7 @@ void RecuperarAmigos();     // recupera os dados dos amigos que estavam no arqui
 void RecuperarLocais();     // recupera os dados dos locais que estavam no arquivo;
 void RecuperarCategorias(); // recupera os dados das categorias que estavam no arquivo;
 void RecuperarEncontros();  // recupera os dados dos encontros que estavam no arquivo;
+void RecuperarArquivos();
 
 int IncluirAmigos();       // inclui na funcao o amigo criado na funcao "cria amigo";
 int IncluirLocais();       // inclui na funcao o local criado na funcao "cria local";
@@ -1682,7 +1683,7 @@ void OpcaoMenuRelatorio()
             Pausar(1);
         }
 
-    } while (op != 7);
+    } while (op != 7 || op != 5);
 }
 
 void OpcaoMenuRelatorioListarAmigos()
@@ -1708,11 +1709,17 @@ void OpcaoMenuRelatorioListarAmigos()
         {
         case 1:
             erro = ListarAmigos();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
         case 2:
             erro = ListarAmigosPorApelido();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
         case 3:
             VoltarMenuRelatorio();
@@ -1753,25 +1760,43 @@ void OpcaoMenuRelatorioListarLocais()
 
         switch (opr)
         {
+
         case 1:
             erro = ListarLocais();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
+
         case 2:
             erro = ListarLocaisPorEstado();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
+
         case 3:
             erro = ListarLocaisPorCidade();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
+
         case 4:
             erro = ListarLocaisPorBairro();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
+
         case 5:
             VoltarMenuRelatorio();
             break;
+
         case 6:
             VoltarMenuPrincipal();
             break;
@@ -1810,12 +1835,18 @@ void OpcaoMenuRelatorioListarCategorias()
         {
         case 1:
             erro = ListarCategorias();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
 
         case 2:
             erro = ListarCategoriasOrdemAlfabetica();
-            Pausar(1);
+            if (erro > 0)
+            {
+                Pausar(1);
+            }
             break;
 
         case 3:
@@ -4274,92 +4305,76 @@ void SalvarArquivos()
 void RecuperarAmigos()
 {
     char linha[200], *token;
-    int sep = 0;
     FILE *ArqAmigos = fopen("Amigos.txt", "r");
 
-    if (ArqAmigos != NULL)
+    // enquanto tiver linhas, ler;
+    while (fgets(linha, sizeof(linha), ArqAmigos) != NULL)
     {
-        // enquanto tiver linhas, ler;
-        while (fgets(linha, sizeof(linha), ArqAmigos) != NULL)
+        if (NumAmigos == 0)
         {
-            // remove o '\n';
-            linha[strcspn(linha, "\n")] = '\0';
-
-            if (NumAmigos == 0)
-            {
-                Amigos = (Amigo *)malloc(sizeof(Amigo));
-            }
-            else
-            {
-                Amigos = (Amigo *)realloc(Amigos, (NumAmigos + 1) * sizeof(Amigo));
-            }
-
-            // divide a string, usando o ';' como limitador;
-            token = strtok(linha, ";");
-
-            while (token != NULL)
-            {
-                switch (sep)
-                {
-
-                // nome;
-                case 0:
-                    Amigos[NumAmigos].nome = (char *)malloc((strlen(token) + 1) * sizeof(char));
-                    strcpy(Amigos[NumAmigos].nome, token);
-                    break;
-
-                // apelido;
-                case 1:
-                    Amigos[NumAmigos].apelido = (char *)malloc((strlen(token) + 1) * sizeof(char));
-                    strcpy(Amigos[NumAmigos].apelido, token);
-                    break;
-
-                // email;
-                case 2:
-                    Amigos[NumAmigos].email = (char *)malloc((strlen(token) + 1) * sizeof(char));
-                    strcpy(Amigos[NumAmigos].email, token);
-                    break;
-
-                // data de nascimento (dia);
-                case 3:
-                    Amigos[NumAmigos].datanasc.dia = atoi(token);
-                    break;
-
-                // data de nascimento (mes);
-                case 4:
-                    Amigos[NumAmigos].datanasc.mes = atoi(token);
-                    break;
-
-                // data de nascimento (ano);
-                case 5:
-                    Amigos[NumAmigos].datanasc.ano = atoi(token);
-                    break;
-
-                // telefone;
-                case 6:
-                    Amigos[NumAmigos].telefone = (char *)malloc((strlen(token) + 1) * sizeof(char));
-                    strcpy(Amigos[NumAmigos].telefone, token);
-                    break;
-                }
-
-                // vai pra proxima string, deixa o limitador nulo pra pegar a proxima string;
-
-                if (sep == 6)
-                {
-                    token = strtok(NULL, ";");
-
-                }
-                sep++;
-            }
+            Amigos = (Amigo *)malloc(sizeof(Amigo));
+        }
+        else
+        {
+            Amigos = (Amigo *)realloc(Amigos, (NumAmigos + 1) * sizeof(Amigo));
         }
 
+        // remove a quebra de linha no final de cada linha lida;
+        linha[strcspn(linha, "\n")] = '\0';
+
+        // nome;
+        token = strtok(linha, ";");
+        if (token != NULL)
+        {
+            Amigos[NumAmigos].nome = (char *)malloc((strlen(token) + 1) * sizeof(char));
+            strcpy(Amigos[NumAmigos].nome, token);
+        }
+
+        // apelido;
+        token = strtok(NULL, ";");
+        if (token != NULL)
+        {
+            Amigos[NumAmigos].apelido = (char *)malloc((strlen(token) + 1) * sizeof(char));
+            strcpy(Amigos[NumAmigos].apelido, token);
+        }
+
+        // data de nascimento (dia);
+        token = strtok(NULL, ";");
+        if (token != NULL)
+        {
+            Amigos[NumAmigos].datanasc.dia = atoi(token);
+        }
+
+        // data de nascimento (mes);
+        token = strtok(NULL, ";");
+        if (token != NULL)
+        {
+            Amigos[NumAmigos].datanasc.mes = atoi(token);
+        }
+
+        // data de nascimento (ano);
+        token = strtok(NULL, ";");
+        if (token != NULL)
+        {
+            Amigos[NumAmigos].datanasc.ano = atoi(token);
+        }
+
+        // telefone;
+        token = strtok(NULL, ";");
+        if (token != NULL)
+        {
+            Amigos[NumAmigos].apelido = (char *)malloc((strlen(token) + 1) * sizeof(char));
+            strcpy(Amigos[NumAmigos].apelido, token);
+        }
         NumAmigos++;
-        fclose(ArqAmigos);
     }
+
+    fclose(ArqAmigos);
 }
 
 void Pausar(int pause)
 {
+    printf("\nPressione Qualquer Tecla para Continuar..\n");
     if (pause)
     {
         getchar();
