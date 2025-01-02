@@ -76,9 +76,9 @@ typedef struct
 } Encontro;
 
 // COISAS IMPORTANTES!!!!!!!!!!!!!!!!!!!! **************************************************
-// USAR TOKEN QUANDO FOR MANIPULAR ARQUIVO (MAIS FACIL);
+// ARRUMAR FUNCAO DE RECUPERAR AMIGO;
 // ARRUMAR LISTAR POR CATEGORIAS;
-// CRIAR OPCAO DE EXCLUIR TODOS DE UMA VEZ; (TALVEZ FAÇA, SO TALVEZ)
+// CRIAR OPCAO DE EXCLUIR TODOS DE UMA VEZ; (TALVEZ FAÇA, SO TALVEZ);
 
 void MensagemErro(int erro); // imprime mensagens de erro;
 
@@ -151,11 +151,21 @@ void LimpaPonteiroLocal(Local *local);             // limpa o ponteiro de locais
 void LimpaPonteiroCategoria(Categoria *categoria); // limpa ponteiro de categorias;
 void LimpaPonteiroEncontro(Encontro *encontro);    // limpa ponteiro de encontros;
 
-void OrdenarCategorias();
+void OrdenarCategorias(); // ordena as categorias por ordem alfabetica;
 
 void Pausar(int pause); // verifica se o pause eh true ou false e pausa;
 void LimparBuffer();    // limpa o buffer do teclado;
 void LimparTela();      // limpa a tela (criei por conta da miseria do linux);
+
+void SalvarAmigos();        // salva os dados dos amigos que estava na memoria, em um arquivo;
+void SalvarLocais();        // salva os dados dos locais que estava na memoria, em um arquivo;
+void SalvarCategorias();    // salva os dados das categorias que estava na memoria, em um arquivo;
+void SalvarEncontros();     // salva os dados dos encotros que estava na memoria, em um arquivo;
+void SalvarArquivos();      // faz a verificacao dos arquivos e salva todos eles;
+void RecuperarAmigos();     // recupera os dados dos amigos que estavam no arquivo;
+void RecuperarLocais();     // recupera os dados dos locais que estavam no arquivo;
+void RecuperarCategorias(); // recupera os dados das categorias que estavam no arquivo;
+void RecuperarEncontros();  // recupera os dados dos encontros que estavam no arquivo;
 
 int IncluirAmigos();       // inclui na funcao o amigo criado na funcao "cria amigo";
 int IncluirLocais();       // inclui na funcao o local criado na funcao "cria local";
@@ -199,7 +209,7 @@ int NumAmigos = 0, NumLocais = 0, NumCategorias = 0, NumEncontros = 0;
 
 int main()
 {
-
+    RecuperarAmigos();
     int op = 0;
 
     while (op != 6)
@@ -408,6 +418,25 @@ void MensagemErro(int erro)
         printf("\nErro. Apenas uma categoria no encontro. Impossivel excluir. Exclua o encontro.\n");
         break;
 
+    case -40:
+        LimparTela();
+        printf("\nErro. Nao foi possivel salvar o arquivo de amigos.\n");
+        break;
+
+    case -41:
+        LimparTela();
+        printf("\nErro. Nao foi possivel salvar o arquivo de locais.\n");
+        break;
+
+    case -42:
+        LimparTela();
+        printf("\nErro. Nao foi possivel salvar o arquivo de categorias.\n");
+        break;
+    case -43:
+        LimparTela();
+        printf("\nErro. Nao foi possivel salvar o arquivo de encontros.\n");
+        break;
+
     default:
         LimparTela();
         printf("\nErro.\n");
@@ -573,6 +602,7 @@ void OpcaoMenu()
 
     do
     {
+
         Menu();
         scanf("%i", &op);
         LimparBuffer();
@@ -606,10 +636,10 @@ void OpcaoMenu()
         {
             VoltarMenuRelatorio();
         }
+        // salva os arquivos (se tiver algo para salvar, e sai do programa);
         else if (op == 6)
         {
-            LimparTela();
-            printf("\nBye Bye..\n");
+            SalvarArquivos();
             exit(0);
         }
 
@@ -4110,6 +4140,221 @@ void OrdenarCategorias()
                 Categorias[j + 1] = aux;
             }
         }
+    }
+}
+
+void SalvarAmigos()
+{
+    FILE *ArqAmigos;
+
+    ArqAmigos = fopen("Amigos.txt", "w");
+
+    if (ArqAmigos == NULL)
+    {
+        MensagemErro(-40);
+        Pausar(1);
+        exit(0);
+    }
+
+    for (int i = 0; i < NumAmigos; i++)
+    {
+        fprintf(ArqAmigos, "%s;", Amigos[i].nome);
+        fprintf(ArqAmigos, "%s;", Amigos[i].apelido);
+        fprintf(ArqAmigos, "%s;", Amigos[i].email);
+        fprintf(ArqAmigos, "%i;", Amigos[i].datanasc.dia);
+        fprintf(ArqAmigos, "%i;", Amigos[i].datanasc.mes);
+        fprintf(ArqAmigos, "%i;", Amigos[i].datanasc.ano);
+        fprintf(ArqAmigos, "%s;", Amigos[i].telefone);
+        fprintf(ArqAmigos, "%c", '\n');
+    }
+
+    fclose(ArqAmigos);
+}
+
+void SalvarLocais()
+{
+    FILE *ArqLocais;
+
+    ArqLocais = fopen("Locais.txt", "w");
+
+    if (ArqLocais == NULL)
+    {
+        MensagemErro(-41);
+        Pausar(1);
+        exit(0);
+    }
+
+    for (int i = 0; i < NumLocais; i++)
+    {
+        fprintf(ArqLocais, "%s@", Locais[i].nome);
+        fprintf(ArqLocais, "%s@", Locais[i].endereco.estado);
+        fprintf(ArqLocais, "%s@", Locais[i].endereco.cidade);
+        fprintf(ArqLocais, "%s@", Locais[i].endereco.bairro);
+        fprintf(ArqLocais, "%s@", Locais[i].endereco.logradouro);
+        fprintf(ArqLocais, "%i@", Locais[i].endereco.numero);
+        fprintf(ArqLocais, "%c", '\n');
+    }
+
+    fclose(ArqLocais);
+}
+
+void SalvarCategorias()
+{
+    FILE *ArqCategorias;
+
+    ArqCategorias = fopen("Categorias.txt", "w");
+
+    if (ArqCategorias == NULL)
+    {
+        MensagemErro(-42);
+        Pausar(1);
+        exit(0);
+    }
+
+    for (int i = 0; i < NumCategorias; i++)
+    {
+        fprintf(ArqCategorias, "%s$", Categorias[i].nome);
+        fprintf(ArqCategorias, "%c", '\n');
+    }
+
+    fclose(ArqCategorias);
+}
+
+void SalvarEncontros()
+{
+    FILE *ArqEncontros;
+
+    ArqEncontros = fopen("Encontros.txt", "w");
+
+    if (ArqEncontros == NULL)
+    {
+        MensagemErro(-43);
+        Pausar(1);
+        exit(0);
+    }
+
+    for (int i = 0; i < NumEncontros; i++)
+    {
+        fprintf(ArqEncontros, "%s#", Encontros[i].amigos->nome);
+        fprintf(ArqEncontros, "%s#", Encontros[i].locais->nome);
+        fprintf(ArqEncontros, "%s#", Encontros[i].categorias->nome);
+        fprintf(ArqEncontros, "%i#", Encontros[i].data.dia);
+        fprintf(ArqEncontros, "%i#", Encontros[i].data.mes);
+        fprintf(ArqEncontros, "%i#", Encontros[i].data.ano);
+        fprintf(ArqEncontros, "%i#", Encontros[i].horario.hora);
+        fprintf(ArqEncontros, "%i#", Encontros[i].horario.minuto);
+        fprintf(ArqEncontros, "%s#", Encontros[i].descricao);
+        fprintf(ArqEncontros, "%c", '\n');
+    }
+
+    fclose(ArqEncontros);
+}
+
+void SalvarArquivos()
+{
+    if (NumAmigos > 0)
+    {
+        SalvarAmigos();
+    }
+    if (NumLocais > 0)
+    {
+        SalvarLocais();
+    }
+    if (NumCategorias > 0)
+    {
+        SalvarCategorias();
+    }
+    if (NumEncontros > 0)
+    {
+        SalvarEncontros();
+    }
+}
+
+// ARRUMAR!!!!!!!!!!!!!!!!!
+void RecuperarAmigos()
+{
+    char linha[200], *token;
+    int sep = 0;
+    FILE *ArqAmigos = fopen("Amigos.txt", "r");
+
+    if (ArqAmigos != NULL)
+    {
+        // enquanto tiver linhas, ler;
+        while (fgets(linha, sizeof(linha), ArqAmigos) != NULL)
+        {
+            // remove o '\n';
+            linha[strcspn(linha, "\n")] = '\0';
+
+            if (NumAmigos == 0)
+            {
+                Amigos = (Amigo *)malloc(sizeof(Amigo));
+            }
+            else
+            {
+                Amigos = (Amigo *)realloc(Amigos, (NumAmigos + 1) * sizeof(Amigo));
+            }
+
+            // divide a string, usando o ';' como limitador;
+            token = strtok(linha, ";");
+
+            while (token != NULL)
+            {
+                switch (sep)
+                {
+
+                // nome;
+                case 0:
+                    Amigos[NumAmigos].nome = (char *)malloc((strlen(token) + 1) * sizeof(char));
+                    strcpy(Amigos[NumAmigos].nome, token);
+                    break;
+
+                // apelido;
+                case 1:
+                    Amigos[NumAmigos].apelido = (char *)malloc((strlen(token) + 1) * sizeof(char));
+                    strcpy(Amigos[NumAmigos].apelido, token);
+                    break;
+
+                // email;
+                case 2:
+                    Amigos[NumAmigos].email = (char *)malloc((strlen(token) + 1) * sizeof(char));
+                    strcpy(Amigos[NumAmigos].email, token);
+                    break;
+
+                // data de nascimento (dia);
+                case 3:
+                    Amigos[NumAmigos].datanasc.dia = atoi(token);
+                    break;
+
+                // data de nascimento (mes);
+                case 4:
+                    Amigos[NumAmigos].datanasc.mes = atoi(token);
+                    break;
+
+                // data de nascimento (ano);
+                case 5:
+                    Amigos[NumAmigos].datanasc.ano = atoi(token);
+                    break;
+
+                // telefone;
+                case 6:
+                    Amigos[NumAmigos].telefone = (char *)malloc((strlen(token) + 1) * sizeof(char));
+                    strcpy(Amigos[NumAmigos].telefone, token);
+                    break;
+                }
+
+                // vai pra proxima string, deixa o limitador nulo pra pegar a proxima string;
+
+                if (sep == 6)
+                {
+                    token = strtok(NULL, ";");
+
+                }
+                sep++;
+            }
+        }
+
+        NumAmigos++;
+        fclose(ArqAmigos);
     }
 }
 
