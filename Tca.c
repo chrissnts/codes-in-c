@@ -210,7 +210,7 @@ int NumAmigos = 0, NumLocais = 0, NumCategorias = 0, NumEncontros = 0;
 
 int main()
 {
-    RecuperarAmigos();
+    RecuperarArquivos();
     int op = 0;
 
     while (op != 6)
@@ -640,6 +640,7 @@ void OpcaoMenu()
         // salva os arquivos (se tiver algo para salvar, e sai do programa);
         else if (op == 6)
         {
+            LimparTela();
             SalvarArquivos();
             exit(0);
         }
@@ -658,7 +659,8 @@ Amigo CriaAmigo()
 
     LimparTela();
     printf("\nNome:\n");
-    fgets(strAux, sizeof(strAux), stdin);
+    LimparBuffer();
+    gets(strAux);
     amigo.nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(amigo.nome, strAux);
     LimparBuffer();
@@ -682,21 +684,24 @@ Amigo CriaAmigo()
 
     LimparTela();
     printf("\nApelido:\n");
-    fgets(strAux, sizeof(strAux), stdin);
+    LimparBuffer();
+    gets(strAux);
     amigo.apelido = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(amigo.apelido, strAux);
     LimparBuffer();
 
     LimparTela();
     printf("\nEmail:\n");
-    fgets(strAux, sizeof(strAux), stdin);
+    LimparBuffer();
+    gets(strAux);
     amigo.email = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(amigo.email, strAux);
     LimparBuffer();
 
     LimparTela();
     printf("\nTelefone:\n");
-    fgets(strAux, sizeof(strAux), stdin);
+    LimparBuffer();
+    gets(strAux);
     amigo.telefone = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(amigo.telefone, strAux);
     LimparBuffer();
@@ -727,7 +732,8 @@ Local CriaLocal()
 
     LimparTela();
     printf("\nNome do Local:\n");
-    fgets(strAux, sizeof(strAux), stdin);
+    LimparBuffer();
+    gets(strAux);
     local.nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(local.nome, strAux);
     LimparBuffer();
@@ -751,28 +757,32 @@ Local CriaLocal()
 
     LimparTela();
     printf("\nEstado:\n");
-    fgets(strAux, sizeof(strAux), stdin);
+    LimparBuffer();
+    gets(strAux);
     local.endereco.estado = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(local.endereco.estado, strAux);
     LimparBuffer();
 
     LimparTela();
     printf("\nCidade:\n");
-    fgets(strAux, sizeof(strAux), stdin);
+    LimparBuffer();
+    gets(strAux);
     local.endereco.cidade = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(local.endereco.cidade, strAux);
     LimparBuffer();
 
     LimparTela();
     printf("\nBairro:\n");
-    fgets(strAux, sizeof(strAux), stdin);
+    LimparBuffer();
+    gets(strAux);
     local.endereco.bairro = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(local.endereco.bairro, strAux);
     LimparBuffer();
 
     LimparTela();
     printf("\nLogradouro:\n");
-    fgets(strAux, sizeof(strAux), stdin);
+    LimparBuffer();
+    gets(strAux);
     local.endereco.logradouro = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(local.endereco.logradouro, strAux);
     LimparBuffer();
@@ -793,7 +803,8 @@ Categoria CriaCategoria()
 
     LimparTela();
     printf("\nCategoria:\n");
-    fgets(strAux, sizeof(strAux), stdin);
+    LimparBuffer();
+    gets(strAux);
     categoria.nome = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(categoria.nome, strAux);
     LimparBuffer();
@@ -1133,7 +1144,8 @@ Encontro CriaEncontro()
     }
 
     printf("\nDescricao do encontro:\n");
-    fgets(strAux, sizeof(strAux), stdin);
+    LimparBuffer();
+    gets(strAux);
     encontro.descricao = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(encontro.descricao, strAux);
     LimparBuffer();
@@ -1951,7 +1963,8 @@ int ListarAmigosPorApelido()
 
     LimparTela();
     printf("\nDigite o apelido do amigo: \n");
-    fgets(apelido, sizeof(apelido), stdin);
+    LimparBuffer();
+    gets(apelido);
     LimparBuffer();
 
     LimparTela();
@@ -2004,7 +2017,7 @@ int ListarLocaisPorEstado()
 
     LimparTela();
     printf("\nDigite o estado: \n");
-    fgets(estado, sizeof(estado), stdin);
+    gets(estado);
     LimparBuffer();
 
     LimparTela();
@@ -2038,7 +2051,7 @@ int ListarLocaisPorCidade()
 
     LimparTela();
     printf("\nDigite o cidade: \n");
-    fgets(cidade, sizeof(cidade), stdin);
+    gets(cidade);
     LimparBuffer();
 
     LimparTela();
@@ -2073,7 +2086,7 @@ int ListarLocaisPorBairro()
 
     LimparTela();
     printf("\nDigite o bairro: \n");
-    fgets(bairro, sizeof(bairro), stdin);
+    gets(bairro);
     LimparBuffer();
 
     LimparTela();
@@ -2165,7 +2178,8 @@ int ListarEncontrosPorAmigos()
 
     LimparTela();
     printf("\nDigite o nome do amigo: \n");
-    fgets(nome, sizeof(nome), stdin);
+    LimparBuffer();
+    gets(nome);
     LimparBuffer();
 
     LimparTela();
@@ -2258,7 +2272,9 @@ void AlterarAmigos(int amigo, int op)
 
         LimparTela();
         printf("\nNovo nome:\n");
-        fgets(strAux, sizeof(strAux), stdin);
+        LimparBuffer();
+        gets(strAux);
+        LimparBuffer();
 
         // verificando se tem o amigo desejado dentro de algum encontro, para pode modificar tambem;
         for (int i = 0; i < NumEncontros; i++)
@@ -2300,7 +2316,9 @@ void AlterarAmigos(int amigo, int op)
     {
         LimparTela();
         printf("\nNovo apelido:\n");
-        fgets(strAux, sizeof(strAux), stdin);
+        LimparBuffer();
+        gets(strAux);
+        LimparBuffer();
 
         if (Amigos[amigo].apelido != NULL)
         {
@@ -2321,7 +2339,9 @@ void AlterarAmigos(int amigo, int op)
     {
         LimparTela();
         printf("\nNovo email:\n");
-        fgets(strAux, sizeof(strAux), stdin);
+        LimparBuffer();
+        gets(strAux);
+        LimparBuffer();
 
         if (Amigos[amigo].email != NULL)
         {
@@ -2342,7 +2362,9 @@ void AlterarAmigos(int amigo, int op)
     {
         LimparTela();
         printf("\nNovo telefone:\n");
-        fgets(strAux, sizeof(strAux), stdin);
+        LimparBuffer();
+        gets(strAux);
+        LimparBuffer();
 
         if (Amigos[amigo].telefone != NULL)
         {
@@ -2386,7 +2408,9 @@ void AlterarLocais(int local, int op)
     {
         LimparTela();
         printf("\nNovo nome do Local:\n");
-        fgets(strAux, sizeof(strAux), stdin);
+        LimparBuffer();
+        gets(strAux);
+        LimparBuffer();
 
         // verificando se tem o local desejado dentro de algum encontro, para pode modificar tambem;
         for (int i = 0; i < NumEncontros; i++)
@@ -2428,7 +2452,9 @@ void AlterarLocais(int local, int op)
     {
         LimparTela();
         printf("\nNovo estado:\n");
-        fgets(strAux, sizeof(strAux), stdin);
+        LimparBuffer();
+        gets(strAux);
+        LimparBuffer();
         if (Locais[local].endereco.estado != NULL)
         {
             free(Locais[local].endereco.estado);
@@ -2447,7 +2473,9 @@ void AlterarLocais(int local, int op)
     {
         LimparTela();
         printf("\nNova cidade:\n");
-        fgets(strAux, sizeof(strAux), stdin);
+        LimparBuffer();
+        gets(strAux);
+        LimparBuffer();
         if (Locais[local].endereco.cidade != NULL)
         {
             free(Locais[local].endereco.cidade);
@@ -2467,7 +2495,9 @@ void AlterarLocais(int local, int op)
     {
         LimparTela();
         printf("\nNovo bairro:\n");
-        fgets(strAux, sizeof(strAux), stdin);
+        LimparBuffer();
+        gets(strAux);
+        LimparBuffer();
         if (Locais[local].endereco.bairro != NULL)
         {
             free(Locais[local].endereco.bairro);
@@ -2487,7 +2517,9 @@ void AlterarLocais(int local, int op)
     {
         LimparTela();
         printf("\nNovo logradouro:\n");
-        fgets(strAux, sizeof(strAux), stdin);
+        LimparBuffer();
+        gets(strAux);
+        LimparBuffer();
         if (Locais[local].endereco.logradouro != NULL)
         {
             free(Locais[local].endereco.logradouro);
@@ -2518,7 +2550,9 @@ void AlterarCategorias(int categoria)
 
     LimparTela();
     printf("\nNova categoria:\n");
-    fgets(strAux, sizeof(strAux), stdin);
+    LimparBuffer();
+    gets(strAux);
+    LimparBuffer();
 
     // verificando se tem a categoria desejada dentro de algum encontro, para pode modificar tambem;
     for (int i = 0; i < NumEncontros; i++)
@@ -3089,7 +3123,9 @@ void ModificarDescricaoEncontro(int encontro)
     char strAux[100];
     LimparTela();
     printf("\nNova descricao do encontro:\n");
-    fgets(strAux, sizeof(strAux), stdin);
+    LimparBuffer();
+    gets(strAux);
+    LimparBuffer();
     Encontros[encontro].descricao = (char *)malloc((strlen(strAux) + 1) * sizeof(char));
     strcpy(Encontros[encontro].descricao, strAux);
     LimparBuffer();
@@ -4301,75 +4337,184 @@ void SalvarArquivos()
     }
 }
 
-// ARRUMAR!!!!!!!!!!!!!!!!!
 void RecuperarAmigos()
 {
-    char linha[200], *token;
+    int i = 0, sep = 0;
+    char str[100], c;
+
     FILE *ArqAmigos = fopen("Amigos.txt", "r");
 
-    // enquanto tiver linhas, ler;
-    while (fgets(linha, sizeof(linha), ArqAmigos) != NULL)
-    {
-        if (NumAmigos == 0)
+    while (1)
+    {   
+        // se o caracter for o end of file;
+        if ((c = fgetc(ArqAmigos)) == EOF)
         {
-            Amigos = (Amigo *)malloc(sizeof(Amigo));
+            break;
+        }
+
+        // monta a string;
+        if (c != '\n' && c != ';')
+        {
+            str[i] = c;
+            i++;
         }
         else
         {
-            Amigos = (Amigo *)realloc(Amigos, (NumAmigos + 1) * sizeof(Amigo));
-        }
+            // finaliza a string;
+            str[i] = '\0';
+            i = 0;
 
-        // remove a quebra de linha no final de cada linha lida;
-        linha[strcspn(linha, "\n")] = '\0';
+            switch (sep)
+            {
+            
+            //nome;
+            case 0: 
+                if (NumAmigos == 0)
+                {
+                    Amigos = (Amigo *)malloc(1 * sizeof(Amigo));
+                }
+                else
+                {
+                    Amigos = (Amigo *)realloc(Amigos, (NumAmigos + 1) * sizeof(Amigo));
+                }
 
-        // nome;
-        token = strtok(linha, ";");
-        if (token != NULL)
-        {
-            Amigos[NumAmigos].nome = (char *)malloc((strlen(token) + 1) * sizeof(char));
-            strcpy(Amigos[NumAmigos].nome, token);
-        }
+                Amigos[NumAmigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                strcpy(Amigos[NumAmigos].nome, str);
+                break;
+            
+            // apelido;
+            case 1: 
+                Amigos[NumAmigos].apelido = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                strcpy(Amigos[NumAmigos].apelido, str);
+                break;
 
-        // apelido;
-        token = strtok(NULL, ";");
-        if (token != NULL)
-        {
-            Amigos[NumAmigos].apelido = (char *)malloc((strlen(token) + 1) * sizeof(char));
-            strcpy(Amigos[NumAmigos].apelido, token);
-        }
+            // email;
+            case 2: 
+                Amigos[NumAmigos].email = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                strcpy(Amigos[NumAmigos].email, str);
+                break;
 
-        // data de nascimento (dia);
-        token = strtok(NULL, ";");
-        if (token != NULL)
-        {
-            Amigos[NumAmigos].datanasc.dia = atoi(token);
-        }
+            // data de nascimento (dia);
+            case 3: 
+                Amigos[NumAmigos].datanasc.dia = atoi(str);
+                break;
 
-        // data de nascimento (mes);
-        token = strtok(NULL, ";");
-        if (token != NULL)
-        {
-            Amigos[NumAmigos].datanasc.mes = atoi(token);
-        }
+            // data de nascimento (mes);
+            case 4:
+                Amigos[NumAmigos].datanasc.mes = atoi(str);
+                break;
 
-        // data de nascimento (ano);
-        token = strtok(NULL, ";");
-        if (token != NULL)
-        {
-            Amigos[NumAmigos].datanasc.ano = atoi(token);
-        }
+            // data de nascimento (ano);
+            case 5: 
+                Amigos[NumAmigos].datanasc.ano = atoi(str);
+                break;
 
-        // telefone;
-        token = strtok(NULL, ";");
-        if (token != NULL)
-        {
-            Amigos[NumAmigos].apelido = (char *)malloc((strlen(token) + 1) * sizeof(char));
-            strcpy(Amigos[NumAmigos].apelido, token);
+            // telefone;
+            case 6:
+                Amigos[NumAmigos].telefone = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                strcpy(Amigos[NumAmigos].telefone, str);
+
+                // passa para o proximo amigo;
+                sep = 0; 
+                NumAmigos++;
+                break;
+            }
+
+            sep++;
         }
-        NumAmigos++;
     }
 
     fclose(ArqAmigos);
+}
+
+void RecuperarLocais()
+{
+    int i = 0, sep = 0;
+    char str[100], c;
+
+    FILE *ArqLocais = fopen("Locais.txt", "r");
+
+    while (1)
+    {   
+        // se o caracter for o end of file;
+        if ((c = fgetc(ArqLocais)) == EOF)
+        {
+            break;
+        }
+
+        // monta a string;
+        if (c != '\n' && c != '@')
+        {
+            str[i] = c;
+            i++;
+        }
+        else
+        {
+            // finaliza a string;
+            str[i] = '\0';
+            i = 0;
+
+            switch (sep)
+            {
+            
+            //nome;
+            case 0: 
+                if (NumLocais == 0)
+                {
+                    Locais = (Local *)malloc(1 * sizeof(Local));
+                }
+                else
+                {
+                    Locais = (Local *)realloc(Locais, (NumLocais + 1) * sizeof(Local));
+                }
+
+                Locais[NumLocais].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                strcpy(Locais[NumLocais].nome, str);
+                break;
+            
+            // estado;
+            case 1: 
+                Locais[NumLocais].endereco.estado = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                strcpy(Locais[NumLocais].endereco.estado, str);
+                break;
+
+            // cidade;
+            case 2: 
+                Locais[NumLocais].endereco.cidade = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                strcpy(Locais[NumLocais].endereco.cidade, str);
+                break;
+
+            // bairro
+            case 3: 
+                Locais[NumLocais].endereco.bairro = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                strcpy(Locais[NumLocais].endereco.bairro, str);
+                break;
+
+            // logradouro
+            case 4: 
+                Locais[NumLocais].endereco.logradouro = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                strcpy(Locais[NumLocais].endereco.logradouro, str);
+                break;
+
+            // numero;
+            case 5: 
+                Locais[NumLocais].endereco.numero = atoi(str);
+                sep = 0; 
+                NumLocais++;
+                break;
+            }
+
+            sep++;
+        }
+    }
+
+    fclose(ArqLocais);
+}
+
+void RecuperarArquivos()
+{
+    RecuperarAmigos();
+    RecuperarLocais();
 }
 
 void Pausar(int pause)
