@@ -4511,10 +4511,66 @@ void RecuperarLocais()
     fclose(ArqLocais);
 }
 
+void RecuperarCategorias()
+{
+    int i = 0, sep = 0;
+    char str[100], c;
+
+    FILE *ArqCategorias = fopen("Categorias.txt", "r");
+
+    while (1)
+    {   
+        // se o caracter for o end of file;
+        if ((c = fgetc(ArqCategorias)) == EOF)
+        {
+            break;
+        }
+
+        // monta a string;
+        if (c != '\n' && c != '$')
+        {
+            str[i] = c;
+            i++;
+        }
+        else
+        {
+            // finaliza a string;
+            str[i] = '\0';
+            i = 0;
+
+            switch (sep)
+            {
+            
+            //nome;
+            case 0: 
+                if (NumCategorias == 0)
+                {
+                    Categorias = (Categoria *)malloc(1 * sizeof(Categoria));
+                }
+                else
+                {
+                    Categorias = (Categoria *)realloc(Categorias, (NumCategorias + 1) * sizeof(Categoria));
+                }
+
+                Categorias[NumCategorias].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                strcpy(Categorias[NumCategorias].nome, str);
+                sep = 0; 
+                NumCategorias++;
+                break;
+            }
+
+            sep++;
+        }
+    }
+
+    fclose(ArqCategorias);
+}
+
 void RecuperarArquivos()
 {
     RecuperarAmigos();
     RecuperarLocais();
+    RecuperarCategorias();
 }
 
 void Pausar(int pause)
