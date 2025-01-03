@@ -1351,8 +1351,8 @@ void ImprimirEncontros(Encontro encontros)
             }
         }
     }
-    printf("\nData: [%02i/%02i/%i]\n", encontros.data.dia, encontros.data.mes, encontros.data.ano);
-    printf("\nHorario: [%02ih:%02im]\n", encontros.horario.hora, encontros.horario.minuto);
+    printf("\nData: [%02i/%02i/%i]", encontros.data.dia, encontros.data.mes, encontros.data.ano);
+    printf("\nHorario: [%02ih:%02im]", encontros.horario.hora, encontros.horario.minuto);
     printf("\nDescricao: %s\n", encontros.descricao);
 }
 
@@ -4155,7 +4155,7 @@ int Bissexto(int ano)
 int ValidarData(int dia, int mes, int ano)
 {
 
-    if (ano < 1980 || ano > 2024)
+    if (ano < 1980 || ano > 2025)
     {
         return -8;
     }
@@ -4185,7 +4185,7 @@ int ValidarHorario(int hora, int min)
     {
         return -20;
     }
-    else if (min < 1 || min > 60)
+    else if (min < 0 || min > 60)
     {
         return -21;
     }
@@ -4302,9 +4302,43 @@ void SalvarEncontros()
 
     for (int i = 0; i < NumEncontros; i++)
     {
-        fprintf(ArqEncontros, "%s#", Encontros[i].amigos->nome);
-        fprintf(ArqEncontros, "%s#", Encontros[i].locais->nome);
-        fprintf(ArqEncontros, "%s#", Encontros[i].categorias->nome);
+        if (Encontros[i].numamigos == 1)
+        {
+            fprintf(ArqEncontros, "%s;", Encontros[i].amigos->nome);
+        }
+        else
+        {
+            for (int j = 0; j < Encontros[i].numamigos; j++)
+            {
+                if (j < Encontros[i].numamigos - 1)
+                {
+                    fprintf(ArqEncontros, "%s;", Encontros[i].amigos[j].nome);
+                }
+                else
+                {
+                    fprintf(ArqEncontros, "%s;", Encontros[i].amigos[j].nome);
+                }
+            }
+        }
+        fprintf(ArqEncontros, "%s@", Encontros[i].locais->nome);
+        if (Encontros[i].numcategorias == 1)
+        {
+            fprintf(ArqEncontros, "%s$", Encontros[i].categorias->nome);
+        }
+        else
+        {
+            for (int j = 0; j < Encontros[i].numcategorias; j++)
+            {
+                if (j < Encontros[i].numcategorias - 1)
+                {
+                    fprintf(ArqEncontros, "%s$", Encontros[i].categorias[j].nome);
+                }
+                else
+                {
+                    fprintf(ArqEncontros, "%s$", Encontros[i].categorias[j].nome);
+                }
+            }
+        }
         fprintf(ArqEncontros, "%i#", Encontros[i].data.dia);
         fprintf(ArqEncontros, "%i#", Encontros[i].data.mes);
         fprintf(ArqEncontros, "%i#", Encontros[i].data.ano);
@@ -4345,7 +4379,7 @@ void RecuperarAmigos()
     FILE *ArqAmigos = fopen("Amigos.txt", "r");
 
     while (1)
-    {   
+    {
         // se o caracter for o end of file;
         if ((c = fgetc(ArqAmigos)) == EOF)
         {
@@ -4358,7 +4392,7 @@ void RecuperarAmigos()
             str[i] = c;
             i++;
         }
-        else
+        else if (c == ';')
         {
             // finaliza a string;
             str[i] = '\0';
@@ -4366,9 +4400,9 @@ void RecuperarAmigos()
 
             switch (sep)
             {
-            
-            //nome;
-            case 0: 
+
+            // nome;
+            case 0:
                 if (NumAmigos == 0)
                 {
                     Amigos = (Amigo *)malloc(1 * sizeof(Amigo));
@@ -4381,21 +4415,21 @@ void RecuperarAmigos()
                 Amigos[NumAmigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
                 strcpy(Amigos[NumAmigos].nome, str);
                 break;
-            
+
             // apelido;
-            case 1: 
+            case 1:
                 Amigos[NumAmigos].apelido = (char *)malloc((strlen(str) + 1) * sizeof(char));
                 strcpy(Amigos[NumAmigos].apelido, str);
                 break;
 
             // email;
-            case 2: 
+            case 2:
                 Amigos[NumAmigos].email = (char *)malloc((strlen(str) + 1) * sizeof(char));
                 strcpy(Amigos[NumAmigos].email, str);
                 break;
 
             // data de nascimento (dia);
-            case 3: 
+            case 3:
                 Amigos[NumAmigos].datanasc.dia = atoi(str);
                 break;
 
@@ -4405,7 +4439,7 @@ void RecuperarAmigos()
                 break;
 
             // data de nascimento (ano);
-            case 5: 
+            case 5:
                 Amigos[NumAmigos].datanasc.ano = atoi(str);
                 break;
 
@@ -4415,12 +4449,16 @@ void RecuperarAmigos()
                 strcpy(Amigos[NumAmigos].telefone, str);
 
                 // passa para o proximo amigo;
-                sep = 0; 
+                sep = 0;
                 NumAmigos++;
                 break;
             }
 
             sep++;
+        }
+        else
+        {
+            sep = 0;
         }
     }
 
@@ -4435,7 +4473,7 @@ void RecuperarLocais()
     FILE *ArqLocais = fopen("Locais.txt", "r");
 
     while (1)
-    {   
+    {
         // se o caracter for o end of file;
         if ((c = fgetc(ArqLocais)) == EOF)
         {
@@ -4448,7 +4486,7 @@ void RecuperarLocais()
             str[i] = c;
             i++;
         }
-        else
+        else if (c == '@')
         {
             // finaliza a string;
             str[i] = '\0';
@@ -4456,9 +4494,9 @@ void RecuperarLocais()
 
             switch (sep)
             {
-            
-            //nome;
-            case 0: 
+
+            // nome;
+            case 0:
                 if (NumLocais == 0)
                 {
                     Locais = (Local *)malloc(1 * sizeof(Local));
@@ -4471,40 +4509,44 @@ void RecuperarLocais()
                 Locais[NumLocais].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
                 strcpy(Locais[NumLocais].nome, str);
                 break;
-            
+
             // estado;
-            case 1: 
+            case 1:
                 Locais[NumLocais].endereco.estado = (char *)malloc((strlen(str) + 1) * sizeof(char));
                 strcpy(Locais[NumLocais].endereco.estado, str);
                 break;
 
             // cidade;
-            case 2: 
+            case 2:
                 Locais[NumLocais].endereco.cidade = (char *)malloc((strlen(str) + 1) * sizeof(char));
                 strcpy(Locais[NumLocais].endereco.cidade, str);
                 break;
 
             // bairro
-            case 3: 
+            case 3:
                 Locais[NumLocais].endereco.bairro = (char *)malloc((strlen(str) + 1) * sizeof(char));
                 strcpy(Locais[NumLocais].endereco.bairro, str);
                 break;
 
             // logradouro
-            case 4: 
+            case 4:
                 Locais[NumLocais].endereco.logradouro = (char *)malloc((strlen(str) + 1) * sizeof(char));
                 strcpy(Locais[NumLocais].endereco.logradouro, str);
                 break;
 
             // numero;
-            case 5: 
+            case 5:
                 Locais[NumLocais].endereco.numero = atoi(str);
-                sep = 0; 
+                sep = 0;
                 NumLocais++;
                 break;
             }
 
             sep++;
+        }
+        else
+        {
+            sep = 0;
         }
     }
 
@@ -4513,13 +4555,13 @@ void RecuperarLocais()
 
 void RecuperarCategorias()
 {
-    int i = 0, sep = 0;
+    int i = 0;
     char str[100], c;
 
     FILE *ArqCategorias = fopen("Categorias.txt", "r");
 
     while (1)
-    {   
+    {
         // se o caracter for o end of file;
         if ((c = fgetc(ArqCategorias)) == EOF)
         {
@@ -4532,38 +4574,153 @@ void RecuperarCategorias()
             str[i] = c;
             i++;
         }
-        else
+        else if (c == '$')
         {
             // finaliza a string;
             str[i] = '\0';
             i = 0;
 
-            switch (sep)
+            if (NumCategorias == 0)
             {
-            
-            //nome;
-            case 0: 
-                if (NumCategorias == 0)
-                {
-                    Categorias = (Categoria *)malloc(1 * sizeof(Categoria));
-                }
-                else
-                {
-                    Categorias = (Categoria *)realloc(Categorias, (NumCategorias + 1) * sizeof(Categoria));
-                }
-
-                Categorias[NumCategorias].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
-                strcpy(Categorias[NumCategorias].nome, str);
-                sep = 0; 
-                NumCategorias++;
-                break;
+                Categorias = (Categoria *)malloc(1 * sizeof(Categoria));
             }
+            else
+            {
+                Categorias = (Categoria *)realloc(Categorias, (NumCategorias + 1) * sizeof(Categoria));
+            }
+            Categorias[NumCategorias].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+            strcpy(Categorias[NumCategorias].nome, str);
 
-            sep++;
+            NumCategorias++;
+            break;
         }
     }
 
     fclose(ArqCategorias);
+}
+
+// ARRUMAR!!!!!!!!!!!!!!!!!!!!!!!!!!
+void RecuperarEncontros()
+{
+    int i = 0, sep = 0;
+    char str[100], c;
+
+    FILE *ArqEncontros = fopen("Encontros.txt", "r");
+
+    while (1)
+    {
+        // se o caracter for o end of file;
+        if ((c = fgetc(ArqEncontros)) == EOF)
+        {
+            break;
+        }
+
+        // monta a string;
+        if (c != '\n' && c != ';' && c != '@' && c != '$' && c != '#')
+        {
+            str[i] = c;
+            i++;
+        }
+        else if (c == ';' || c == '@' || c == '$' || c == '#' || c == '\n')
+        {
+            // finaliza a string;
+            str[i] = '\0';
+            i = 0;
+
+            if (c == ';')
+            {
+                if (NumEncontros == 0)
+                {
+                    Encontros = (Encontro *)calloc(1, sizeof(Encontro));
+                }
+                else
+                {
+                    Encontros = (Encontro *)realloc(Encontros, (NumEncontros + 1) * sizeof(Encontro));
+                }
+
+                if (Encontros[NumEncontros].numamigos == 0)
+                {
+                    Encontros[NumEncontros].amigos->nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                    strcpy(Encontros[NumEncontros].amigos->nome, str);
+                    Encontros[NumEncontros].numamigos++;
+                }
+                else
+                {
+                    Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                    strcpy(Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome, str);
+                    Encontros[NumEncontros].numamigos++;
+                }
+            }
+            else if (c == '@')
+            {
+                Encontros[NumEncontros].locais->nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                strcpy(Encontros[NumEncontros].locais->nome, str);
+            }
+            else if (c == '$')
+            {
+                if (Encontros[NumEncontros].numcategorias == 0)
+                {
+                    Encontros[NumEncontros].categorias->nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                    strcpy(Encontros[NumEncontros].categorias->nome, str);
+                    Encontros[NumEncontros].numcategorias++;
+                }
+                else
+                {
+                    Encontros[NumEncontros].categorias[Encontros[NumEncontros].numcategorias].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                    strcpy(Encontros[NumEncontros].categorias[Encontros[NumEncontros].numcategorias].nome, str);
+                    Encontros[NumEncontros].numcategorias++;
+                }
+            }
+            else if (c == '#')
+            {
+                switch (sep)
+                {
+
+                // data (dia);
+                case 0:
+                    Encontros[NumEncontros].data.dia = atoi(str);
+                    break;
+
+                // data (mes);
+                case 1:
+                    Encontros[NumEncontros].data.mes = atoi(str);
+                    break;
+
+                // data (ano);
+                case 2:
+                    Encontros[NumEncontros].data.ano = atoi(str);
+                    break;
+
+                // horario (hora);
+                case 3:
+                    Encontros[NumEncontros].horario.hora = atoi(str);
+
+                    break;
+
+                // horario (minutos);
+                case 4:
+                    Encontros[NumEncontros].horario.minuto = atoi(str);
+                    break;
+
+                // horario (minutos);
+                case 5:
+                    Encontros[NumEncontros].descricao = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                    strcpy(Encontros[NumEncontros].descricao, str);
+                    NumEncontros++;
+                    sep = 0;
+                    break;
+                }
+
+                sep++;
+            }
+            else
+            {
+                sep = 0;
+            }
+        }
+    }
+
+    fclose(ArqEncontros);
 }
 
 void RecuperarArquivos()
@@ -4571,6 +4728,7 @@ void RecuperarArquivos()
     RecuperarAmigos();
     RecuperarLocais();
     RecuperarCategorias();
+    RecuperarEncontros();
 }
 
 void Pausar(int pause)
