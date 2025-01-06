@@ -157,11 +157,11 @@ void Pausar(int pause); // verifica se o pause eh true ou false e pausa;
 void LimparBuffer();    // limpa o buffer do teclado;
 void LimparTela();      // limpa a tela (criei por conta da miseria do linux);
 
-void SalvarAmigos();        // salva os dados dos amigos que estava na memoria, em um arquivo;
-void SalvarLocais();        // salva os dados dos locais que estava na memoria, em um arquivo;
-void SalvarCategorias();    // salva os dados das categorias que estava na memoria, em um arquivo;
-void SalvarEncontros();     // salva os dados dos encotros que estava na memoria, em um arquivo;
-void SalvarArquivos();      // faz a verificacao dos arquivos e salva todos eles;
+void SalvarAmigos();      // salva os dados dos amigos que estava na memoria, em um arquivo;
+void SalvarLocais();      // salva os dados dos locais que estava na memoria, em um arquivo;
+void SalvarCategorias();  // salva os dados das categorias que estava na memoria, em um arquivo;
+void SalvarEncontros();   // salva os dados dos encotros que estava na memoria, em um arquivo;
+void SalvarArquivos();    // faz a verificacao dos arquivos e salva todos eles;
 void RecuperarArquivos(); // recupera todos os dados que estavam salvos que estavam no arquivo;
 
 int IncluirAmigos();       // inclui na funcao o amigo criado na funcao "cria amigo";
@@ -1319,7 +1319,7 @@ void ImprimirEncontros(Encontro encontros)
         {
             if (i < encontros.numamigos - 1)
             {
-                printf("%s ", encontros.amigos[i].nome);
+                printf("%s, ", encontros.amigos[i].nome);
             }
             else
             {
@@ -1339,7 +1339,7 @@ void ImprimirEncontros(Encontro encontros)
         {
             if (j < encontros.numcategorias - 1)
             {
-                printf("%s ", encontros.categorias[j].nome);
+                printf("%s, ", encontros.categorias[j].nome);
             }
             else
             {
@@ -3140,60 +3140,63 @@ void DeletarAmigoEncontro(int encontro)
     {
         MensagemErro(-38);
     }
-    while (1)
+    else
     {
-
-        LimparTela();
-        printf("\nRealmente deseja prosseguir? (s) (n)\n");
-        scanf(" %c", &op);
-        LimparBuffer();
-        op = tolower(op);
-
-        if (op == 's')
+        while (1)
         {
 
-            AlterarEncontroListarAmigos(Encontros[encontro]);
-            printf("\nDigite o amigo que deseja deletar do encontro:\n");
-            scanf("%i", &amigo);
+            LimparTela();
+            printf("\nRealmente deseja prosseguir? (s) (n)\n");
+            scanf(" %c", &op);
             LimparBuffer();
-            amigo--;
-            if (amigo < 0 || amigo > Encontros[encontro].numamigos)
+            op = tolower(op);
+
+            if (op == 's')
             {
-                MensagemErro(-3);
-                Pausar(1);
-                continue;
+
+                AlterarEncontroListarAmigos(Encontros[encontro]);
+                printf("\nDigite o amigo que deseja deletar do encontro:\n");
+                scanf("%i", &amigo);
+                LimparBuffer();
+                amigo--;
+                if (amigo < 0 || amigo > Encontros[encontro].numamigos)
+                {
+                    MensagemErro(-3);
+                    Pausar(1);
+                    continue;
+                }
+                else
+                {
+                    // limpa a memoria do amigo que estava no encontro;
+                    if (Encontros[encontro].amigos[amigo].nome != NULL)
+                    {
+                        free(Encontros[encontro].amigos[amigo].nome);
+                        Encontros[encontro].amigos[amigo].nome = NULL;
+                    }
+
+                    // reorganiza a lista de amigos no encontro;
+                    Encontros[encontro].amigos[amigo] = Encontros[encontro].amigos[Encontros[encontro].numamigos - 1];
+
+                    Encontros[encontro].numamigos--;
+
+                    LimparTela();
+                    printf("\nDeletado com sucesso.\n");
+                    break;
+                }
+            }
+            else if (op == 'n')
+            {
+                OpcaoMenuEncontro();
             }
             else
             {
-                // limpa a memoria do amigo que estava no encontro;
-                if (Encontros[encontro].amigos[amigo].nome != NULL)
-                {
-                    free(Encontros[encontro].amigos[amigo].nome);
-                    Encontros[encontro].amigos[amigo].nome = NULL;
-                }
-
-                // reorganiza a lista de amigos no encontro;
-                Encontros[encontro].amigos[amigo] = Encontros[encontro].amigos[Encontros[encontro].numamigos - 1];
-
-                Encontros[encontro].numamigos--;
-
-                LimparTela();
-                printf("\nDeletado com sucesso.\n");
-                break;
+                MensagemErro(0);
+                Pausar(1);
+                continue;
             }
-        }
-        else if (op == 'n')
-        {
-            OpcaoMenuEncontro();
-        }
-        else
-        {
-            MensagemErro(0);
-            Pausar(1);
-            continue;
-        }
 
-        break;
+            break;
+        }
     }
 }
 
@@ -3201,24 +3204,22 @@ void DeletarCategoriaEncontro(int encontro)
 {
     int categoria;
     char op;
-
-    while (1)
+    // caso tenha apenas 1 categoria no encontro, nao deixar excluir;
+    if (Encontros[encontro].numcategorias <= 1)
     {
-        LimparTela();
-        printf("\nRealmente deseja prosseguir? (s) (n)\n");
-        scanf(" %c", &op);
-        LimparBuffer();
-        op = tolower(op);
-
-        if (op == 's')
+        MensagemErro(-39);
+    }
+    else
+    {
+        while (1)
         {
-            // caso tenha apenas 1 categoria no encontro, nao deixar excluir;
-            if (Encontros[encontro].numcategorias <= 1)
-            {
-                MensagemErro(-39);
-                Pausar(1);
-            }
-            else
+            LimparTela();
+            printf("\nRealmente deseja prosseguir? (s) (n)\n");
+            scanf(" %c", &op);
+            LimparBuffer();
+            op = tolower(op);
+
+            if (op == 's')
             {
                 AlterarEncontroListarCategorias(Encontros[encontro]);
                 printf("\nDigite a categoria que deseja deletar do encontro:\n");
@@ -3250,19 +3251,19 @@ void DeletarCategoriaEncontro(int encontro)
                     break;
                 }
             }
-        }
-        else if (op == 'n')
-        {
-            OpcaoMenuEncontro();
-        }
-        else
-        {
-            MensagemErro(0);
-            Pausar(1);
-            continue;
-        }
+            else if (op == 'n')
+            {
+                OpcaoMenuEncontro();
+            }
+            else
+            {
+                MensagemErro(0);
+                Pausar(1);
+                continue;
+            }
 
-        break;
+            break;
+        }
     }
 }
 
@@ -4568,11 +4569,10 @@ void RecuperarArquivos()
             {
                 Categorias = (Categoria *)realloc(Categorias, (NumCategorias + 1) * sizeof(Categoria));
             }
+
             Categorias[NumCategorias].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
             strcpy(Categorias[NumCategorias].nome, str);
-
             NumCategorias++;
-            break;
         }
     }
 
@@ -4598,9 +4598,9 @@ void RecuperarArquivos()
 
             if (c == ';')
             {
-                
+
                 if (NumEncontros == 0)
-                {   
+                {
                     printf("\nAlocou do 0 para 1\n");
                     Encontros = (Encontro *)malloc(1 * sizeof(Encontro));
                 }
@@ -4615,7 +4615,6 @@ void RecuperarArquivos()
                 strcpy(Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome, str);
                 printf("\nnome depois de copiar %s\n", Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome);
                 Encontros[NumEncontros].numamigos++;
-
             }
             else if (c == '@')
             {
