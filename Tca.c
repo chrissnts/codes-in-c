@@ -162,11 +162,7 @@ void SalvarLocais();        // salva os dados dos locais que estava na memoria, 
 void SalvarCategorias();    // salva os dados das categorias que estava na memoria, em um arquivo;
 void SalvarEncontros();     // salva os dados dos encotros que estava na memoria, em um arquivo;
 void SalvarArquivos();      // faz a verificacao dos arquivos e salva todos eles;
-void RecuperarAmigos();     // recupera os dados dos amigos que estavam no arquivo;
-void RecuperarLocais();     // recupera os dados dos locais que estavam no arquivo;
-void RecuperarCategorias(); // recupera os dados das categorias que estavam no arquivo;
-void RecuperarEncontros();  // recupera os dados dos encontros que estavam no arquivo;
-void RecuperarArquivos();
+void RecuperarArquivos(); // recupera todos os dados que estavam salvos que estavam no arquivo;
 
 int IncluirAmigos();       // inclui na funcao o amigo criado na funcao "cria amigo";
 int IncluirLocais();       // inclui na funcao o local criado na funcao "cria local";
@@ -1307,7 +1303,7 @@ void ImprimirLocais(Local locais)
 
 void ImprimirCategorias(Categoria categorias)
 {
-    printf("\nCategoria: %s", categorias.nome);
+    printf("\nCategoria: %s\n", categorias.nome);
 }
 
 void ImprimirEncontros(Encontro encontros)
@@ -4371,12 +4367,16 @@ void SalvarArquivos()
     }
 }
 
-void RecuperarAmigos()
+// ARRUMAR!!!!!!!!!!!!!!!!!!!!!!!!!!
+void RecuperarArquivos()
 {
     int i = 0, sep = 0;
     char str[100], c;
 
     FILE *ArqAmigos = fopen("Amigos.txt", "r");
+    FILE *ArqLocais = fopen("Locais.txt", "r");
+    FILE *ArqCategorias = fopen("Categorias.txt", "r");
+    FILE *ArqEncontros = fopen("Encontros.txt", "r");
 
     while (1)
     {
@@ -4462,16 +4462,6 @@ void RecuperarAmigos()
         }
     }
 
-    fclose(ArqAmigos);
-}
-
-void RecuperarLocais()
-{
-    int i = 0, sep = 0;
-    char str[100], c;
-
-    FILE *ArqLocais = fopen("Locais.txt", "r");
-
     while (1)
     {
         // se o caracter for o end of file;
@@ -4550,16 +4540,6 @@ void RecuperarLocais()
         }
     }
 
-    fclose(ArqLocais);
-}
-
-void RecuperarCategorias()
-{
-    int i = 0;
-    char str[100], c;
-
-    FILE *ArqCategorias = fopen("Categorias.txt", "r");
-
     while (1)
     {
         // se o caracter for o end of file;
@@ -4596,17 +4576,6 @@ void RecuperarCategorias()
         }
     }
 
-    fclose(ArqCategorias);
-}
-
-// ARRUMAR!!!!!!!!!!!!!!!!!!!!!!!!!!
-void RecuperarEncontros()
-{
-    int i = 0, sep = 0;
-    char str[100], c;
-
-    FILE *ArqEncontros = fopen("Encontros.txt", "r");
-
     while (1)
     {
         // se o caracter for o end of file;
@@ -4629,27 +4598,24 @@ void RecuperarEncontros()
 
             if (c == ';')
             {
+                
                 if (NumEncontros == 0)
-                {
-                    Encontros = (Encontro *)calloc(1, sizeof(Encontro));
+                {   
+                    printf("\nAlocou do 0 para 1\n");
+                    Encontros = (Encontro *)malloc(1 * sizeof(Encontro));
                 }
                 else
                 {
+                    printf("\nRealocou\n");
                     Encontros = (Encontro *)realloc(Encontros, (NumEncontros + 1) * sizeof(Encontro));
                 }
 
-                if (Encontros[NumEncontros].numamigos == 0)
-                {
-                    Encontros[NumEncontros].amigos->nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
-                    strcpy(Encontros[NumEncontros].amigos->nome, str);
-                    Encontros[NumEncontros].numamigos++;
-                }
-                else
-                {
-                    Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
-                    strcpy(Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome, str);
-                    Encontros[NumEncontros].numamigos++;
-                }
+                Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                printf("\nnome antes de copiar %s\n", Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome);
+                strcpy(Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome, str);
+                printf("\nnome depois de copiar %s\n", Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome);
+                Encontros[NumEncontros].numamigos++;
+
             }
             else if (c == '@')
             {
@@ -4658,18 +4624,10 @@ void RecuperarEncontros()
             }
             else if (c == '$')
             {
-                if (Encontros[NumEncontros].numcategorias == 0)
-                {
-                    Encontros[NumEncontros].categorias->nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
-                    strcpy(Encontros[NumEncontros].categorias->nome, str);
-                    Encontros[NumEncontros].numcategorias++;
-                }
-                else
-                {
-                    Encontros[NumEncontros].categorias[Encontros[NumEncontros].numcategorias].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
-                    strcpy(Encontros[NumEncontros].categorias[Encontros[NumEncontros].numcategorias].nome, str);
-                    Encontros[NumEncontros].numcategorias++;
-                }
+
+                Encontros[NumEncontros].categorias[Encontros[NumEncontros].numcategorias].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                strcpy(Encontros[NumEncontros].categorias[Encontros[NumEncontros].numcategorias].nome, str);
+                Encontros[NumEncontros].numcategorias++;
             }
             else if (c == '#')
             {
@@ -4720,20 +4678,18 @@ void RecuperarEncontros()
         }
     }
 
+    fclose(ArqAmigos);
+    fclose(ArqLocais);
+    fclose(ArqCategorias);
     fclose(ArqEncontros);
-}
 
-void RecuperarArquivos()
-{
-    RecuperarAmigos();
-    RecuperarLocais();
-    RecuperarCategorias();
-    RecuperarEncontros();
+    Pausar(1);
 }
 
 void Pausar(int pause)
 {
-    printf("\nPressione Qualquer Tecla para Continuar..\n");
+    printf("\n\nPressione Qualquer Tecla para Continuar..\n");
+
     if (pause)
     {
         getchar();
