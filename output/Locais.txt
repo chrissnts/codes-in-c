@@ -1,2 +1,3 @@
 Bar@Parana@Matinhos@Tabuleiro@Rua Caioba@23@
 Restaurante@Parana@Matinhos@Caioba@Avenida Curitiba@56@
+Garagem de Casa@Parana@Matinhos@Tabuleiro@Rua Cabaraquara@216@

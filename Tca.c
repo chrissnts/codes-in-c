@@ -157,12 +157,16 @@ void Pausar(int pause); // verifica se o pause eh true ou false e pausa;
 void LimparBuffer();    // limpa o buffer do teclado;
 void LimparTela();      // limpa a tela (criei por conta da miseria do linux);
 
-void SalvarAmigos();      // salva os dados dos amigos que estava na memoria, em um arquivo;
-void SalvarLocais();      // salva os dados dos locais que estava na memoria, em um arquivo;
-void SalvarCategorias();  // salva os dados das categorias que estava na memoria, em um arquivo;
-void SalvarEncontros();   // salva os dados dos encotros que estava na memoria, em um arquivo;
-void SalvarArquivos();    // faz a verificacao dos arquivos e salva todos eles;
-void RecuperarArquivos(); // recupera todos os dados que estavam salvos que estavam no arquivo;
+void SalvarAmigos();        // salva os dados dos amigos que estava na memoria, em um arquivo;
+void SalvarLocais();        // salva os dados dos locais que estava na memoria, em um arquivo;
+void SalvarCategorias();    // salva os dados das categorias que estava na memoria, em um arquivo;
+void SalvarEncontros();     // salva os dados dos encotros que estava na memoria, em um arquivo;
+void SalvarArquivos();      // faz a verificacao dos arquivos e salva todos eles;
+void RecuperarAmigos();     // recupera todos os dados que estavam salvos que estavam no arquivo;
+void RecuperarLocais();     // recupera todos os dados que estavam salvos que estavam no arquivo;
+void RecuperarCategorias(); // recupera todos os dados que estavam salvos que estavam no arquivo;
+void RecuperarEncontros();  // recupera todos os dados que estavam salvos que estavam no arquivo;
+void RecuperarArquivos();   // recupera todos os dados que estavam salvos que estavam no arquivo;
 
 int IncluirAmigos();       // inclui na funcao o amigo criado na funcao "cria amigo";
 int IncluirLocais();       // inclui na funcao o local criado na funcao "cria local";
@@ -851,7 +855,7 @@ Encontro CriaEncontro()
             printf("\n%i. %s\n", i + 1, Amigos[i].nome);
         }
 
-        printf("\nDigite o amigo que deseja incluir no encontro:\n");
+        printf("\n\nDigite o amigo que deseja incluir no encontro:\n");
         scanf("%i", &amigo);
         LimparBuffer();
         amigo--;
@@ -877,7 +881,7 @@ Encontro CriaEncontro()
 
             if (amigonoencontro)
             {
-                MensagemErro(-24);
+                MensagemErro(-22);
                 Pausar(1);
                 continue;
             }
@@ -1008,7 +1012,6 @@ Encontro CriaEncontro()
         {
             printf("\n%i. %s\n", i + 1, Categorias[i].nome);
         }
-
         printf("\nDigite a categoria que deseja incluir no encontro:\n");
         scanf("%i", &categoria);
         LimparBuffer();
@@ -1284,20 +1287,20 @@ int IncluirEncontros()
 
 void ImprimirAmigos(Amigo amigos)
 {
-    printf("\nNome: %s", amigos.nome);
-    printf("\nApelido: %s", amigos.apelido);
-    printf("\nEmail: %s", amigos.email);
-    printf("\nTelefone: %s", amigos.telefone);
+    printf("\nNome: %s\n", amigos.nome);
+    printf("\nApelido: %s\n", amigos.apelido);
+    printf("\nEmail: %s\n", amigos.email);
+    printf("\nTelefone: %s\n", amigos.telefone);
     printf("\nData Nascimento: [%02i/%02i/%i]\n", amigos.datanasc.dia, amigos.datanasc.mes, amigos.datanasc.ano);
 }
 
 void ImprimirLocais(Local locais)
 {
-    printf("\nNome do Local: %s", locais.nome);
-    printf("\nEstado: %s", locais.endereco.estado);
-    printf("\nCidade: %s", locais.endereco.cidade);
-    printf("\nBairro: %s", locais.endereco.bairro);
-    printf("\nLogradouro: %s", locais.endereco.logradouro);
+    printf("\nNome do Local: %s\n", locais.nome);
+    printf("\nEstado: %s\n", locais.endereco.estado);
+    printf("\nCidade: %s\n", locais.endereco.cidade);
+    printf("\nBairro: %s\n", locais.endereco.bairro);
+    printf("\nLogradouro: %s\n", locais.endereco.logradouro);
     printf("\nNumero: %i\n", locais.endereco.numero);
 }
 
@@ -1310,7 +1313,7 @@ void ImprimirEncontros(Encontro encontros)
 {
     if (encontros.numamigos == 1)
     {
-        printf("\nAmigo: %s", encontros.amigos->nome);
+        printf("\nAmigo: %s\n", encontros.amigos->nome);
     }
     else
     {
@@ -1323,14 +1326,14 @@ void ImprimirEncontros(Encontro encontros)
             }
             else
             {
-                printf("%s ", encontros.amigos[i].nome);
+                printf("%s \n", encontros.amigos[i].nome);
             }
         }
     }
-    printf("\nLocal: %s", encontros.locais->nome);
+    printf("\nLocal: %s\n", encontros.locais->nome);
     if (encontros.numcategorias == 1)
     {
-        printf("\nCategoria: %s", encontros.categorias->nome);
+        printf("\nCategoria: %s\n", encontros.categorias->nome);
     }
     else
     {
@@ -1343,12 +1346,12 @@ void ImprimirEncontros(Encontro encontros)
             }
             else
             {
-                printf("%s ", encontros.categorias[j].nome);
+                printf("%s \n", encontros.categorias[j].nome);
             }
         }
     }
-    printf("\nData: [%02i/%02i/%i]", encontros.data.dia, encontros.data.mes, encontros.data.ano);
-    printf("\nHorario: [%02ih:%02im]", encontros.horario.hora, encontros.horario.minuto);
+    printf("\nData: [%02i/%02i/%i]\n", encontros.data.dia, encontros.data.mes, encontros.data.ano);
+    printf("\nHorario: [%02ih:%02im]\n", encontros.horario.hora, encontros.horario.minuto);
     printf("\nDescricao: %s\n", encontros.descricao);
 }
 
@@ -2212,23 +2215,45 @@ void QuantidadeRegistros()
     Pausar(1);
 }
 
-// ARRUMAR !!!!!!!!!!!!
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// ARRUMAR !!!!!!!!!!!! (esta imprimindo duas vezes se uma categoria ja foi imprimida)
 void ListarEncontrosPorCategorias()
 {
+    // supondo no maximo 100 categorias com nome ate 99 caracteres.
+    char CategoriasUnicas[100][100];
+    int NumCategoriasUnicas = 0, encontrada;
 
-    LimparTela();
     for (int i = 0; i < NumEncontros; i++)
     {
         for (int j = 0; j < Encontros[i].numcategorias; j++)
         {
-            printf("\n-- Categoria: %s --\n", Encontros[i].categorias[j].nome);
-
-            for (int k = 0; k < NumCategorias; k++)
+            for (int k = 0; k < NumCategoriasUnicas; k++)
             {
-
-                if (strcmp(Encontros[i].categorias[j].nome, Categorias[k].nome) == 0)
+                if (strcmp(CategoriasUnicas[k], Encontros[i].categorias[j].nome) == 0)
                 {
+                    encontrada = 1;
+                    break;
+                }
+            }
+
+            if (encontrada)
+            {
+                strcpy(CategoriasUnicas[NumCategoriasUnicas++], Encontros[i].categorias[j].nome);
+            }
+        }
+    }
+
+    LimparTela();
+    for (int c = 0; c < NumCategoriasUnicas; c++)
+    {
+        printf("\n-- Categoria: %s --\n", CategoriasUnicas[c]);
+
+        for (int i = 0; i < NumEncontros; i++)
+        {
+            for (int j = 0; j < Encontros[i].numcategorias; j++)
+            {
+                if (strcmp(Encontros[i].categorias[j].nome, CategoriasUnicas[c]) == 0)
+                {
+                    printf("\nEncontro %i: \n", i + 1);
                     if (Encontros[i].numamigos == 1)
                     {
                         printf("\nAmigo: %s", Encontros[i].amigos->nome);
@@ -2236,22 +2261,23 @@ void ListarEncontrosPorCategorias()
                     else
                     {
                         printf("\nAmigos: ");
-                        for (int l = 0; l < Encontros[i].numamigos; l++)
+                        for (int a = 0; a < Encontros[i].numamigos; a++)
                         {
-                            if (l < Encontros[i].numamigos - 1)
+                            if (a < Encontros[i].numamigos - 1)
                             {
-                                printf("%s ", Encontros[i].amigos[l].nome);
+                                printf("%s, ", Encontros[i].amigos[a].nome);
                             }
                             else
                             {
-                                printf("%s ", Encontros[i].amigos[l].nome);
+                                printf("%s ", Encontros[i].amigos[a].nome);
                             }
                         }
                     }
                     printf("\nLocal: %s", Encontros[i].locais->nome);
-                    printf("\nData: [%02i/%02i/%i]\n", Encontros[i].data.dia, Encontros[i].data.mes, Encontros[i].data.ano);
-                    printf("\nHorario: [%02ih:%02im]\n", Encontros[i].horario.hora, Encontros[i].horario.minuto);
+                    printf("\nData: [%02i/%02i/%i]", Encontros[i].data.dia, Encontros[i].data.mes, Encontros[i].data.ano);
+                    printf("\nHorario: [%02ih:%02im]", Encontros[i].horario.hora, Encontros[i].horario.minuto);
                     printf("\nDescricao: %s\n", Encontros[i].descricao);
+                    break;
                 }
             }
         }
@@ -2700,7 +2726,7 @@ void AdicionarAmigoEncontro(int encontro)
                 printf("\n%i. %s\n", i + 1, Amigos[i].nome);
             }
 
-            printf("\nDigite o amigo que deseja incluir no encontro:\n");
+            printf("\n\nDigite o amigo que deseja incluir no encontro:\n");
             scanf("%i", &amigo);
             LimparBuffer();
             amigo--;
@@ -2762,8 +2788,7 @@ void AdicionarCategoriaEncontro(int encontro)
     // caso nao tenha categorias suficientes para adicionar;
     if (NumCategorias <= Encontros[encontro].numcategorias)
     {
-        MensagemErro(-28);
-        Pausar(1);
+        MensagemErro(-36);
     }
     else
     {
@@ -2775,7 +2800,6 @@ void AdicionarCategoriaEncontro(int encontro)
             {
                 printf("\n%i. %s\n", i + 1, Categorias[i].nome);
             }
-
             printf("\nDigite a categoria que deseja incluir no encontro:\n");
             scanf("%i", &categoria);
             LimparBuffer();
@@ -2802,7 +2826,7 @@ void AdicionarCategoriaEncontro(int encontro)
 
                 if (categorianoencontro)
                 {
-                    MensagemErro(-22);
+                    MensagemErro(-24);
                     Pausar(1);
                     continue;
                 }
@@ -2839,80 +2863,82 @@ void ModificarAmigoEncontro(int encontro)
     {
         MensagemErro(-36);
     }
-
-    while (incluir)
+    else
     {
-        AlterarEncontroListarAmigos(Encontros[encontro]);
-        printf("\nDigite o amigo que sera substituido do encontro:\n");
-        scanf("%i", &amigoaux);
-        LimparBuffer();
-        amigoaux--;
-        if (amigoaux < 0 || amigoaux >= NumAmigos)
+        while (incluir)
         {
-            MensagemErro(-3);
-            Pausar(1);
-            continue;
-        }
-        else
-        {
-            while (1)
+            AlterarEncontroListarAmigos(Encontros[encontro]);
+            printf("\n\nDigite o amigo que sera substituido do encontro:\n");
+            scanf("%i", &amigoaux);
+            LimparBuffer();
+            amigoaux--;
+            if (amigoaux < 0 || amigoaux >= NumAmigos)
             {
-                LimparTela();
-                printf("\n--- Amigos ---\n");
-                for (int i = 0; i < NumAmigos; i++)
+                MensagemErro(-3);
+                Pausar(1);
+                continue;
+            }
+            else
+            {
+                while (1)
                 {
-                    printf("\n%i. %s\n", i + 1, Amigos[i].nome);
-                }
-                printf("\nDigite o novo amigo que deseja substituir no encontro:\n");
-                scanf("%i", &amigo);
-                LimparBuffer();
-                amigo--;
-                if (amigo < 0 || amigo >= NumAmigos)
-                {
-                    MensagemErro(-3);
-                    Pausar(1);
-                    continue;
-                }
-                else
-                {
-                    // verifica se ja existe um amigo com o mesmo nome;
-                    int amigonoencontro = 0;
-                    for (int i = 0; i < Encontros[encontro].numamigos; i++)
+                    LimparTela();
+                    printf("\n--- Amigos ---\n");
+                    for (int i = 0; i < NumAmigos; i++)
                     {
-                        if (strcmp(Amigos[amigo].nome, Encontros[encontro].amigos[i].nome) == 0)
-                        {
-                            amigonoencontro = 1;
-                            break;
-                        }
+                        printf("\n%i. %s\n", i + 1, Amigos[i].nome);
                     }
-
-                    if (amigonoencontro)
+                    printf("\nDigite o novo amigo que deseja substituir no encontro:\n");
+                    scanf("%i", &amigo);
+                    LimparBuffer();
+                    amigo--;
+                    if (amigo < 0 || amigo >= NumAmigos)
                     {
-                        MensagemErro(-22);
+                        MensagemErro(-3);
                         Pausar(1);
                         continue;
                     }
                     else
                     {
-                        if (Encontros[encontro].amigos[amigoaux].nome != NULL)
+                        // verifica se ja existe um amigo com o mesmo nome;
+                        int amigonoencontro = 0;
+                        for (int i = 0; i < Encontros[encontro].numamigos; i++)
                         {
-                            free(Encontros[encontro].amigos[amigoaux].nome);
+                            if (strcmp(Amigos[amigo].nome, Encontros[encontro].amigos[i].nome) == 0)
+                            {
+                                amigonoencontro = 1;
+                                break;
+                            }
                         }
-                        Encontros[encontro].amigos[amigoaux].nome = (char *)malloc((strlen(Amigos[amigo].nome) + 1) * sizeof(char));
-                        strcpy(Encontros[encontro].amigos[amigoaux].nome, Amigos[amigo].nome);
-                        if (Encontros[encontro].amigos[amigoaux].nome == NULL)
+
+                        if (amigonoencontro)
                         {
-                            MensagemErro(-7);
-                            exit(0);
+                            MensagemErro(-22);
+                            Pausar(1);
+                            continue;
                         }
-                        LimparTela();
-                        printf("\nModificado com sucesso.\n");
-                        break;
+                        else
+                        {
+                            if (Encontros[encontro].amigos[amigoaux].nome != NULL)
+                            {
+                                free(Encontros[encontro].amigos[amigoaux].nome);
+                            }
+                            Encontros[encontro].amigos[amigoaux].nome = (char *)malloc((strlen(Amigos[amigo].nome) + 1) * sizeof(char));
+                            strcpy(Encontros[encontro].amigos[amigoaux].nome, Amigos[amigo].nome);
+                            if (Encontros[encontro].amigos[amigoaux].nome == NULL)
+                            {
+                                MensagemErro(-7);
+                                exit(0);
+                            }
+                            LimparTela();
+                            printf("\nModificado com sucesso.\n");
+                            break;
+                        }
                     }
                 }
             }
+            break;
         }
-        break;
     }
 }
 
@@ -2925,80 +2951,83 @@ void ModificarCategoriaEncontro(int encontro)
     {
         MensagemErro(-36);
     }
-    while (incluir)
+    else
     {
-        AlterarEncontroListarCategorias(Encontros[encontro]);
-        printf("\nDigite a categoria que deseja substituir no encontro:\n");
-        scanf("%i", &cateaux);
-        LimparBuffer();
-        cateaux--;
-        if (cateaux < 0 || cateaux >= NumAmigos)
+        while (incluir)
         {
-            MensagemErro(-37);
-            Pausar(1);
-            continue;
-        }
-        else
-        {
-            while (1)
+            AlterarEncontroListarCategorias(Encontros[encontro]);
+            printf("\n\nDigite a categoria que deseja substituir no encontro:\n");
+            scanf("%i", &cateaux);
+            LimparBuffer();
+            cateaux--;
+            if (cateaux < 0 || cateaux >= NumAmigos)
             {
-                LimparTela();
-                printf("\n--- Categorias ---\n");
-                for (int i = 0; i < NumCategorias; i++)
+                MensagemErro(-37);
+                Pausar(1);
+                continue;
+            }
+            else
+            {
+                while (1)
                 {
-                    printf("\n%i. %s\n", i + 1, Categorias[i].nome);
-                }
-                printf("\nDigite a nova categoria que deseja substituir no encontro:\n");
-                scanf("%i", &categoria);
-                LimparBuffer();
-                categoria--;
-                if (categoria < 0 || categoria >= NumCategorias)
-                {
-                    MensagemErro(-37);
-                    Pausar(1);
-                    continue;
-                }
-                else
-                {
-                    // verifica se ja existe uma categoria com o mesmo nome;
-                    int categorianoencontro = 0;
-                    for (int i = 0; i < Encontros[encontro].numcategorias; i++)
+                    LimparTela();
+                    printf("\n--- Categorias ---\n");
+                    for (int i = 0; i < NumCategorias; i++)
                     {
-                        if (strcmp(Categorias[categoria].nome, Encontros[encontro].categorias[i].nome) == 0)
-                        {
-                            categorianoencontro = 1;
-                            break;
-                        }
+                        printf("\n%i. %s\n", i + 1, Categorias[i].nome);
                     }
-
-                    if (categorianoencontro)
+                    printf("\nDigite a nova categoria que deseja substituir no encontro:\n");
+                    scanf("%i", &categoria);
+                    LimparBuffer();
+                    categoria--;
+                    if (categoria < 0 || categoria >= NumCategorias)
                     {
-                        MensagemErro(-24);
+                        MensagemErro(-37);
                         Pausar(1);
                         continue;
                     }
                     else
                     {
+                        // verifica se ja existe uma categoria com o mesmo nome;
+                        int categorianoencontro = 0;
+                        for (int i = 0; i < Encontros[encontro].numcategorias; i++)
+                        {
+                            if (strcmp(Categorias[categoria].nome, Encontros[encontro].categorias[i].nome) == 0)
+                            {
+                                categorianoencontro = 1;
+                                break;
+                            }
+                        }
 
-                        if (Encontros[encontro].categorias[cateaux].nome != NULL)
+                        if (categorianoencontro)
                         {
-                            free(Encontros[encontro].categorias[cateaux].nome);
+                            MensagemErro(-24);
+                            Pausar(1);
+                            continue;
                         }
-                        Encontros[encontro].categorias[cateaux].nome = (char *)malloc((strlen(Categorias[categoria].nome) + 1) * sizeof(char));
-                        strcpy(Encontros[encontro].categorias[cateaux].nome, Categorias[categoria].nome);
-                        if (Encontros[encontro].categorias[cateaux].nome == NULL)
+                        else
                         {
-                            MensagemErro(-7);
-                            exit(0);
+
+                            if (Encontros[encontro].categorias[cateaux].nome != NULL)
+                            {
+                                free(Encontros[encontro].categorias[cateaux].nome);
+                            }
+                            Encontros[encontro].categorias[cateaux].nome = (char *)malloc((strlen(Categorias[categoria].nome) + 1) * sizeof(char));
+                            strcpy(Encontros[encontro].categorias[cateaux].nome, Categorias[categoria].nome);
+                            if (Encontros[encontro].categorias[cateaux].nome == NULL)
+                            {
+                                MensagemErro(-7);
+                                exit(0);
+                            }
+                            LimparTela();
+                            printf("\nModificado com sucesso.\n");
+                            break;
                         }
-                        LimparTela();
-                        printf("\nModificado com sucesso.\n");
-                        break;
                     }
                 }
             }
+            break;
         }
-        break;
     }
 }
 
@@ -3155,7 +3184,7 @@ void DeletarAmigoEncontro(int encontro)
             {
 
                 AlterarEncontroListarAmigos(Encontros[encontro]);
-                printf("\nDigite o amigo que deseja deletar do encontro:\n");
+                printf("\n\nDigite o amigo que deseja deletar do encontro:\n");
                 scanf("%i", &amigo);
                 LimparBuffer();
                 amigo--;
@@ -3222,7 +3251,7 @@ void DeletarCategoriaEncontro(int encontro)
             if (op == 's')
             {
                 AlterarEncontroListarCategorias(Encontros[encontro]);
-                printf("\nDigite a categoria que deseja deletar do encontro:\n");
+                printf("\n\nDigite a categoria que deseja deletar do encontro:\n");
                 scanf("%i", &categoria);
                 LimparBuffer();
                 categoria--;
@@ -3648,7 +3677,7 @@ void AlterarEncontroListarAmigos(Encontro encontros)
         }
         else
         {
-            printf("\n%i. %s ", i + 1, encontros.amigos[i].nome);
+            printf("\n%i. %s \n", i + 1, encontros.amigos[i].nome);
         }
     }
 }
@@ -3661,11 +3690,11 @@ void AlterarEncontroListarCategorias(Encontro encontros)
     {
         if (i < encontros.numcategorias - 1)
         {
-            printf("\n%i. %s ", i + 1, encontros.categorias[i].nome);
+            printf("\n%i. %s", i + 1, encontros.categorias[i].nome);
         }
         else
         {
-            printf("\n%i. %s ", i + 1, encontros.categorias[i].nome);
+            printf("\n%i. %s \n", i + 1, encontros.categorias[i].nome);
         }
     }
 }
@@ -4368,25 +4397,15 @@ void SalvarArquivos()
     }
 }
 
-// ARRUMAR!!!!!!!!!!!!!!!!!!!!!!!!!!
-void RecuperarArquivos()
+void RecuperarAmigos()
 {
     int i = 0, sep = 0;
     char str[100], c;
 
     FILE *ArqAmigos = fopen("Amigos.txt", "r");
-    FILE *ArqLocais = fopen("Locais.txt", "r");
-    FILE *ArqCategorias = fopen("Categorias.txt", "r");
-    FILE *ArqEncontros = fopen("Encontros.txt", "r");
 
-    while (1)
+    while ((c = fgetc(ArqAmigos)) != EOF)
     {
-        // se o caracter for o end of file;
-        if ((c = fgetc(ArqAmigos)) == EOF)
-        {
-            break;
-        }
-
         // monta a string;
         if (c != '\n' && c != ';')
         {
@@ -4463,13 +4482,18 @@ void RecuperarArquivos()
         }
     }
 
-    while (1)
+    fclose(ArqAmigos);
+}
+
+void RecuperarLocais()
+{
+    int i = 0, sep = 0;
+    char str[100], c;
+
+    FILE *ArqLocais = fopen("Locais.txt", "r");
+
+    while ((c = fgetc(ArqLocais)) != EOF)
     {
-        // se o caracter for o end of file;
-        if ((c = fgetc(ArqLocais)) == EOF)
-        {
-            break;
-        }
 
         // monta a string;
         if (c != '\n' && c != '@')
@@ -4541,14 +4565,18 @@ void RecuperarArquivos()
         }
     }
 
-    while (1)
-    {
-        // se o caracter for o end of file;
-        if ((c = fgetc(ArqCategorias)) == EOF)
-        {
-            break;
-        }
+    fclose(ArqLocais);
+}
 
+void RecuperarCategorias()
+{
+    int i = 0, sep = 0;
+    char str[100], c;
+
+    FILE *ArqCategorias = fopen("Categorias.txt", "r");
+
+    while ((c = fgetc(ArqCategorias)) != EOF)
+    {
         // monta a string;
         if (c != '\n' && c != '$')
         {
@@ -4576,14 +4604,19 @@ void RecuperarArquivos()
         }
     }
 
-    while (1)
-    {
-        // se o caracter for o end of file;
-        if ((c = fgetc(ArqEncontros)) == EOF)
-        {
-            break;
-        }
+    fclose(ArqCategorias);
+}
 
+// ARRUMAR!!!!!!!!!!!!!!!!!!!!!!!!!!
+void RecuperarEncontros()
+{
+    int i = 0, sep = 0;
+    char str[100], c;
+
+    FILE *ArqEncontros = fopen("Encontros.txt", "r");
+
+    while ((c = fgetc(ArqEncontros)) != EOF)
+    {
         // monta a string;
         if (c != '\n' && c != ';' && c != '@' && c != '$' && c != '#')
         {
@@ -4598,23 +4631,26 @@ void RecuperarArquivos()
 
             if (c == ';')
             {
-
-                if (NumEncontros == 0)
+                if (sep == 0)
                 {
                     printf("\nAlocou do 0 para 1\n");
                     Encontros = (Encontro *)malloc(1 * sizeof(Encontro));
+                    Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                    printf("\nnome antes de copiar %s\n", Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome);
+                    strcpy(Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome, str);
+                    printf("\nnome depois de copiar %s\n", Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome);
+                    Encontros[NumEncontros].numamigos++;
                 }
                 else
                 {
                     printf("\nRealocou\n");
                     Encontros = (Encontro *)realloc(Encontros, (NumEncontros + 1) * sizeof(Encontro));
+                    Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+                    printf("\nnome antes de copiar %s\n", Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome);
+                    strcpy(Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome, str);
+                    printf("\nnome depois de copiar %s\n", Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome);
+                    Encontros[NumEncontros].numamigos++;
                 }
-
-                Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
-                printf("\nnome antes de copiar %s\n", Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome);
-                strcpy(Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome, str);
-                printf("\nnome depois de copiar %s\n", Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome);
-                Encontros[NumEncontros].numamigos++;
             }
             else if (c == '@')
             {
@@ -4623,7 +4659,6 @@ void RecuperarArquivos()
             }
             else if (c == '$')
             {
-
                 Encontros[NumEncontros].categorias[Encontros[NumEncontros].numcategorias].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
                 strcpy(Encontros[NumEncontros].categorias[Encontros[NumEncontros].numcategorias].nome, str);
                 Encontros[NumEncontros].numcategorias++;
@@ -4677,14 +4712,17 @@ void RecuperarArquivos()
         }
     }
 
-    fclose(ArqAmigos);
-    fclose(ArqLocais);
-    fclose(ArqCategorias);
     fclose(ArqEncontros);
-
-    Pausar(1);
 }
 
+void RecuperarArquivos()
+{
+    RecuperarAmigos();
+    RecuperarLocais();
+    RecuperarCategorias();
+    // RecuperarEncontros();
+    Pausar(1);
+}
 void Pausar(int pause)
 {
     printf("\n\nPressione Qualquer Tecla para Continuar..\n");
