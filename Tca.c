@@ -2268,7 +2268,6 @@ void ListarEncontrosPorCategorias()
                     printf("\nData: [%02i/%02i/%i]", Encontros[i].data.dia, Encontros[i].data.mes, Encontros[i].data.ano);
                     printf("\nHorario: [%02ih:%02im]", Encontros[i].horario.hora, Encontros[i].horario.minuto);
                     printf("\nDescricao: %s\n", Encontros[i].descricao);
-                    break;
                 }
             }
         }
@@ -4376,7 +4375,7 @@ void SalvarArquivos()
     }
     if (NumEncontros > 0)
     {
-        // SalvarEncontros();
+        SalvarEncontros();
     }
 }
 
@@ -4553,7 +4552,7 @@ void RecuperarLocais()
 
 void RecuperarCategorias()
 {
-    int i = 0, sep = 0;
+    int i = 0;
     char str[100], c;
 
     FILE *ArqCategorias = fopen("Categorias.txt", "r");
@@ -4703,7 +4702,7 @@ void RecuperarArquivos()
     RecuperarAmigos();
     RecuperarLocais();
     RecuperarCategorias();
-    // RecuperarEncontros();
+    RecuperarEncontros();
     Pausar(1);
 }
 void Pausar(int pause)
