@@ -1457,9 +1457,6 @@ void OpcaoMenuLocal()
         case 4:
             VoltarMenuPrincipal();
             break;
-        default:
-            printf("\nErro\n.");
-            break;
         }
 
         if (erro <= 0)
@@ -1516,9 +1513,6 @@ void OpcaoMenuCategoria()
             break;
         case 4:
             VoltarMenuPrincipal();
-            break;
-        default:
-            printf("\nErro\n.");
             break;
         }
 
@@ -1580,11 +1574,6 @@ void OpcaoMenuEncontro()
 
         case 4:
             VoltarMenuPrincipal();
-            break;
-
-        default:
-            printf("\nErro\n.");
-            Pausar(1);
             break;
         }
 
@@ -4013,7 +4002,6 @@ int DeletarEncontros()
         {
             if (NumEncontros == 1)
             {
-
                 ExcluirEncontros(0);
             }
             else
@@ -4109,8 +4097,8 @@ void ExcluirCategorias(int categoria)
 
 void ExcluirEncontros(int encontro)
 {
-    if (NumEncontros <= 0 || encontro < 0 || encontro >= NumEncontros)
-    {
+    if (NumEncontros <= 0 || encontro < 0  ||  encontro >= NumEncontros)
+    {   
         return;
     }
 
@@ -4119,6 +4107,7 @@ void ExcluirEncontros(int encontro)
 
     // sobrescreve o elemento a ser removido com o último elemento (basicamente reorganiza);
     Encontros[encontro] = Encontros[NumEncontros - 1];
+
     NumEncontros--;
 }
 
@@ -4155,17 +4144,9 @@ void LimpaPonteiroCategoria(Categoria *categoria)
 }
 
 void LimpaPonteiroEncontro(Encontro *encontro)
-{
-
+{   
     free(encontro->amigos->nome);
-    free(encontro->amigos->apelido);
-    free(encontro->amigos->email);
-    free(encontro->amigos->telefone);
     free(encontro->locais->nome);
-    free(encontro->locais->endereco.estado);
-    free(encontro->locais->endereco.cidade);
-    free(encontro->locais->endereco.bairro);
-    free(encontro->locais->endereco.logradouro);
     free(encontro->categorias->nome);
     free(encontro->descricao);
     encontro->numamigos = 0;
@@ -4393,7 +4374,7 @@ void SalvarArquivos()
     }
     if (NumEncontros > 0)
     {
-        SalvarEncontros();
+        //SalvarEncontros();
     }
 }
 
