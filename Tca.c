@@ -76,8 +76,7 @@ typedef struct
 } Encontro;
 
 // COISAS IMPORTANTES!!!!!!!!!!!!!!!!!!!! **************************************************
-// ARRUMAR FUNCAO DE RECUPERAR AMIGO;
-// ARRUMAR LISTAR POR CATEGORIAS;
+// ARRUMAR RECUPERAR ARQUIVO DE ENCONTRO;
 // CRIAR OPCAO DE EXCLUIR TODOS DE UMA VEZ; (TALVEZ FAÇA, SO TALVEZ);
 
 void MensagemErro(int erro); // imprime mensagens de erro;
@@ -2204,17 +2203,18 @@ void QuantidadeRegistros()
     Pausar(1);
 }
 
-// ARRUMAR !!!!!!!!!!!! (esta imprimindo duas vezes se uma categoria ja foi imprimida)
 void ListarEncontrosPorCategorias()
 {
     // supondo no maximo 100 categorias com nome ate 99 caracteres.
     char CategoriasUnicas[100][100];
-    int NumCategoriasUnicas = 0, encontrada;
+    int NumCategoriasUnicas = 0, encontrada = 0;
 
     for (int i = 0; i < NumEncontros; i++)
     {
         for (int j = 0; j < Encontros[i].numcategorias; j++)
         {
+            // resetando a cada vez que procura;
+            encontrada = 0;
             for (int k = 0; k < NumCategoriasUnicas; k++)
             {
                 if (strcmp(CategoriasUnicas[k], Encontros[i].categorias[j].nome) == 0)
@@ -2224,7 +2224,7 @@ void ListarEncontrosPorCategorias()
                 }
             }
 
-            if (encontrada)
+            if (!encontrada)
             {
                 strcpy(CategoriasUnicas[NumCategoriasUnicas++], Encontros[i].categorias[j].nome);
             }
@@ -2234,6 +2234,7 @@ void ListarEncontrosPorCategorias()
     LimparTela();
     for (int c = 0; c < NumCategoriasUnicas; c++)
     {
+
         printf("\n-- Categoria: %s --\n", CategoriasUnicas[c]);
 
         for (int i = 0; i < NumEncontros; i++)
@@ -2243,6 +2244,7 @@ void ListarEncontrosPorCategorias()
                 if (strcmp(Encontros[i].categorias[j].nome, CategoriasUnicas[c]) == 0)
                 {
                     printf("\nEncontro %i: \n", i + 1);
+
                     if (Encontros[i].numamigos == 1)
                     {
                         printf("\nAmigo: %s", Encontros[i].amigos->nome);
@@ -4097,8 +4099,8 @@ void ExcluirCategorias(int categoria)
 
 void ExcluirEncontros(int encontro)
 {
-    if (NumEncontros <= 0 || encontro < 0  ||  encontro >= NumEncontros)
-    {   
+    if (NumEncontros <= 0 || encontro < 0 || encontro >= NumEncontros)
+    {
         return;
     }
 
@@ -4144,7 +4146,7 @@ void LimpaPonteiroCategoria(Categoria *categoria)
 }
 
 void LimpaPonteiroEncontro(Encontro *encontro)
-{   
+{
     free(encontro->amigos->nome);
     free(encontro->locais->nome);
     free(encontro->categorias->nome);
@@ -4374,7 +4376,7 @@ void SalvarArquivos()
     }
     if (NumEncontros > 0)
     {
-        //SalvarEncontros();
+        // SalvarEncontros();
     }
 }
 
