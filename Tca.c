@@ -4593,9 +4593,10 @@ void RecuperarCategorias()
 void RecuperarEncontros()
 {
     int i = 0, sep = 0;
-    char str[100], c;
+    char str[100], c;   
 
     FILE *ArqEncontros = fopen("Encontros.txt", "r");
+
 
     while ((c = fgetc(ArqEncontros)) != EOF)
     {
@@ -4615,8 +4616,9 @@ void RecuperarEncontros()
             {
                 if (sep == 0)
                 {
-                    printf("\nAlocou do 0 para 1\n");
+                    
                     Encontros = (Encontro *)malloc(1 * sizeof(Encontro));
+                    printf("\nAlocou do 0 para 1\n");
                     Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
                     printf("\nnome antes de copiar %s\n", Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome);
                     strcpy(Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome, str);
@@ -4698,7 +4700,8 @@ void RecuperarEncontros()
 }
 
 void RecuperarArquivos()
-{
+{   
+    
     RecuperarAmigos();
     RecuperarLocais();
     RecuperarCategorias();
