@@ -1,4 +1,4 @@
-PÑ;Chriss;christiandossantos125@gmail.com;23;3;2007;41997776684;
+Christian;Chriss;christiandossantos125@gmail.com;23;3;2007;41997776684;
 Luana;Luu;luanab.moura125@gmail.com;14;3;2006;41991999041;
 Joao;Juca;joaopaulo.m125@gmail.com;12;7;2007;41993368745;
 Daniel;Daniel;danielmarcos67@gmail.com;14;9;2005;4198546754;
