@@ -161,10 +161,10 @@ void SalvarLocais();        // salva os dados dos locais que estava na memoria, 
 void SalvarCategorias();    // salva os dados das categorias que estava na memoria, em um arquivo;
 void SalvarEncontros();     // salva os dados dos encotros que estava na memoria, em um arquivo;
 void SalvarArquivos();      // faz a verificacao dos arquivos e salva todos eles;
-void RecuperarAmigos();     // recupera todos os dados que estavam salvos que estavam no arquivo;
-void RecuperarLocais();     // recupera todos os dados que estavam salvos que estavam no arquivo;
-void RecuperarCategorias(); // recupera todos os dados que estavam salvos que estavam no arquivo;
-void RecuperarEncontros();  // recupera todos os dados que estavam salvos que estavam no arquivo;
+//void RecuperarAmigos();     // recupera todos os dados que estavam salvos que estavam no arquivo;
+//void RecuperarLocais();     // recupera todos os dados que estavam salvos que estavam no arquivo;
+//void RecuperarCategorias(); // recupera todos os dados que estavam salvos que estavam no arquivo;
+//void RecuperarEncontros();  // recupera todos os dados que estavam salvos que estavam no arquivo;
 void RecuperarArquivos();   // recupera todos os dados que estavam salvos que estavam no arquivo;
 
 int IncluirAmigos();       // inclui na funcao o amigo criado na funcao "cria amigo";
@@ -209,9 +209,9 @@ int NumAmigos = 0, NumLocais = 0, NumCategorias = 0, NumEncontros = 0;
 
 int main()
 {
-    RecuperarArquivos();
     int op = 0;
 
+    RecuperarArquivos();
     while (op != 6)
     {
         VoltarMenuPrincipal();
@@ -838,9 +838,9 @@ Encontro CriaEncontro()
     char op;
     char strAux[100];
 
-    encontro.amigos = 0;
-    encontro.categorias = 0;
-    encontro.locais = 0;
+    encontro.amigos = NULL;
+    encontro.categorias = NULL;
+    encontro.locais = NULL;
     encontro.numamigos = 0;
     encontro.numlocais = 0;
     encontro.numcategorias = 0;
@@ -887,7 +887,7 @@ Encontro CriaEncontro()
             else
             {
 
-                if (encontro.amigos == 0)
+                if (encontro.amigos == NULL)
                 {
                     encontro.amigos = (Amigo *)malloc(1 * sizeof(Amigo));
                 }
@@ -975,7 +975,7 @@ Encontro CriaEncontro()
         else
         {
 
-            if (encontro.locais == 0)
+            if (encontro.locais == NULL)
             {
                 encontro.locais = (Local *)malloc(1 * sizeof(Local));
             }
@@ -1044,7 +1044,7 @@ Encontro CriaEncontro()
             else
             {
 
-                if (encontro.categorias == 0)
+                if (encontro.categorias == NULL)
                 {
                     encontro.categorias = (Categoria *)malloc(1 * sizeof(Categoria));
                 }
@@ -4379,12 +4379,15 @@ void SalvarArquivos()
     }
 }
 
-void RecuperarAmigos()
+void RecuperarArquivos()
 {
     int i = 0, sep = 0;
     char str[100], c;
 
     FILE *ArqAmigos = fopen("Amigos.txt", "r");
+    FILE *ArqLocais = fopen("Locais.txt", "r");
+    FILE *ArqCategorias = fopen("Categorias.txt", "r");
+    FILE *ArqEncontros = fopen("Encontros.txt", "r");
 
     while ((c = fgetc(ArqAmigos)) != EOF)
     {
@@ -4464,15 +4467,34 @@ void RecuperarAmigos()
         }
     }
 
-    fclose(ArqAmigos);
-}
+    while ((c = fgetc(ArqCategorias)) != EOF)
+    {
+        // monta a string;
+        if (c != '\n' && c != '$')
+        {
+            str[i] = c;
+            i++;
+        }
+        else if (c == '$')
+        {
+            // finaliza a string;
+            str[i] = '\0';
+            i = 0;
 
-void RecuperarLocais()
-{
-    int i = 0, sep = 0;
-    char str[100], c;
+            if (NumCategorias == 0)
+            {
+                Categorias = (Categoria *)malloc(1 * sizeof(Categoria));
+            }
+            else
+            {
+                Categorias = (Categoria *)realloc(Categorias, (NumCategorias + 1) * sizeof(Categoria));
+            }
 
-    FILE *ArqLocais = fopen("Locais.txt", "r");
+            Categorias[NumCategorias].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+            strcpy(Categorias[NumCategorias].nome, str);
+            NumCategorias++;
+        }
+    }
 
     while ((c = fgetc(ArqLocais)) != EOF)
     {
@@ -4547,57 +4569,6 @@ void RecuperarLocais()
         }
     }
 
-    fclose(ArqLocais);
-}
-
-void RecuperarCategorias()
-{
-    int i = 0;
-    char str[100], c;
-
-    FILE *ArqCategorias = fopen("Categorias.txt", "r");
-
-    while ((c = fgetc(ArqCategorias)) != EOF)
-    {
-        // monta a string;
-        if (c != '\n' && c != '$')
-        {
-            str[i] = c;
-            i++;
-        }
-        else if (c == '$')
-        {
-            // finaliza a string;
-            str[i] = '\0';
-            i = 0;
-
-            if (NumCategorias == 0)
-            {
-                Categorias = (Categoria *)malloc(1 * sizeof(Categoria));
-            }
-            else
-            {
-                Categorias = (Categoria *)realloc(Categorias, (NumCategorias + 1) * sizeof(Categoria));
-            }
-
-            Categorias[NumCategorias].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
-            strcpy(Categorias[NumCategorias].nome, str);
-            NumCategorias++;
-        }
-    }
-
-    fclose(ArqCategorias);
-}
-
-// ARRUMAR!!!!!!!!!!!!!!!!!!!!!!!!!!
-void RecuperarEncontros()
-{
-    int i = 0, sep = 0;
-    char str[100], c;   
-
-    FILE *ArqEncontros = fopen("Encontros.txt", "r");
-
-
     while ((c = fgetc(ArqEncontros)) != EOF)
     {
         // monta a string;
@@ -4614,9 +4585,9 @@ void RecuperarEncontros()
 
             if (c == ';')
             {
-                if (sep == 0)
+                if (NumEncontros == 0)
                 {
-                    
+
                     Encontros = (Encontro *)malloc(1 * sizeof(Encontro));
                     printf("\nAlocou do 0 para 1\n");
                     Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
@@ -4696,17 +4667,10 @@ void RecuperarEncontros()
         }
     }
 
+    fclose(ArqAmigos);
+    fclose(ArqLocais);
+    fclose(ArqCategorias);
     fclose(ArqEncontros);
-}
-
-void RecuperarArquivos()
-{   
-    
-    RecuperarAmigos();
-    RecuperarLocais();
-    RecuperarCategorias();
-    RecuperarEncontros();
-    Pausar(1);
 }
 void Pausar(int pause)
 {
