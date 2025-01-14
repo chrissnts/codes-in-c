@@ -150,6 +150,7 @@ void LimpaPonteiroEncontro(Encontro *encontro);    // limpa ponteiro de encontro
 
 void OrdenarCategorias(); // ordena as categorias por ordem alfabetica;
 
+void LiberarMemoria();  //libera toda a memoria que foi alocada dps de salvar em arquivo;
 void Pausar(int pause); // verifica se o pause eh true ou false e pausa;
 void LimparBuffer();    // limpa o buffer do teclado;
 void LimparTela();      // limpa a tela (criei por conta da miseria do linux);
@@ -164,6 +165,8 @@ void RecuperarLocais();     // recupera todos os dados dos locais que estavam sa
 void RecuperarCategorias(); // recupera todos os dados da categorias que estavam salvos que estavam no arquivo;
 void RecuperarEncontros();  // recupera todos os dados dos encontros que estavam salvos que estavam no arquivo;
 void RecuperarArquivos();   // recupera todos os dados de todos os arquivos que estavam salvos que estavam no arquivo;
+
+
 
 int IncluirAmigos();       // inclui na funcao o amigo criado na funcao "cria amigo";
 int IncluirLocais();       // inclui na funcao o local criado na funcao "cria local";
@@ -641,6 +644,7 @@ void OpcaoMenu()
         {
             LimparTela();
             SalvarArquivos();
+            LiberarMemoria();
             exit(0);
         }
 
@@ -1139,6 +1143,7 @@ Encontro CriaEncontro()
         }
     }
 
+    LimparTela();
     printf("\nDescricao do encontro:\n");
     LimparBuffer();
     gets(strAux);
@@ -4540,6 +4545,7 @@ void SalvarArquivos()
     SalvarCategorias();
 
     SalvarEncontros();
+
 }
 
 void RecuperarAmigos()
@@ -4783,6 +4789,8 @@ void RecuperarEncontros()
 
                         Encontros = (Encontro *)malloc(1 * sizeof(Encontro));
                         Encontros[NumEncontros].amigos = (Amigo *)malloc(1 * sizeof(Amigo));
+                        Encontros[NumEncontros].numamigos = 0;
+                        Encontros[NumEncontros].numcategorias = 0;
 
                         printf("\nAlocou do 0 para 1\n");
                         Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
@@ -4796,6 +4804,9 @@ void RecuperarEncontros()
                         printf("\nRealocou\n");
                         Encontros = (Encontro *)realloc(Encontros, (NumEncontros + 1) * sizeof(Encontro));
                         Encontros[NumEncontros].amigos = (Amigo *)malloc(1 * sizeof(Amigo));
+                        Encontros[NumEncontros].numamigos = 0;
+                        Encontros[NumEncontros].numcategorias = 0;
+
 
                         Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
                         strcpy(Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome, str);
@@ -4805,6 +4816,7 @@ void RecuperarEncontros()
                 }
                 else
                 {
+                
 
                     Encontros[NumEncontros].amigos = (Amigo *)realloc(Encontros[NumEncontros].amigos, (Encontros[NumEncontros].numamigos + 1) * sizeof(Amigo));
 
@@ -4823,7 +4835,7 @@ void RecuperarEncontros()
                 printf("\nlocal: %s\n", Encontros[NumEncontros].locais->nome);
             }
             else if (c == '$')
-            {
+            {   
                 if (Encontros[NumEncontros].numcategorias == 0)
                 {
                     Encontros[NumEncontros].categorias = (Categoria *)malloc(1 * sizeof(Categoria));
@@ -4907,6 +4919,14 @@ void RecuperarArquivos()
     RecuperarCategorias();
     RecuperarEncontros();
     Pausar(1);
+}
+
+void LiberarMemoria()
+{
+    ExcluirTodosAmigos();
+    ExcluirTodosLocais();
+    ExcluirTodasCategorias();
+    ExcluirTodosEncontros();
 }
 
 void Pausar(int pause)
