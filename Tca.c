@@ -637,7 +637,7 @@ void OpcaoMenu()
         {
             VoltarMenuRelatorio();
         }
-        // salva os arquivos (se tiver algo para salvar, e sai do programa);
+        // salva os arquivos e libera os ponteiros sai do programa ;
         else if (op == 6)
         {
             LimparTela();
@@ -3298,7 +3298,7 @@ int ModificarAmigos()
         return -2;
     }
 
-    while (1)
+    while (op != 'n')
     {
         LimparTela();
         printf("\nRealmente deseja prosseguir? (s) (n)\n");
@@ -3399,7 +3399,7 @@ int ModificarLocais()
         return -5;
     }
 
-    while (1)
+    while (op != 'n')
     {
         LimparTela();
         printf("\nRealmente deseja prosseguir? (s) (n)\n");
@@ -3499,7 +3499,7 @@ int ModificarCategorias()
         return -14;
     }
 
-    while (1)
+    while (op != 'n')
     {
         LimparTela();
         printf("\nRealmente deseja prosseguir? (s) (n)\n");
@@ -3570,7 +3570,7 @@ int ModificarEncontros()
         return -16;
     }
 
-    while (1)
+    while (op != 'n')
     {
         LimparTela();
         printf("\nRealmente deseja prosseguir? (s) (n)\n");
@@ -3701,7 +3701,7 @@ int DeletarAmigos()
         return -2;
     }
 
-    while (1)
+    while (op != 'n')
     {
         LimparTela();
         printf("\nRealmente deseja prosseguir? (s) (n)\n");
@@ -3739,14 +3739,17 @@ int DeletarAmigos()
                     {
                         printf("\n1. Excluir Todos (Deletara todos os encontros cadastrados)\n");
                         printf("\n2. Listar e Excluir\n");
+                        printf("\n3. Voltar\n");
                     }
                     else
                     {
                         printf("\n1. Excluir Todos\n");
                         printf("\n2. Listar e Excluir\n");
+                        printf("\n3. Voltar\n");
                     }
                     scanf("%i", &opm);
                     LimparBuffer();
+
                     if (opm == 1)
                     {
                         ExcluirTodosAmigos();
@@ -3755,6 +3758,7 @@ int DeletarAmigos()
                     }
                     else if (opm == 2)
                     {
+
                         ListarAmigos();
                         printf("\nSelecione o amigo que deseja excluir: [ %i - %i]: ", 1, NumAmigos);
                         scanf("%i", &amigo);
@@ -3789,6 +3793,11 @@ int DeletarAmigos()
                             ExcluirAmigos(amigo);
                             break;
                         }
+                    }
+                    else if (opm == 3)
+                    {
+                        OpcaoMenuAmigo();
+
                     }
                     else
                     {
@@ -3830,7 +3839,7 @@ int DeletarLocais()
         return -5;
     }
 
-    while (1)
+    while (op != 'n')
     {
         LimparTela();
         printf("\nRealmente deseja prosseguir? (s) (n)\n");
@@ -3866,14 +3875,17 @@ int DeletarLocais()
                     {
                         printf("\n1. Excluir Todos (Deletara todos os encontros cadastrados)\n");
                         printf("\n2. Listar e Excluir\n");
+                        printf("\n3. Voltar\n");
                     }
                     else
                     {
                         printf("\n1. Excluir Todos\n");
                         printf("\n2. Listar e Excluir\n");
+                        printf("\n3. Voltar\n");
                     }
                     scanf("%i", &opm);
                     LimparBuffer();
+
                     if (opm == 1)
                     {
                         ExcluirTodosLocais();
@@ -3911,6 +3923,10 @@ int DeletarLocais()
                             ExcluirLocais(local);
                             break;
                         }
+                    }
+                    else if (opm == 3)
+                    {
+                        OpcaoMenuLocal();
                     }
                     else
                     {
@@ -3951,7 +3967,7 @@ int DeletarCategorias()
         return -14;
     }
 
-    while (1)
+    while (op != 'n')
     {
         LimparTela();
         printf("\nRealmente deseja prosseguir? (s) (n)\n");
@@ -3989,14 +4005,17 @@ int DeletarCategorias()
                     {
                         printf("\n1. Excluir Todos (Deletara todos os encontros cadastrados)\n");
                         printf("\n2. Listar e Excluir\n");
+                        printf("\n3. Voltar\n");
                     }
                     else
                     {
                         printf("\n1. Excluir Todas\n");
                         printf("\n2. Listar e Excluir\n");
+                        printf("\n3. Voltar\n");
                     }
                     scanf("%i", &opm);
                     LimparBuffer();
+
                     if (opm == 1)
                     {
                         ExcluirTodasCategorias();
@@ -4037,6 +4056,10 @@ int DeletarCategorias()
                             break;
                         }
                     }
+                    else if (opm ==  3)
+                    {
+                        OpcaoMenuCategoria();
+                    }
                     else
                     {
                         MensagemErro(0);
@@ -4076,7 +4099,7 @@ int DeletarEncontros()
         return -16;
     }
 
-    while (1)
+    while (op != 'n')
     {
         LimparTela();
         printf("\nRealmente deseja prosseguir? (s) (n)\n");
@@ -4097,8 +4120,10 @@ int DeletarEncontros()
                     LimparTela();
                     printf("\n1. Excluir Todos \n");
                     printf("\n2. Listar e Excluir\n");
+                    printf("\n3. Voltar\n");
                     scanf("%i", &opm);
                     LimparBuffer();
+
                     if (opm == 1)
                     {
                         ExcluirTodosEncontros();
@@ -4123,6 +4148,10 @@ int DeletarEncontros()
                             ExcluirEncontros(encontro);
                             break;
                         }
+                    }
+                    else if (opm == 3)
+                    {
+                        OpcaoMenuEncontro();
                     }
                     else
                     {
@@ -4785,39 +4814,42 @@ void RecuperarEncontros()
                     {
 
                         Encontros = (Encontro *)malloc(1 * sizeof(Encontro));
+                        Encontros[NumEncontros].amigos = NULL;
                         Encontros[NumEncontros].amigos = (Amigo *)malloc(1 * sizeof(Amigo));
                         Encontros[NumEncontros].numamigos = 0;
                         Encontros[NumEncontros].numcategorias = 0;
-
-                        printf("\nAlocou do 0 para 1\n");
                         Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+
                         strcpy(Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome, str);
-                        printf("\namigo: %s\n", Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome);
                         Encontros[NumEncontros].numamigos++;
                         sep = 1;
+                        continue;
                     }
                     else
                     {
                         if (aux)
                         {
-                            printf("\nRealocou\n");
+                            
                             Encontros = (Encontro *)realloc(Encontros, (NumEncontros + 1) * sizeof(Encontro));
+                            Encontros[NumEncontros].amigos = NULL;
                             Encontros[NumEncontros].amigos = (Amigo *)malloc(1 * sizeof(Amigo));
                             Encontros[NumEncontros].numamigos = 0;
                             Encontros[NumEncontros].numcategorias = 0;
-
                             Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+
                             strcpy(Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome, str);
-                            printf("\namigo: %s\n", Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome);
                             Encontros[NumEncontros].numamigos++;
                             aux = 0;
+                            continue;
                         }
                         else
                         {
+                            Encontros[NumEncontros].amigos = (Amigo *)realloc(Encontros[NumEncontros].amigos, (Encontros[NumEncontros].numamigos + 1) * sizeof(Amigo));
                             Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+
                             strcpy(Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome, str);
-                            printf("\namigo: %s\n", Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome);
                             Encontros[NumEncontros].numamigos++;
+                            continue;
                         }
                     }
                 }
@@ -4825,20 +4857,19 @@ void RecuperarEncontros()
                 {
 
                     Encontros[NumEncontros].amigos = (Amigo *)realloc(Encontros[NumEncontros].amigos, (Encontros[NumEncontros].numamigos + 1) * sizeof(Amigo));
-
                     Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+
                     strcpy(Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome, str);
-                    printf("\namigo: %s\n", Encontros[NumEncontros].amigos[Encontros[NumEncontros].numamigos].nome);
                     Encontros[NumEncontros].numamigos++;
+                    continue;
                 }
             }
             else if (c == '@')
             {
                 Encontros[NumEncontros].locais = (Local *)malloc(1 * sizeof(Local));
-
                 Encontros[NumEncontros].locais->nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
+
                 strcpy(Encontros[NumEncontros].locais->nome, str);
-                printf("\nlocal: %s\n", Encontros[NumEncontros].locais->nome);
             }
             else if (c == '$')
             {
@@ -4853,7 +4884,6 @@ void RecuperarEncontros()
 
                 Encontros[NumEncontros].categorias[Encontros[NumEncontros].numcategorias].nome = (char *)malloc((strlen(str) + 1) * sizeof(char));
                 strcpy(Encontros[NumEncontros].categorias[Encontros[NumEncontros].numcategorias].nome, str);
-                printf("\ncategoria : %s\n", Encontros[NumEncontros].categorias[Encontros[NumEncontros].numcategorias].nome);
                 Encontros[NumEncontros].numcategorias++;
                 // zerando pra poder usar no '#'
                 sep = 0;
@@ -4898,7 +4928,6 @@ void RecuperarEncontros()
                 case 5:
                     Encontros[NumEncontros].descricao = (char *)malloc((strlen(str) + 1) * sizeof(char));
                     strcpy(Encontros[NumEncontros].descricao, str);
-                    printf("\ndescricao: %s\n", Encontros[NumEncontros].descricao);
                     NumEncontros++;
                     aux = 1;
                     break;
@@ -4925,7 +4954,6 @@ void RecuperarArquivos()
     RecuperarLocais();
     RecuperarCategorias();
     RecuperarEncontros();
-    Pausar(1);
 }
 
 void LiberarMemoria()
