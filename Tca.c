@@ -4951,8 +4951,11 @@ void RecuperarEncontros()
 void RecuperarArquivos()
 {
     RecuperarAmigos();
+
     RecuperarLocais();
+
     RecuperarCategorias();
+
     RecuperarEncontros();
 }
 
@@ -4976,18 +4979,22 @@ void Pausar(int pause)
 
 void LimparBuffer()
 {
+
 #ifdef _WIN32
     fflush(stdin);
 #elif __linux__
     __fpurge(stdin);
 #endif
+
 }
 
 void LimparTela()
 {
+
 #ifdef _WIN32
     system("cls");
 #elif __linux__
     system("clear");
 #endif
+
 }
