@@ -2,11 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#ifdef _WIN32
-#include <windows.h>
-#elif __linux__
-#include <unistd.h>
-#endif
 
 #define MAXLOCAL 100
 #define MAXAMIGO 100
